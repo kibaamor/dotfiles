@@ -1,5 +1,5 @@
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
-export PATH=$(go env GOPATH)/bin:$PATH
+(( ${+commands[go]} )) && export PATH=$(go env GOPATH)/bin:$PATH
 
 export GOPROXY=https://artifactory.ubisoft.org/artifactory/go,https://goproxy.io,direct
 export GOPRIVATE=*.ubisoft.org,*.ubi.com
@@ -22,7 +22,7 @@ alias pc='proxychains4 -q'
 test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
 test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-(( ${+commands[fleet]} )) && emulate zsh -c "$(fleet dev env 2>/dev/null)"
+(( ${+commands[fleet]} )) && eval "$(fleet dev env 2>/dev/null)"
 
 ###################################################################################################
 # Proxy
