@@ -16,6 +16,8 @@
 {{- /* find sudo command */ -}}
 {{ $sudo := findExecutable "sudo" (list "/bin" "/sbin" "/usr/bin" "/usr/sbin") -}}
 
+format: yaml
+
 data:
   personal: {{ $personal }}
 
