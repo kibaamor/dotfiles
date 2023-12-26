@@ -44,7 +44,7 @@ function disable_proxy() {
     export NO_PROXY=$no_proxy
 }
 
-{{ if .is_workpc -}}
+{{ if not .personal -}}
 enable_proxy
 {{- end }}
 

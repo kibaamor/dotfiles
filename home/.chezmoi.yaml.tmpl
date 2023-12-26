@@ -1,6 +1,17 @@
 {{- /* https://www.chezmoi.io/reference/configuration-file/variables/ */ -}}
 
+{{- /* Checks if running interactively */ -}}
+{{- $interactive := and
+    stdinIsATTY
+    (env "ACT" | not)
+    (env "CODESPACES" | not)
+    (env "DEBIAN_FRONTEND" | ne "noninteractive") -}}
+
+{{- /* is personal workstation */ -}}
+{{- $personal := contains "-WKS-" .chezmoi.hostname | not -}}
+
 data:
-  is_workpc: {{ contains "-WKS-" .chezmoi.hostname }}
+  interactive: {{ $interactive }}
+  personal: {{ $personal }}
 
   uname_arch: "{{ output "uname" "-m" | trim }}"

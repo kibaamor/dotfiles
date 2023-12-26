@@ -1,7 +1,7 @@
-{{ if eq .chezmoi.os "linux" -}}
+{{- if eq .chezmoi.os "linux" -}}
 #!/bin/bash
 
-set -e
+set -eu
 
 vim +PlugInstall +qa!
 

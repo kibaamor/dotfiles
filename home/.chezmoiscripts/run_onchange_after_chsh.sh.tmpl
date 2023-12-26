@@ -1,0 +1,8 @@
+{{- if and (eq .chezmoi.os "linux") ( .interactive ) -}}
+#!/bin/bash
+
+set -eu
+
+chsh -s /usr/bin/zsh
+
+{{ end -}}
