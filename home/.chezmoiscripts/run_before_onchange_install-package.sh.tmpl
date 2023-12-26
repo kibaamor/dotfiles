@@ -1,0 +1,22 @@
+{{ if or
+    (eq .chezmoi.osRelease.id "ubuntu")
+    (eq .chezmoi.osRelease.id "debian")
+    -}}
+
+#!/bin/bash
+
+if [ "$(id -u)" -eq 0 ]; then
+    set -eu \
+        && export DEBIAN_FRONTEND=noninteractive \
+        && apt update \
+        && apt install --yes {{ .packages.debian }} \
+        && rm -rf /var/lib/apt/lists/*
+else
+    set -eu \
+        && export DEBIAN_FRONTEND=noninteractive \
+        && sudo apt update \
+        && sudo apt install --yes {{ .packages.debian }} \
+        && sudo rm -rf /var/lib/apt/lists/*
+fi
+
+{{ end -}}

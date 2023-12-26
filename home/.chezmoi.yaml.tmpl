@@ -1,7 +1,11 @@
+# https://www.chezmoi.io/reference/configuration-file/variables/
+
 {{- $workpc := contains "-WKS-" .chezmoi.hostname -}}
 
 # https://github.com/twpayne/chezmoi/issues/3257
 pager: ""
+
+verbose: true
 
 {{/* Here we "export" the variables, so we can access them outside this file */ -}}
 data:
