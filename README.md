@@ -1,9 +1,9 @@
 # dotfiles
 
-Personal dotfiles managed by [chezmoi](https://github.com/twpayne/chezmoi).
+Personal dotfiles.
 
 ## Install
 
 ```bash
-sh -c "`curl -fsSL https://raw.githubusercontent.com/kibaamor/dotfiles/main/install.sh`"
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin init --apply kibaamor
 ```

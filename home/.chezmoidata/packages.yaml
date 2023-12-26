@@ -1,5 +1,2 @@
 packages:
-  ubuntu:
-  - "git"
-  - "vim-nox"
-  - "global"
+  ubuntu: "git zsh vim"
