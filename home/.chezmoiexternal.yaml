@@ -1,0 +1,66 @@
+# https://www.chezmoi.io/reference/special-files-and-directories/chezmoiexternal-format/
+
+".oh-my-zsh":
+  type: archive
+  url: "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
+  exact: true
+  stripComponents: 1
+".oh-my-zsh/custom/themes/powerlevel10k":
+  type: archive
+  url: "https://github.com/romkatv/powerlevel10k/archive/v{{ .versions.p10k }}.tar.gz"
+  exact: true
+  stripComponents: 1
+".oh-my-zsh/custom/plugins/zsh-autosuggestions":
+  type: archive
+  url: "https://github.com/zsh-users/zsh-autosuggestions/archive/master.tar.gz"
+  exact: true
+  stripComponents: 1
+".oh-my-zsh/custom/plugins/zsh-syntax-highlighting":
+  type: archive
+  url: "https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz"
+  exact: true
+  stripComponents: 1
+
+".local/bin/fzf":
+  type: archive-file
+  url: "https://github.com/junegunn/fzf/releases/download/{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tar.gz"
+  path: fzf
+  executable: true
+
+".local/bin/direnv":
+  type: file
+  url: "https://github.com/direnv/direnv/releases/download/v{{ .versions.direnv }}/direnv.{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
+  executable: true
+
+".local/bin/kubecolor":
+  type: archive-file
+  url: "https://github.com/kubecolor/kubecolor/releases/download/v{{ .versions.kubecolor }}/kubecolor_{{ .versions.kubecolor }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tar.gz"
+  path: kubecolor
+  executable: true
+
+".local/bin/kubectx":
+  type: archive-file
+  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubectx_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}.tar.gz"
+  path: kubectx
+  executable: true
+
+".local/bin/kubens":
+  type: archive-file
+  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubens_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}.tar.gz"
+  path: kubens
+  executable: true
+
+".local/bin/rg":
+  type: archive-file
+  url: https://github.com/BurntSushi/ripgrep/releases/download/{{ .versions.ripgrep }}/ripgrep-{{ .versions.ripgrep }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz
+  stripComponents: 1
+  path: rg
+  executable: true
+
+".vim/autoload/plug.vim":
+  type: file
+  url: "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+
+".vimconf":
+  type: git-repo
+  url: "https://github.com/kibaamor/vimconf"

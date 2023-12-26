@@ -1,0 +1,7 @@
+versions:
+  p10k: 1.19.0
+  fzf: 0.44.1
+  direnv: 2.33.0
+  kubecolor: 0.2.0
+  kubectx: 0.9.5
+  ripgrep: 14.0.3
