@@ -1,9 +1,6 @@
-# https://www.chezmoi.io/reference/configuration-file/variables/
+{{- /* https://www.chezmoi.io/reference/configuration-file/variables/ */ -}}
 
-{{- $workpc := contains "-WKS-" .chezmoi.hostname -}}
-
-{{/* Here we "export" the variables, so we can access them outside this file */ -}}
 data:
-  is_workpc: {{ $workpc }}
+  is_workpc: {{ contains "-WKS-" .chezmoi.hostname }}
 
   uname_arch: "{{ output "uname" "-m" | trim }}"
