@@ -6,4 +6,4 @@
 data:
   is_workpc: {{ $workpc }}
 
-  uname_arch: {{ output "uname" "-m" | trim }}
+  uname_arch: "{{ output "uname" "-m" | trim }}"
