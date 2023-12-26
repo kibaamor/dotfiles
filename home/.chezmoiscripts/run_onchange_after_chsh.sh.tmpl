@@ -3,6 +3,10 @@
 
 set -eufo pipefail
 
+if [[ "$(basename "$SHELL")" = "zsh" ]]; then
+    exit 0
+fi
+
 chsh -s /usr/bin/zsh
 
 {{ end -}}
