@@ -1,22 +1,15 @@
-#!/bin/bash
-
-# -e: exit on error
-# -u: exit on unset variables
-set -eu
-
 {{ if or
     (eq .chezmoi.osRelease.id "ubuntu")
     (eq .chezmoi.osRelease.id "debian")
     -}}
 
-export DEBIAN_FRONTEND=noninteractive
+#!/bin/su root
+# !!!!make sure that we are root
 
-SUDO=""
-if [[ $(id -u) -ne 0 ]]; then
-  SUDO="sudo"
-fi
-"$SUDO" apt update
-"$SUDO" apt install --yes --no-install-recommends {{ . | quote }}
-"$SUDO" rm -rf /var/lib/apt/lists/*
+set -eu \
+    && export DEBIAN_FRONTEND=noninteractive \
+    && apt update \
+    && apt install --yes {{ .packages.debian | quote }} \
+    && rm -rf /var/lib/apt/lists/*
 
 {{ end -}}

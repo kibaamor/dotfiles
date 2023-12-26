@@ -1,2 +1,2 @@
 packages:
-  ubuntu: "git zsh vim"
+  debian: "git zsh vim"
