@@ -9,7 +9,7 @@
 set -eu \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt update \
-    && apt install --yes {{ .packages.debian | quote }} \
+    && apt install --yes {{ .packages.debian }} \
     && rm -rf /var/lib/apt/lists/*
 
 {{ end -}}
