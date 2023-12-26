@@ -10,8 +10,8 @@ if [ "$(id -u)" -eq 0 ]; then
         && apt update \
         && apt install --yes {{ .packages.debian }} \
         && rm -rf /var/lib/apt/lists/*
-else
 {{ if .can_sudo }}
+else
     set -eufo pipefail \
         && {{ .sudo }} apt update \
         && {{ .sudo }} apt install --yes {{ .packages.debian }} \

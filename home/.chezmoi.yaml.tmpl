@@ -10,7 +10,7 @@
     (env "CODESPACES" | not)
     (env "DEBIAN_FRONTEND" | ne "noninteractive") -}}
 
-{{- /* can execute sudo command or not */ -}}
+{{- /* we can execute sudo command or not */ -}}
 {{ $can_sudo := or $interactive (env "CODESPACES") }}
 
 {{- /* find sudo command */ -}}
