@@ -1,7 +1,7 @@
-{{- if and (eq .chezmoi.os "linux") ( .interactive ) -}}
+{{- if and (eq .chezmoi.os "linux") .interactive -}}
 #!/bin/bash
 
-set -eu
+set -eufo pipefail
 
 chsh -s /usr/bin/zsh
 

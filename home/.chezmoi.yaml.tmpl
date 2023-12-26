@@ -1,17 +1,26 @@
 {{- /* https://www.chezmoi.io/reference/configuration-file/variables/ */ -}}
 
+{{- /* is personal workstation */ -}}
+{{ $personal := contains "-WKS-" .chezmoi.hostname | not -}}
+
 {{- /* Checks if running interactively */ -}}
-{{- $interactive := and
+{{ $interactive := and
     stdinIsATTY
     (env "ACT" | not)
     (env "CODESPACES" | not)
     (env "DEBIAN_FRONTEND" | ne "noninteractive") -}}
 
-{{- /* is personal workstation */ -}}
-{{- $personal := contains "-WKS-" .chezmoi.hostname | not -}}
+{{- /* can execute sudo command or not */ -}}
+{{ $can_sudo := or $interactive (env "CODESPACES") }}
+
+{{- /* find sudo command */ -}}
+{{ $sudo := findExecutable "sudo" (list "/bin" "/sbin" "/usr/bin" "/usr/sbin") -}}
 
 data:
-  interactive: {{ $interactive }}
   personal: {{ $personal }}
+
+  interactive: {{ $interactive }}
+  can_sudo: {{ $can_sudo }}
+  sudo: {{ $sudo }}
 
   uname_arch: "{{ output "uname" "-m" | trim }}"

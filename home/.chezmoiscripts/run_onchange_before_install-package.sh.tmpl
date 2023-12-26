@@ -6,16 +6,16 @@
 #!/bin/bash
 
 if [ "$(id -u)" -eq 0 ]; then
-    set -eu \
+    set -eufo pipefail \
         && apt update \
         && apt install --yes {{ .packages.debian }} \
         && rm -rf /var/lib/apt/lists/*
 else
-{{ if .interactive }}
-    set -eu \
-        && sudo apt update \
-        && sudo apt install --yes {{ .packages.debian }} \
-        && sudo rm -rf /var/lib/apt/lists/*
+{{ if .can_sudo }}
+    set -eufo pipefail \
+        && {{ .sudo }} apt update \
+        && {{ .sudo }} apt install --yes {{ .packages.debian }} \
+        && {{ .sudo }} rm -rf /var/lib/apt/lists/*
 {{ end }}
 fi
 
