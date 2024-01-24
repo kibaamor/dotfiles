@@ -53,7 +53,8 @@ enable_proxy
 # https://github.com/ohmyzsh/ohmyzsh
 export ZSH="$HOME/.oh-my-zsh"
 
-ZSH_THEME="powerlevel10k/powerlevel10k"
+export ZSH_THEME="robbyrussell"
+export ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(
   git
   web-search
@@ -122,9 +123,9 @@ _fzf_comprun() {
   shift
 
   case "$command" in
-    cd)           fzf --height 100% --preview 'tree -C {} | head -500'   "$@" ;;
-    export|unset) fzf --height 100% --preview "eval 'echo \$'{}"         "$@" ;;
-    ssh)          fzf --height 100% --preview 'dig {}'                   "$@" ;;
+    cd)           fzf --height 100% --preview 'tree -C {} | head -500'                           "$@" ;;
+    export|unset) fzf --height 100% --preview "eval 'echo \$'{}"                                 "$@" ;;
+    ssh)          fzf --height 100% --preview 'dig {}'                                           "$@" ;;
     *)            fzf --height 100% --preview 'bat -n --color=always --theme Dracula -r :500 {}' "$@" ;;
   esac
 }

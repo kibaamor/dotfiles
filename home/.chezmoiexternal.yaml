@@ -21,16 +21,25 @@
   exact: true
   stripComponents: 1
 
+".local/bin/bat":
+  type: archive-file
+  url: "https://github.com/sharkdp/bat/releases/download/v{{ .versions.bat }}/bat-v{{ .versions.bat }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"
+  path: bat
+  executable: true
+".local/bin/fd":
+  type: archive-file
+  url: "https://github.com/sharkdp/fd/releases/download/v{{ .versions.fd }}/fd-v{{ .versions.fd }}-i686-unknown-{{ .chezmoi.os }}-musl.tar.gz"
+  path: fd
+  executable: true
+
 ".local/bin/fzf":
   type: archive-file
   url: "https://github.com/junegunn/fzf/releases/download/{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tar.gz"
   path: fzf
   executable: true
-
 ".fzf.key-bindings.zsh":
   type: file
   url: "https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"
-
 ".fzf.completion.zsh":
   type: file
   url: "https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh"
