@@ -53,7 +53,9 @@ enable_proxy
 # https://github.com/romkatv/powerlevel10k
 
 # Powerlevel10k requires zsh version is greater than or equal to 5.1
-if [[ ! "echo \"$(zsh --version | cut -d ' ' -f 2)\n5.1\" | sort -V -r | head -n1" = "5.1" ]]; then
+if [[ "`printf '%s\n' $(zsh --version | cut -d ' ' -f2) '5.1' | sort -V -r | head -n1`" = "5.1" ]]; then
+  ZSH_THEME="robbyrussell"
+else
   ZSH_THEME="powerlevel10k/powerlevel10k"
   [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
@@ -66,8 +68,6 @@ if [[ ! "echo \"$(zsh --version | cut -d ' ' -f 2)\n5.1\" | sort -V -r | head -n
   fi
 
   (( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
-else
-  ZSH_THEME="robbyrussell"
 fi
 
 ###################################################################################################
