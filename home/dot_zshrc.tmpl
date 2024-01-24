@@ -98,6 +98,10 @@ export BAT_THEME=Dracula
 [[ -f ~/.fzf.key-bindings.zsh ]] && source ~/.fzf.key-bindings.zsh
 [[ -f ~/.fzf.completion.zsh ]] && source ~/.fzf.completion.zsh
 
+export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
+
 ### CTRL-T Paste the selected files and directories onto the command-line
 export FZF_CTRL_T_OPTS="
   --height 100%
