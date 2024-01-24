@@ -27,6 +27,14 @@
   path: fzf
   executable: true
 
+".fzf.key-bindings.zsh":
+  type: file
+  url: "https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"
+
+".fzf.completion.zsh":
+  type: file
+  url: "https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh"
+
 ".local/bin/direnv":
   type: file
   url: "https://github.com/direnv/direnv/releases/download/v{{ .versions.direnv }}/direnv.{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
