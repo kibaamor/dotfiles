@@ -1,2 +1,3 @@
 packages:
   debian: "git zsh vim-nox"
+  centos: "git zsh vim-enhanced"
