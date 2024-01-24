@@ -26,11 +26,13 @@
   url: "https://github.com/sharkdp/bat/releases/download/v{{ .versions.bat }}/bat-v{{ .versions.bat }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"
   path: bat
   executable: true
+  stripComponents: 1
 ".local/bin/fd":
   type: archive-file
   url: "https://github.com/sharkdp/fd/releases/download/v{{ .versions.fd }}/fd-v{{ .versions.fd }}-i686-unknown-{{ .chezmoi.os }}-musl.tar.gz"
   path: fd
   executable: true
+  stripComponents: 1
 
 ".local/bin/fzf":
   type: archive-file
