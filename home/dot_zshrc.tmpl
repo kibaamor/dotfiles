@@ -53,8 +53,13 @@ enable_proxy
 # https://github.com/ohmyzsh/ohmyzsh
 export ZSH="$HOME/.oh-my-zsh"
 
-export ZSH_THEME="robbyrussell"
-export ZSH_THEME="powerlevel10k/powerlevel10k"
+# Powerlevel10k requires zsh version is greater than or equal to 5.1
+if [[ "echo \"$(zsh --version | cut -d ' ' -f 2)\n5.1\" | sort -V -r | head -n1" = "5.1" ]]; then
+    ZSH_THEME="robbyrussell"
+else
+    ZSH_THEME="powerlevel10k/powerlevel10k"
+fi
+
 plugins=(
   git
   web-search
