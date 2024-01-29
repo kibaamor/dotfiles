@@ -1,8 +1,10 @@
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 (( ${+commands[go]} )) && export PATH=$(go env GOPATH)/bin:$PATH
 
+{{ if not .personal -}}
 export GOPROXY=https://artifactory.ubisoft.org/artifactory/go,https://goproxy.io,direct
 export GOPRIVATE="*.ubisoft.org,*.ubi.com"
+{{- end }}
 
 export EDITOR=vim
 
@@ -22,6 +24,7 @@ alias pc='proxychains4 -q'
 test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
 test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
+{{ if not .personal -}}
 (( ${+commands[fleet]} )) && eval "$(fleet dev env 2>/dev/null)"
 
 ###################################################################################################
@@ -44,7 +47,6 @@ function disable_proxy() {
   export NO_PROXY=$no_proxy
 }
 
-{{ if not .personal -}}
 enable_proxy
 {{- end }}
 
