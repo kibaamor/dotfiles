@@ -21,6 +21,13 @@
   exact: true
   stripComponents: 1
 
+".local/bin/delta":
+  type: archive-file
+  url: "https://github.com/dandavison/delta/releases/download/{{ .versions.delta }}/delta-{{ .versions.delta }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"
+  path: delta
+  executable: true
+  stripComponents: 1
+
 ".local/bin/bat":
   type: archive-file
   url: "https://github.com/sharkdp/bat/releases/download/v{{ .versions.bat }}/bat-v{{ .versions.bat }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"

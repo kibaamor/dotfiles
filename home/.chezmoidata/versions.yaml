@@ -1,5 +1,6 @@
 versions:
   p10k: 1.19.0
+  delta: 0.16.5
   bat: 0.24.0
   fd: 9.0.0
   fzf: 0.44.1
