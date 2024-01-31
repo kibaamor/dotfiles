@@ -2,7 +2,7 @@ export PATH=$HOME/.local/bin:$HOME/bin:/usr/local/bin:/snap/bin:$PATH
 (( ${+commands[go]} )) && export PATH=$(go env GOPATH)/bin:$PATH
 
 export GO111MODULE=on
-{{- if not .personal -}}
+{{ if not .personal -}}
 export GOPROXY=https://artifactory.ubisoft.org/artifactory/go,https://goproxy.io,direct
 export GOPRIVATE="*.ubisoft.org,*.ubi.com"
 {{- else -}}
@@ -14,7 +14,7 @@ export EDITOR=vim
 test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
 test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-{{- if not .personal -}}
+{{ if not .personal -}}
 (( ${+commands[fleet]} )) && eval "$(fleet dev env 2>/dev/null)"
 
 ###################################################################################################
