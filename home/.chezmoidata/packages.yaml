@@ -1,3 +1,3 @@
 packages:
-  debian: "git zsh vim-nox"
-  centos: "git zsh vim-enhanced"
+  debian: "git zsh tree vim-nox"
+  centos: "git zsh tree vim-enhanced"
