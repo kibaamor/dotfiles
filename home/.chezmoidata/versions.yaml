@@ -1,12 +1,12 @@
 versions:
-  p10k: 1.19.0
+  p10k: 1.20.0
   delta: 0.16.5
   bat: 0.24.0
   fd: 9.0.0
-  fzf: 0.44.1
+  fzf: 0.46.0
   direnv: 2.33.0
-  kubecolor: 0.2.0
+  kubecolor: 0.2.2
   kubectx: 0.9.5
-  ripgrep: 14.0.3
+  ripgrep: 14.1.0
   lsd: 1.0.0
   duf: 0.8.1
