@@ -10,3 +10,4 @@ versions:
   ripgrep: 14.1.0
   lsd: 1.0.0
   duf: 0.8.1
+  age: 1.1.1

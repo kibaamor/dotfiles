@@ -24,41 +24,26 @@
 ".vim/autoload/plug.vim":
   type: file
   url: "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-
 ".vimconf":
   type: archive
   url: "https://github.com/kibaamor/vimconf/archive/main.tar.gz"
   exact: true
   stripComponents: 1
 
-".local/bin/delta":
+".local/bin/kubecolor":
   type: archive-file
-  url: "https://github.com/dandavison/delta/releases/download/{{ .versions.delta }}/delta-{{ .versions.delta }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"
-  path: delta
+  url: "https://github.com/kubecolor/kubecolor/releases/download/v{{ .versions.kubecolor }}/kubecolor_{{ .versions.kubecolor }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tar.gz"
+  path: kubecolor
   executable: true
-  stripComponents: 1
-".local/bin/bat":
+".local/bin/kubectx":
   type: archive-file
-  url: "https://github.com/sharkdp/bat/releases/download/v{{ .versions.bat }}/bat-v{{ .versions.bat }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"
-  path: bat
+  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubectx_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}.tar.gz"
+  path: kubectx
   executable: true
-  stripComponents: 1
-".local/bin/fd":
+".local/bin/kubens":
   type: archive-file
-  url: "https://github.com/sharkdp/fd/releases/download/v{{ .versions.fd }}/fd-v{{ .versions.fd }}-i686-unknown-{{ .chezmoi.os }}-musl.tar.gz"
-  path: fd
-  executable: true
-  stripComponents: 1
-".local/bin/lsd":
-  type: archive-file
-  url: "https://github.com/lsd-rs/lsd/releases/download/v{{ .versions.lsd }}/lsd-v{{ .versions.lsd }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"
-  path: lsd
-  executable: true
-  stripComponents: 1
-".local/bin/duf":
-  type: archive-file
-  url: "https://github.com/muesli/duf/releases/download/v{{ .versions.duf }}/duf_{{ .versions.duf }}_{{ .chezmoi.os }}_{{ .uname_arch }}.tar.gz"
-  path: duf
+  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubens_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}.tar.gz"
+  path: kubens
   executable: true
 
 ".local/bin/fzf":
@@ -73,27 +58,22 @@
   type: file
   url: "https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh"
 
+".local/bin/age":
+  type: archive-file
+  url: https://github.com/FiloSottile/age/releases/download/v{{ .versions.age }}/age-v{{ .versions.age }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}.tar.gz
+  stripComponents: 1
+  path: age
+  executable: true
+".local/bin/age-keygen":
+  type: archive-file
+  url: https://github.com/FiloSottile/age/releases/download/v{{ .versions.age }}/age-v{{ .versions.age }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}.tar.gz
+  stripComponents: 1
+  path: age-keygen
+  executable: true
+
 ".local/bin/direnv":
   type: file
   url: "https://github.com/direnv/direnv/releases/download/v{{ .versions.direnv }}/direnv.{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
-  executable: true
-
-".local/bin/kubecolor":
-  type: archive-file
-  url: "https://github.com/kubecolor/kubecolor/releases/download/v{{ .versions.kubecolor }}/kubecolor_{{ .versions.kubecolor }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tar.gz"
-  path: kubecolor
-  executable: true
-
-".local/bin/kubectx":
-  type: archive-file
-  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubectx_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}.tar.gz"
-  path: kubectx
-  executable: true
-
-".local/bin/kubens":
-  type: archive-file
-  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubens_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}.tar.gz"
-  path: kubens
   executable: true
 
 ".local/bin/rg":
@@ -101,4 +81,38 @@
   url: https://github.com/BurntSushi/ripgrep/releases/download/{{ .versions.ripgrep }}/ripgrep-{{ .versions.ripgrep }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz
   stripComponents: 1
   path: rg
+  executable: true
+
+".local/bin/delta":
+  type: archive-file
+  url: "https://github.com/dandavison/delta/releases/download/{{ .versions.delta }}/delta-{{ .versions.delta }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"
+  path: delta
+  executable: true
+  stripComponents: 1
+
+".local/bin/bat":
+  type: archive-file
+  url: "https://github.com/sharkdp/bat/releases/download/v{{ .versions.bat }}/bat-v{{ .versions.bat }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"
+  path: bat
+  executable: true
+  stripComponents: 1
+
+".local/bin/fd":
+  type: archive-file
+  url: "https://github.com/sharkdp/fd/releases/download/v{{ .versions.fd }}/fd-v{{ .versions.fd }}-i686-unknown-{{ .chezmoi.os }}-musl.tar.gz"
+  path: fd
+  executable: true
+  stripComponents: 1
+
+".local/bin/lsd":
+  type: archive-file
+  url: "https://github.com/lsd-rs/lsd/releases/download/v{{ .versions.lsd }}/lsd-v{{ .versions.lsd }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"
+  path: lsd
+  executable: true
+  stripComponents: 1
+
+".local/bin/duf":
+  type: archive-file
+  url: "https://github.com/muesli/duf/releases/download/v{{ .versions.duf }}/duf_{{ .versions.duf }}_{{ .chezmoi.os }}_{{ .uname_arch }}.tar.gz"
+  path: duf
   executable: true
