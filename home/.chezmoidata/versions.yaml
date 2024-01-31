@@ -8,3 +8,5 @@ versions:
   kubecolor: 0.2.0
   kubectx: 0.9.5
   ripgrep: 14.0.3
+  lsd: 1.0.0
+  duf: 0.8.1

@@ -1,25 +1,15 @@
-export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.local/bin:$HOME/bin:/usr/local/bin:/snap/bin:$PATH
 (( ${+commands[go]} )) && export PATH=$(go env GOPATH)/bin:$PATH
 
+export GO111MODULE=on
 {{- if not .personal -}}
 export GOPROXY=https://artifactory.ubisoft.org/artifactory/go,https://goproxy.io,direct
 export GOPRIVATE="*.ubisoft.org,*.ubi.com"
+{{- else -}}
+export GOPROXY=https://goproxy.cn,direct
 {{- end }}
 
 export EDITOR=vim
-
-alias kubectl="kubecolor"
-alias kc="kubectl"
-alias kca="kubectl apply"
-alias kcd="kubectl delete"
-alias kcl="kubectl logs"
-alias kcs="kubectl describe"
-alias kcga="kubectl get secret,configmap,pod,rs,service,statefulset,jobs,cronjobs,pvc,pv -o wide"
-# 'nslookup' command in busybox has issues.
-alias kcrnetdbg="kubectl run net-debug --image=nicolaka/netshoot --image-pull-policy=IfNotPresent -it --rm -- /bin/sh"
-alias kcdnetdbg="kubectl delete pod/net-debug"
-
-alias pc='proxychains4 -q'
 
 test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
 test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
@@ -77,6 +67,9 @@ fi
 # https://github.com/ohmyzsh/ohmyzsh
 export ZSH="$HOME/.oh-my-zsh"
 
+ENABLE_CORRECTION=true
+HIST_STAMPS="yyyy-mm-dd"
+
 plugins=(
   git
   web-search
@@ -93,6 +86,8 @@ plugins=(
   zsh-autosuggestions
 )
 [[ -f $ZSH/oh-my-zsh.sh ]] && source $ZSH/oh-my-zsh.sh
+
+typeset -g ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=12'
 
 ###################################################################################################
 # Bat
@@ -140,3 +135,18 @@ _fzf_comprun() {
     *)            fzf --height 100% --preview 'if [ -d {} ]; then (tree -C {} | head -500) else (bat -n --color=always --theme Dracula -r :500 {}) fi' "$@" ;;
   esac
 }
+
+alias kubectl="kubecolor"
+alias kc="kubectl"
+alias kca="kubectl apply"
+alias kcd="kubectl delete"
+alias kcl="kubectl logs"
+alias kcs="kubectl describe"
+alias kcga="kubectl get secret,configmap,pod,rs,service,statefulset,jobs,cronjobs,pvc,pv -o wide"
+# 'nslookup' command in busybox has issues.
+alias kcrnetdbg="kubectl run net-debug --image=nicolaka/netshoot --image-pull-policy=IfNotPresent -it --rm -- /bin/sh"
+alias kcdnetdbg="kubectl delete pod/net-debug"
+
+alias pc="proxychains4 -q"
+
+alias ls="lsd"
