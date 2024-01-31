@@ -60,7 +60,11 @@
   url: "https://github.com/muesli/duf/releases/download/v{{ .versions.duf }}/duf_{{ .versions.duf }}_{{ .chezmoi.os }}_{{ .uname_arch }}.tar.gz"
   path: duf
   executable: true
-  stripComponents: 1
+".local/bin/cheat":
+  type: archive-file
+  url: "https://github.com/cheat/cheat/releases/download/{{ .versions.cheat }}/cheat-{{ .chezmoi.os }}-{{ .chezmoi.arch }}.gz"
+  path: "cheat-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
+  executable: true
 
 ".local/bin/fzf":
   type: archive-file
