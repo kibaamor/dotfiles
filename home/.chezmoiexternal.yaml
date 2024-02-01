@@ -116,3 +116,9 @@
   url: "https://github.com/muesli/duf/releases/download/v{{ .versions.duf }}/duf_{{ .versions.duf }}_{{ .chezmoi.os }}_{{ .uname_arch }}.tar.gz"
   path: duf
   executable: true
+
+".local/bin/tldr":
+  type: archive-file
+  url: "https://github.com/tldr-pages/tlrc/releases/download/v{{ .versions.tlrc }}/tlrc-v{{ .versions.tlrc }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"
+  path: tldr
+  executable: true
