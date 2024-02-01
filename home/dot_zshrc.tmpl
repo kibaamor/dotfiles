@@ -13,6 +13,7 @@ export EDITOR=vim
 
 test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
 test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+test -f /opt/conda/etc/profile.d/conda.sh && source /opt/conda/etc/profile.d/conda.sh
 
 {{ if not .personal -}}
 (( ${+commands[fleet]} )) && eval "$(fleet dev env 2>/dev/null)"
