@@ -12,3 +12,4 @@ versions:
   duf: 0.8.1
   age: 1.1.1
   tlrc: 1.8.0
+  ctop: 0.7.7

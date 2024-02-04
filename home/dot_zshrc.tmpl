@@ -68,7 +68,6 @@ fi
 # https://github.com/ohmyzsh/ohmyzsh
 export ZSH="$HOME/.oh-my-zsh"
 
-ENABLE_CORRECTION=true
 HIST_STAMPS="yyyy-mm-dd"
 
 plugins=(
@@ -85,6 +84,11 @@ plugins=(
   sudo
   zsh-syntax-highlighting
   zsh-autosuggestions
+  extract
+  z
+  colored-man-pages
+  you-should-use
+  zsh-bat
 )
 [[ -f $ZSH/oh-my-zsh.sh ]] && source $ZSH/oh-my-zsh.sh
 

@@ -20,6 +20,16 @@
   url: "https://github.com/zsh-users/zsh-syntax-highlighting/archive/master.tar.gz"
   exact: true
   stripComponents: 1
+".oh-my-zsh/custom/plugins/zsh-bat":
+  type: archive
+  url: "https://github.com/fdellwing/zsh-bat/archive/master.tar.gz"
+  exact: true
+  stripComponents: 1
+".oh-my-zsh/custom/plugins/zsh-you-should-use":
+  type: archive
+  url: "https://github.com/MichaelAquilina/zsh-you-should-use/archive/master.tar.gz"
+  exact: true
+  stripComponents: 1
 
 ".vim/autoload/plug.vim":
   type: file
@@ -121,4 +131,9 @@
   type: archive-file
   url: "https://github.com/tldr-pages/tlrc/releases/download/v{{ .versions.tlrc }}/tlrc-v{{ .versions.tlrc }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"
   path: tldr
+  executable: true
+
+".local/bin/ctop":
+  type: file
+  url: "https://github.com/bcicen/ctop/releases/download/v{{ .versions.ctop }}/ctop-{{ .versions.ctop }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
   executable: true
