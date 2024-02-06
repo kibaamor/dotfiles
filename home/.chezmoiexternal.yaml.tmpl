@@ -40,7 +40,7 @@
   url: "https://github.com/kibaamor/vimconf/archive/main.tar.gz"
   exact: true
   stripComponents: 1
-{{- end }}
+{{ end }}
 
 ".local/bin/kubecolor":
   type: archive-file
@@ -62,9 +62,9 @@
   type: archive-file
 {{ if eq .chezmoi.os "darwin" -}}
   url: "https://github.com/junegunn/fzf/releases/download/{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}.zip"
-{{ else }}
+{{ else -}}
   url: "https://github.com/junegunn/fzf/releases/download/{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-{{- end }}
+{{ end }}
   path: fzf
   executable: true
 {{ if not (eq .chezmoi.os "windows") -}}
@@ -74,7 +74,7 @@
 ".fzf.completion.zsh":
   type: file
   url: "https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh"
-{{- end }}
+{{ end }}
 
 ".local/bin/age":
   type: archive-file
@@ -96,35 +96,35 @@
 
 ".local/bin/rg":
   type: archive-file
-  url: "https://github.com/BurntSushi/ripgrep/releases/download/{{ .versions.ripgrep }}/ripgrep-{{ .versions.ripgrep }}-{{ .uname_arch }}-{{ .pkg_platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "https://github.com/BurntSushi/ripgrep/releases/download/{{ .versions.ripgrep }}/ripgrep-{{ .versions.ripgrep }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   stripComponents: 1
   path: rg
   executable: true
 
 ".local/bin/delta":
   type: archive-file
-  url: "https://github.com/dandavison/delta/releases/download/{{ .versions.delta }}/delta-{{ .versions.delta }}-{{ .uname_arch }}-{{ .pkg_platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "https://github.com/dandavison/delta/releases/download/{{ .versions.delta }}/delta-{{ .versions.delta }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: delta
   executable: true
   stripComponents: 1
 
 ".local/bin/bat":
   type: archive-file
-  url: "https://github.com/sharkdp/bat/releases/download/v{{ .versions.bat }}/bat-v{{ .versions.bat }}-{{ .uname_arch }}-{{ .pkg_platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "https://github.com/sharkdp/bat/releases/download/v{{ .versions.bat }}/bat-v{{ .versions.bat }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: bat
   executable: true
   stripComponents: 1
 
 ".local/bin/fd":
   type: archive-file
-  url: "https://github.com/sharkdp/fd/releases/download/v{{ .versions.fd }}/fd-v{{ .versions.fd }}-{{ .uname_arch }}-{{ .pkg_platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "https://github.com/sharkdp/fd/releases/download/v{{ .versions.fd }}/fd-v{{ .versions.fd }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: fd
   executable: true
   stripComponents: 1
 
 ".local/bin/lsd":
   type: archive-file
-  url: "https://github.com/lsd-rs/lsd/releases/download/v{{ .versions.lsd }}/lsd-v{{ .versions.lsd }}-{{ .uname_arch }}-{{ .pkg_platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "https://github.com/lsd-rs/lsd/releases/download/v{{ .versions.lsd }}/lsd-v{{ .versions.lsd }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: lsd
   executable: true
   stripComponents: 1
@@ -137,7 +137,7 @@
 
 ".local/bin/tldr":
   type: archive-file
-  url: "https://github.com/tldr-pages/tlrc/releases/download/v{{ .versions.tlrc }}/tlrc-v{{ .versions.tlrc }}-{{ .uname_arch }}-{{ .pkg_platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "https://github.com/tldr-pages/tlrc/releases/download/v{{ .versions.tlrc }}/tlrc-v{{ .versions.tlrc }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: tldr
   executable: true
 
