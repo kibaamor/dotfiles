@@ -62,7 +62,7 @@
   type: archive-file
 {{ if eq .chezmoi.os "darwin" -}}
   url: "https://github.com/junegunn/fzf/releases/download/{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}.zip"
-{{- else -}}
+{{ else }}
   url: "https://github.com/junegunn/fzf/releases/download/{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
 {{- end }}
   path: fzf

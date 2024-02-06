@@ -1,20 +1,20 @@
 {{- /* https://www.chezmoi.io/reference/configuration-file/variables/ */ -}}
 
 {{- /* is personal workstation */ -}}
-{{ $personal := contains "-WKS-" .chezmoi.hostname | not -}}
+{{- $personal := contains "-WKS-" .chezmoi.hostname | not -}}
 
 {{- /* Checks if running interactively */ -}}
-{{ $interactive := and
+{{- $interactive := and
     stdinIsATTY
     (env "ACT" | not)
     (env "CODESPACES" | not)
     (env "DEBIAN_FRONTEND" | ne "noninteractive") -}}
 
 {{- /* we can execute sudo command or not */ -}}
-{{ $can_sudo := or $interactive (env "CODESPACES") }}
+{{- $can_sudo := or $interactive (env "CODESPACES") -}}
 
 {{- /* find sudo command */ -}}
-{{ $sudo := findExecutable "sudo" (list "/bin" "/sbin" "/usr/bin" "/usr/sbin") -}}
+{{- $sudo := findExecutable "sudo" (list "/bin" "/sbin" "/usr/bin" "/usr/sbin") -}}
 
 format: yaml
 
@@ -28,7 +28,7 @@ data:
 {{ if eq .chezmoi.os "windows" -}}
   uname_arch: "x86_64"
   pkg_postfix: ".zip"
-{{- else -}}
+{{ else }}
   uname_arch: "{{ output "uname" "-m" | trim }}"
   pkg_postfix: ".tar.gz"
 {{- end }}
@@ -36,9 +36,9 @@ data:
 {{ if eq .chezmoi.os "windows" -}}
   platform: "pc"
   pkg_runtime: "-msvc"
-{{- else if eq .chezmoi.os "darwin" -}}
+{{ else if eq .chezmoi.os "darwin" }}
   platform: "apple"
   pkg_runtime: ""
-{{- else -}}
+{{ else }}
   pkg_platform: "-musl"
 {{- end }}
