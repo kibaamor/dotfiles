@@ -11,9 +11,15 @@ export GOPROXY=https://goproxy.cn,direct
 
 export EDITOR=vim
 
-test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
-test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-test -f /opt/conda/etc/profile.d/conda.sh && source /opt/conda/etc/profile.d/conda.sh
+export HOMEBREW_API_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api"
+export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
+export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
+export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+export HOMEBREW_PIP_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"
+(( ${+command[brew]} )) && eval "$($(brew --prefix)/bin/brew shellenv)"
+
+test -e /opt/conda/etc/profile.d/conda.sh && source /opt/conda/etc/profile.d/conda.sh
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 {{ if not .personal -}}
 (( ${+commands[fleet]} )) && eval "$(fleet dev env 2>/dev/null)"
