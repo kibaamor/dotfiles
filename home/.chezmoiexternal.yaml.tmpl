@@ -40,7 +40,7 @@
   url: "https://github.com/kibaamor/vimconf/archive/main.tar.gz"
   exact: true
   stripComponents: 1
-{{ end -}}
+{{- end }}
 
 ".local/bin/kubecolor":
   type: archive-file
@@ -62,9 +62,9 @@
   type: archive-file
 {{ if eq .chezmoi.os "darwin" -}}
   url: "https://github.com/junegunn/fzf/releases/download/{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}.zip"
-{{ else -}}
+{{ else }}
   url: "https://github.com/junegunn/fzf/releases/download/{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-{{ end -}}
+{{- end }}
   path: fzf
   executable: true
 {{ if not (eq .chezmoi.os "windows") -}}
