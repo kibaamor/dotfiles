@@ -1,6 +1,6 @@
 {{- if or
-    (eq .chezmoi.osRelease.id "ubuntu")
-    (eq .chezmoi.osRelease.id "debian")
+    (eq (get .chezmoi.osRelease "id") "ubuntu")
+    (eq (get .chezmoi.osRelease "id") "debian")
     -}}
 
 #!/bin/bash
