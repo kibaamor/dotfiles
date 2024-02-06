@@ -1,5 +1,6 @@
 # https://www.chezmoi.io/reference/special-files-and-directories/chezmoiexternal-format/
 
+{{ if not eq .chezmoi.os "windows" -}}
 ".oh-my-zsh":
   type: archive
   url: "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
@@ -39,44 +40,51 @@
   url: "https://github.com/kibaamor/vimconf/archive/main.tar.gz"
   exact: true
   stripComponents: 1
+{{ end -}}
 
 ".local/bin/kubecolor":
   type: archive-file
-  url: "https://github.com/kubecolor/kubecolor/releases/download/v{{ .versions.kubecolor }}/kubecolor_{{ .versions.kubecolor }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tar.gz"
+  url: "https://github.com/kubecolor/kubecolor/releases/download/v{{ .versions.kubecolor }}/kubecolor_{{ .versions.kubecolor }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
   path: kubecolor
   executable: true
 ".local/bin/kubectx":
   type: archive-file
-  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubectx_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}.tar.gz"
+  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubectx_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
   path: kubectx
   executable: true
 ".local/bin/kubens":
   type: archive-file
-  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubens_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}.tar.gz"
+  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubens_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
   path: kubens
   executable: true
 
 ".local/bin/fzf":
   type: archive-file
-  url: "https://github.com/junegunn/fzf/releases/download/{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tar.gz"
+{{ if eq .chezmoi.os "darwin" -}}
+  url: "https://github.com/junegunn/fzf/releases/download/{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}.zip"
+{{ else -}}
+  url: "https://github.com/junegunn/fzf/releases/download/{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+{{ end -}}
   path: fzf
   executable: true
+{{ if not eq .chezmoi.os "windows" -}}
 ".fzf.key-bindings.zsh":
   type: file
   url: "https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"
 ".fzf.completion.zsh":
   type: file
   url: "https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh"
+{{ end -}}
 
 ".local/bin/age":
   type: archive-file
-  url: https://github.com/FiloSottile/age/releases/download/v{{ .versions.age }}/age-v{{ .versions.age }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}.tar.gz
+  url: "https://github.com/FiloSottile/age/releases/download/v{{ .versions.age }}/age-v{{ .versions.age }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
   stripComponents: 1
   path: age
   executable: true
 ".local/bin/age-keygen":
   type: archive-file
-  url: https://github.com/FiloSottile/age/releases/download/v{{ .versions.age }}/age-v{{ .versions.age }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}.tar.gz
+  url: "https://github.com/FiloSottile/age/releases/download/v{{ .versions.age }}/age-v{{ .versions.age }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
   stripComponents: 1
   path: age-keygen
   executable: true
@@ -88,48 +96,48 @@
 
 ".local/bin/rg":
   type: archive-file
-  url: https://github.com/BurntSushi/ripgrep/releases/download/{{ .versions.ripgrep }}/ripgrep-{{ .versions.ripgrep }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz
+  url: "https://github.com/BurntSushi/ripgrep/releases/download/{{ .versions.ripgrep }}/ripgrep-{{ .versions.ripgrep }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   stripComponents: 1
   path: rg
   executable: true
 
 ".local/bin/delta":
   type: archive-file
-  url: "https://github.com/dandavison/delta/releases/download/{{ .versions.delta }}/delta-{{ .versions.delta }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"
+  url: "https://github.com/dandavison/delta/releases/download/{{ .versions.delta }}/delta-{{ .versions.delta }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: delta
   executable: true
   stripComponents: 1
 
 ".local/bin/bat":
   type: archive-file
-  url: "https://github.com/sharkdp/bat/releases/download/v{{ .versions.bat }}/bat-v{{ .versions.bat }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"
+  url: "https://github.com/sharkdp/bat/releases/download/v{{ .versions.bat }}/bat-v{{ .versions.bat }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: bat
   executable: true
   stripComponents: 1
 
 ".local/bin/fd":
   type: archive-file
-  url: "https://github.com/sharkdp/fd/releases/download/v{{ .versions.fd }}/fd-v{{ .versions.fd }}-i686-unknown-{{ .chezmoi.os }}-musl.tar.gz"
+  url: "https://github.com/sharkdp/fd/releases/download/v{{ .versions.fd }}/fd-v{{ .versions.fd }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: fd
   executable: true
   stripComponents: 1
 
 ".local/bin/lsd":
   type: archive-file
-  url: "https://github.com/lsd-rs/lsd/releases/download/v{{ .versions.lsd }}/lsd-v{{ .versions.lsd }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"
+  url: "https://github.com/lsd-rs/lsd/releases/download/v{{ .versions.lsd }}/lsd-v{{ .versions.lsd }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: lsd
   executable: true
   stripComponents: 1
 
 ".local/bin/duf":
   type: archive-file
-  url: "https://github.com/muesli/duf/releases/download/v{{ .versions.duf }}/duf_{{ .versions.duf }}_{{ .chezmoi.os }}_{{ .uname_arch }}.tar.gz"
+  url: "https://github.com/muesli/duf/releases/download/v{{ .versions.duf }}/duf_{{ .versions.duf }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
   path: duf
   executable: true
 
 ".local/bin/tldr":
   type: archive-file
-  url: "https://github.com/tldr-pages/tlrc/releases/download/v{{ .versions.tlrc }}/tlrc-v{{ .versions.tlrc }}-{{ .uname_arch }}-unknown-{{ .chezmoi.os }}-musl.tar.gz"
+  url: "https://github.com/tldr-pages/tlrc/releases/download/v{{ .versions.tlrc }}/tlrc-v{{ .versions.tlrc }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: tldr
   executable: true
 
