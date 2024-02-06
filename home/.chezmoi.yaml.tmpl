@@ -25,21 +25,21 @@ data:
   can_sudo: {{ $can_sudo }}
   sudo: {{ $sudo }}
 
-{{ if eq .chezmoi.os "windows" -}}
+{{- if eq .chezmoi.os "windows" -}}
   uname_arch: "x86_64"
   pkg_postfix: ".zip"
-{{- else -}}
+{{ else -}}
   uname_arch: "{{ output "uname" "-m" | trim }}"
   pkg_postfix: ".tar.gz"
-{{- end }}
+{{ end -}}
 
-{{ if eq .chezmoi.os "windows" -}}
+{{- if eq .chezmoi.os "windows" -}}
   platform: "pc"
   pkg_runtime: "-msvc"
-{{- else if eq .chezmoi.os "darwin" -}}
+{{ else if eq .chezmoi.os "darwin" -}}
   platform: "apple"
   pkg_runtime: ""
-{{- else -}}
+{{ else -}}
   platform: "unknown"
   pkg_runtime: "-musl"
-{{- end }}
+{{ end -}}
