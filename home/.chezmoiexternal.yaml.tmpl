@@ -1,6 +1,6 @@
 # https://www.chezmoi.io/reference/special-files-and-directories/chezmoiexternal-format/
 
-{{ if not eq .chezmoi.os "windows" -}}
+{{ if not (eq .chezmoi.os "windows") -}}
 ".oh-my-zsh":
   type: archive
   url: "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
@@ -67,7 +67,7 @@
 {{ end -}}
   path: fzf
   executable: true
-{{ if not eq .chezmoi.os "windows" -}}
+{{ if not (eq .chezmoi.os "windows") -}}
 ".fzf.key-bindings.zsh":
   type: file
   url: "https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"

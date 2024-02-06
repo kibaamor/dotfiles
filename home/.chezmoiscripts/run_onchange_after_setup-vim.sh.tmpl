@@ -1,4 +1,4 @@
-{{- if not eq .chezmoi.os "windows" -}}
+{{- if not (eq .chezmoi.os "windows") -}}
 #!/bin/bash
 
 set -eufo pipefail
