@@ -23,7 +23,7 @@ data:
   personal: {{ $personal }}
 
   interactive: {{ $interactive }}
-{{ if not (eq .chezmoi.os "windows") }}
+{{ if ne .chezmoi.os "windows" }}
   can_sudo: {{ $can_sudo }}
   sudo: {{ $sudo }}
 {{ end }}
