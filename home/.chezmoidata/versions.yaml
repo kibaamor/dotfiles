@@ -13,3 +13,4 @@ versions:
   age: 1.1.1
   tlrc: 1.8.0
   ctop: 0.7.7
+  frp: 0.54.0

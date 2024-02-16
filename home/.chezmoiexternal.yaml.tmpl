@@ -145,3 +145,14 @@
   type: file
   url: "https://github.com/bcicen/ctop/releases/download/v{{ .versions.ctop }}/ctop-{{ .versions.ctop }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
   executable: true
+
+".local/bin/frpc{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/fatedier/frp/releases/download/v{{ .versions.frp }}/frp_{{ .versions.frp }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  path: "frpc{{ .exe_ext }}"
+  executable: true
+".local/bin/frps{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/fatedier/frp/releases/download/v{{ .versions.frp }}/frp_{{ .versions.frp }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  path: "frps{{ .exe_ext }}"
+  executable: true
