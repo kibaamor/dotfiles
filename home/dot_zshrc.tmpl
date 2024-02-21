@@ -148,15 +148,11 @@ _fzf_comprun() {
 }
 
 alias kubectl="kubecolor"
-alias kc="kubectl"
-alias kca="kubectl apply"
-alias kcd="kubectl delete"
-alias kcl="kubectl logs"
-alias kcs="kubectl describe"
-alias kcga="kubectl get secret,configmap,pod,rs,service,statefulset,jobs,cronjobs,pvc,pv -o wide"
+alias k="kubectl"
+alias ks="kubectl -n kube-system"
 # 'nslookup' command in busybox has issues.
-alias kcrnetdbg="kubectl run net-debug --image=nicolaka/netshoot --image-pull-policy=IfNotPresent -it --rm"
-alias kcdnetdbg="kubectl delete pod/net-debug"
+alias krnetdbg="kubectl run net-debug --image=nicolaka/netshoot --image-pull-policy=IfNotPresent -it --rm"
+alias kdelnetdbg="kubectl delete pod/net-debug"
 
 alias pc="proxychains4 -q"
 
