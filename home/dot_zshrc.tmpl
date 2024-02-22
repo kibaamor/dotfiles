@@ -150,9 +150,15 @@ _fzf_comprun() {
 alias kubectl="kubecolor"
 alias k="kubectl"
 alias ks="kubectl -n kube-system"
+
 # 'nslookup' command in busybox has issues.
 alias krnetdbg="kubectl run net-debug --image=nicolaka/netshoot --image-pull-policy=IfNotPresent -it --rm"
 alias kdelnetdbg="kubectl delete pod/net-debug"
+
+# run command `kubectl api-resources` to get all resources and its shortnames.
+alias kapires="kubectl api-resources"
+
+alias mk="minikube"
 
 alias pc="proxychains4 -q"
 
