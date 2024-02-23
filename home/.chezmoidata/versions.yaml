@@ -14,3 +14,4 @@ versions:
   tlrc: 1.8.0
   ctop: 0.7.7
   frp: 0.54.0
+  k9s: 0.31.9
