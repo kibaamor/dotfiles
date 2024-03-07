@@ -18,32 +18,38 @@ export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebr
 export HOMEBREW_PIP_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"
 (( ${+command[brew]} )) && eval "$($(brew --prefix)/bin/brew shellenv)"
 
+# export MINIKUBE_HOME="${HOME}/.minikube"
+
 test -e /opt/conda/etc/profile.d/conda.sh && source /opt/conda/etc/profile.d/conda.sh
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-{{ if not .personal -}}
 (( ${+commands[fleet]} )) && eval "$(fleet dev env 2>/dev/null)"
 
 ###################################################################################################
 # Proxy
 function enable_proxy() {
-  export HTTPS_PROXY=http://proxy.ubisoft.org:3128;
-  export HTTP_PROXY=http://proxy.ubisoft.org:3128;
   export https_proxy=http://proxy.ubisoft.org:3128;
   export http_proxy=http://proxy.ubisoft.org:3128;
+  export ftp_proxy=http://proxy.ubisoft.org:3128;
   export no_proxy=localhost,127.0.0.1,::1,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com,kubernetes.docker.internal;
+  export HTTPS_PROXY=$https_proxy;
+  export HTTP_PROXY=$http_proxy;
+  export FTP_PROXY=$ftp_proxy;
   export NO_PROXY=$no_proxy
 }
 
 function disable_proxy() {
-  export HTTPS_PROXY="";
-  export HTTP_PROXY="";
   export https_proxy="";
   export http_proxy="";
+  export ftp_proxy="";
   export no_proxy=localhost,127.0.0.1,::1,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com,kubernetes.docker.internal;
+  export HTTPS_PROXY=$https_proxy;
+  export HTTP_PROXY=$http_proxy;
+  export FTP_PROXY=$ftp_proxy;
   export NO_PROXY=$no_proxy
 }
 
+{{ if not .personal -}}
 enable_proxy
 {{- end }}
 
@@ -163,3 +169,5 @@ alias mk="minikube"
 alias pc="proxychains4 -q"
 
 alias ls="lsd"
+
+test -e "${HOME}/.customrc.sh" && source "${HOME}/.customrc.sh"
