@@ -2,14 +2,14 @@
 {{- /* https://masterminds.github.io/sprig/ */ -}}
 
 {{- /* is personal workstation */ -}}
-{{- $personal := contains "-WKS-" "ubisoft" .chezmoi.hostname | not -}}
+{{- $personal := (or (contains "-WKS-" .chezmoi.hostname) (contains "ubisoft" .chezmoi.hostname)) | not -}}
 
 {{- /* Checks if running interactively */ -}}
 {{- $interactive := and
-    stdinIsATTY
-    (env "ACT" | not)
-    (env "CODESPACES" | not)
-    (env "DEBIAN_FRONTEND" | ne "noninteractive") -}}
+  stdinIsATTY
+  (env "ACT" | not)
+  (env "CODESPACES" | not)
+  (env "DEBIAN_FRONTEND" | ne "noninteractive") -}}
 
 {{- /* we can execute sudo command or not */ -}}
 {{- $can_sudo := or $interactive (env "CODESPACES") -}}
