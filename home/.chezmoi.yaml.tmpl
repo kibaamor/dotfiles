@@ -2,7 +2,7 @@
 {{- /* https://masterminds.github.io/sprig/ */ -}}
 
 {{- /* is personal workstation */ -}}
-{{- $personal := (or (contains "-WKS-" .chezmoi.hostname) (contains "ubisoft" .chezmoi.hostname)) | not -}}
+{{- $personal := contains "ubisoft" .chezmoi.fqdnHostname | not -}}
 
 {{- /* Checks if running interactively */ -}}
 {{- $interactive := and
