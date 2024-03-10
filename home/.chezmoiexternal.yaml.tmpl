@@ -42,65 +42,6 @@
   exact: true
   stripComponents: 1
 
-".local/bin/kubecolor{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/kubecolor/kubecolor/releases/download/v{{ .versions.kubecolor }}/kubecolor_{{ .versions.kubecolor }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-  path: "kubecolor{{ .exe_ext }}"
-  executable: true
-".local/bin/kubectx{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubectx_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
-  path: "kubectx{{ .exe_ext }}"
-  executable: true
-".local/bin/kubens{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubens_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
-  path: "kubens{{ .exe_ext }}"
-  executable: true
-
-".local/bin/fzf{{ .exe_ext }}":
-  type: archive-file
-{{ if eq .chezmoi.os "darwin" }}
-  url: "https://github.com/junegunn/fzf/releases/download/{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}.zip"
-{{ else }}
-  url: "https://github.com/junegunn/fzf/releases/download/{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-{{ end }}
-  path: "fzf{{ .exe_ext }}"
-  executable: true
-{{ if ne .chezmoi.os "windows" }}
-".fzf.key-bindings.zsh":
-  type: file
-  url: "https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"
-".fzf.completion.zsh":
-  type: file
-  url: "https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh"
-{{ end }}
-
-".local/bin/age{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/FiloSottile/age/releases/download/v{{ .versions.age }}/age-v{{ .versions.age }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-  stripComponents: 1
-  path: "age{{ .exe_ext }}"
-  executable: true
-".local/bin/age-keygen{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/FiloSottile/age/releases/download/v{{ .versions.age }}/age-v{{ .versions.age }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-  stripComponents: 1
-  path: "age-keygen{{ .exe_ext }}"
-  executable: true
-
-".local/bin/direnv{{ .exe_ext }}":
-  type: file
-  url: "https://github.com/direnv/direnv/releases/download/v{{ .versions.direnv }}/direnv.{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
-  executable: true
-
-".local/bin/rg{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/BurntSushi/ripgrep/releases/download/{{ .versions.ripgrep }}/ripgrep-{{ .versions.ripgrep }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
-  stripComponents: 1
-  path: "rg{{ .exe_ext }}"
-  executable: true
-
 ".local/bin/delta{{ .exe_ext }}":
   type: archive-file
   url: "https://github.com/dandavison/delta/releases/download/{{ .versions.delta }}/delta-{{ .versions.delta }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
@@ -122,6 +63,36 @@
   executable: true
   stripComponents: 1
 
+".local/bin/fzf{{ .exe_ext }}":
+  type: archive-file
+{{ if eq .chezmoi.os "darwin" }}
+  url: "https://github.com/junegunn/fzf/releases/download/{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}.zip"
+{{ else }}
+  url: "https://github.com/junegunn/fzf/releases/download/{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+{{ end }}
+  path: "fzf{{ .exe_ext }}"
+  executable: true
+{{ if ne .chezmoi.os "windows" }}
+".fzf.key-bindings.zsh":
+  type: file
+  url: "https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"
+".fzf.completion.zsh":
+  type: file
+  url: "https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh"
+{{ end }}
+
+".local/bin/direnv{{ .exe_ext }}":
+  type: file
+  url: "https://github.com/direnv/direnv/releases/download/v{{ .versions.direnv }}/direnv.{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
+  executable: true
+
+".local/bin/rg{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/BurntSushi/ripgrep/releases/download/{{ .versions.ripgrep }}/ripgrep-{{ .versions.ripgrep }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  stripComponents: 1
+  path: "rg{{ .exe_ext }}"
+  executable: true
+
 ".local/bin/lsd{{ .exe_ext }}":
   type: archive-file
   url: "https://github.com/lsd-rs/lsd/releases/download/v{{ .versions.lsd }}/lsd-v{{ .versions.lsd }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
@@ -135,15 +106,23 @@
   path: "duf{{ .exe_ext }}"
   executable: true
 
+".local/bin/age{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/FiloSottile/age/releases/download/v{{ .versions.age }}/age-v{{ .versions.age }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  stripComponents: 1
+  path: "age{{ .exe_ext }}"
+  executable: true
+".local/bin/age-keygen{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/FiloSottile/age/releases/download/v{{ .versions.age }}/age-v{{ .versions.age }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  stripComponents: 1
+  path: "age-keygen{{ .exe_ext }}"
+  executable: true
+
 ".local/bin/tldr{{ .exe_ext }}":
   type: archive-file
   url: "https://github.com/tldr-pages/tlrc/releases/download/v{{ .versions.tlrc }}/tlrc-v{{ .versions.tlrc }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: "tldr{{ .exe_ext }}"
-  executable: true
-
-".local/bin/ctop{{ .exe_ext }}":
-  type: file
-  url: "https://github.com/bcicen/ctop/releases/download/v{{ .versions.ctop }}/ctop-{{ .versions.ctop }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
   executable: true
 
 {{ if .personal }}
@@ -160,6 +139,27 @@
   executable: true
   stripComponents: 1
 {{ end }}
+
+".local/bin/ctop{{ .exe_ext }}":
+  type: file
+  url: "https://github.com/bcicen/ctop/releases/download/v{{ .versions.ctop }}/ctop-{{ .versions.ctop }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
+  executable: true
+
+".local/bin/kubecolor{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/kubecolor/kubecolor/releases/download/v{{ .versions.kubecolor }}/kubecolor_{{ .versions.kubecolor }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  path: "kubecolor{{ .exe_ext }}"
+  executable: true
+".local/bin/kubectx{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubectx_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  path: "kubectx{{ .exe_ext }}"
+  executable: true
+".local/bin/kubens{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubens_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  path: "kubens{{ .exe_ext }}"
+  executable: true
 
 ".local/bin/k9s{{ .exe_ext }}":
   type: archive-file
