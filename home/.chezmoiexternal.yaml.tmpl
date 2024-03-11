@@ -166,3 +166,9 @@
   url: "https://github.com/derailed/k9s/releases/download/v{{ .versions.k9s }}/k9s_{{ .chezmoi.os | camelcase }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
   path: "k9s{{ .exe_ext }}"
   executable: true
+
+".local/bin/dive{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/wagoodman/dive/releases/download/v{{ .versions.dive }}/dive_{{ .versions.dive }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  path: "dive{{ .exe_ext }}"
+  executable: true
