@@ -1,3 +1,5 @@
+test -e "${HOME}/.customrc.pre.sh" && source "${HOME}/.customrc.pre.sh"
+
 export PATH=$HOME/.local/bin:$HOME/bin:/usr/local/bin:/snap/bin:$PATH
 (( ${+commands[go]} )) && export PATH=$(go env GOPATH)/bin:$PATH
 
@@ -28,25 +30,31 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 ###################################################################################################
 # Proxy
 function enable_proxy() {
-  export https_proxy=http://proxy.ubisoft.org:3128;
-  export http_proxy=http://proxy.ubisoft.org:3128;
-  export ftp_proxy=http://proxy.ubisoft.org:3128;
-  export no_proxy=localhost,127.0.0.1,::1,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com,kubernetes.docker.internal;
-  export HTTPS_PROXY=$https_proxy;
-  export HTTP_PROXY=$http_proxy;
-  export FTP_PROXY=$ftp_proxy;
+  export no_proxy=localhost,127.0.0.1,::1,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com,kubernetes.docker.internal
+  export all_proxy=http://proxy.ubisoft.org:3128
+  export https_proxy=$all_proxy
+  export http_proxy=$all_proxy
+  export ftp_proxy=$all_proxy
+
   export NO_PROXY=$no_proxy
+  export ALL_PROXY=$all_proxy
+  export HTTPS_PROXY=$https_proxy
+  export HTTP_PROXY=$http_proxy
+  export FTP_PROXY=$ftp_proxy
 }
 
 function disable_proxy() {
-  export https_proxy="";
-  export http_proxy="";
-  export ftp_proxy="";
-  export no_proxy=localhost,127.0.0.1,::1,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com,kubernetes.docker.internal;
-  export HTTPS_PROXY=$https_proxy;
-  export HTTP_PROXY=$http_proxy;
-  export FTP_PROXY=$ftp_proxy;
+  export no_proxy=localhost,127.0.0.1,::1,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com,kubernetes.docker.internal
+  export all_proxy=
+  export https_proxy=$all_proxy
+  export http_proxy=$all_proxy
+  export ftp_proxy=$all_proxy
+
   export NO_PROXY=$no_proxy
+  export ALL_PROXY=$all_proxy
+  export HTTPS_PROXY=$https_proxy
+  export HTTP_PROXY=$http_proxy
+  export FTP_PROXY=$ftp_proxy
 }
 
 {{ if not .personal -}}
@@ -57,8 +65,15 @@ enable_proxy
 # Powerlevel10k
 # https://github.com/romkatv/powerlevel10k
 
+# change GITSTATUS_CACHE_DIR or XDG_CACHE_HOME to change default cache dir for gitstatus
+# https://github.com/romkatv/gitstatus/blob/master/install
+
 # Powerlevel10k requires zsh version is greater than or equal to 5.1
 if [[ "`printf '%s\n' $(zsh --version | cut -d ' ' -f2) '5.1' | sort -V -r | head -n1`" = "5.1" ]]; then
+  # or we can install zsh-bin to upgrade zsh version
+  # https://github.com/romkatv/zsh-bin
+  # sh -c "$(curl -fsSL https://raw.githubusercontent.com/romkatv/zsh-bin/master/install)"
+
   ZSH_THEME="robbyrussell"
 else
   ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -170,4 +185,4 @@ alias pc="proxychains4 -q"
 
 alias ls="lsd"
 
-test -e "${HOME}/.customrc.sh" && source "${HOME}/.customrc.sh"
+test -e "${HOME}/.customrc.post.sh" && source "${HOME}/.customrc.post.sh"
