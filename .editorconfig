@@ -1,0 +1,27 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{json,xml,yml,yaml,tmpl}]
+indent_size = 2
+
+[*.{sh,bash,csh}]
+end_of_line = lf
+
+[*.{bat,cmd,ps1}]
+end_of_line = crlf
+
+[*.{ps1,psd1,psm1,ps1xml}]
+charset = utf-8-bom
+
+[.editorconfig]
+max_line_length = 80

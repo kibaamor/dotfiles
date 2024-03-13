@@ -1,23 +1,23 @@
 {{- if or
-    (eq (get .chezmoi.osRelease "id") "ubuntu")
-    (eq (get .chezmoi.osRelease "id") "debian")
-    -}}
+  (eq (get .chezmoi.osRelease "id") "ubuntu")
+  (eq (get .chezmoi.osRelease "id") "debian")
+  -}}
 
 #!/bin/bash
 
 if [ "$(id -u)" -eq 0 ]; then
-    set -eufo pipefail \
-        && export DEBIAN_FRONTEND=noninteractive \
-        && apt update \
-        && apt install --yes --no-install-recommends {{ .packages.debian }} \
-        && rm -rf /var/lib/apt/lists/*
+  set -eufo pipefail \
+    && export DEBIAN_FRONTEND=noninteractive \
+    && apt update \
+    && apt install --yes --no-install-recommends {{ .packages.debian }} \
+    && rm -rf /var/lib/apt/lists/*
 {{ if .can_sudo }}
 else
-    set -eufo pipefail \
-        && export DEBIAN_FRONTEND=noninteractive \
-        && {{ .sudo }} apt update \
-        && {{ .sudo }} apt install --yes --no-install-recommends {{ .packages.debian }} \
-        && {{ .sudo }} rm -rf /var/lib/apt/lists/*
+  set -eufo pipefail \
+    && export DEBIAN_FRONTEND=noninteractive \
+    && {{ .sudo }} apt update \
+    && {{ .sudo }} apt install --yes --no-install-recommends {{ .packages.debian }} \
+    && {{ .sudo }} rm -rf /var/lib/apt/lists/*
 {{ end }}
 fi
 

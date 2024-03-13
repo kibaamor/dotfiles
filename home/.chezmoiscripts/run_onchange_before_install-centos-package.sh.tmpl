@@ -3,16 +3,16 @@
 #!/bin/bash
 
 if [ "$(id -u)" -eq 0 ]; then
-    set -eufo pipefail \
-        && yum update \
-        && yum --assumeyes install {{ .packages.centos }} \
-        && yum update clean
+  set -eufo pipefail \
+    && yum update \
+    && yum --assumeyes install {{ .packages.centos }} \
+    && yum update clean
 {{ if .can_sudo }}
 else
-    set -eufo pipefail \
-        && {{ .sudo }} yum update \
-        && {{ .sudo }} yum --assumeyes install {{ .packages.centos }} \
-        && {{ .sudo }} yum update clean
+  set -eufo pipefail \
+    && {{ .sudo }} yum update \
+    && {{ .sudo }} yum --assumeyes install {{ .packages.centos }} \
+    && {{ .sudo }} yum update clean
 {{ end }}
 fi
 

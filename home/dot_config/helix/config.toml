@@ -1,0 +1,63 @@
+# Migrating from Vim 
+# https://github.com/helix-editor/helix/wiki/Migrating-from-Vim
+
+# Configuration
+# https://docs.helix-editor.com/configuration.html
+
+theme = "dracula"
+
+[editor]
+bufferline = "always"
+auto-save = true
+rulers = [120]
+cursorline = true
+cursorcolumn = false
+true-color = true
+color-modes = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+# https://docs.helix-editor.com/master/configuration.html#editorsoft-wrap-section
+[editor.soft-wrap]
+enable = true
+wrap-indicator = "↩ "
+
+[editor.whitespace.render]
+tab = "all"
+space = "all"
+nbsp = "all"
+newline = "none"
+
+[editor.whitespace.characters]
+space = "·"
+nbsp = "⍽"
+tab = "→"
+newline = "⏎"
+tabpad = "·" # Tabs will look like "→···" (depending on tab width)
+
+[editor.statusline]
+left = ["mode", "spinner", "file-name", "file-type", "file-encoding", "total-line-numbers"]
+center = []
+right = ["selections", "primary-selection-length", "position", "position-percentage", "spacer", "diagnostics", "workspace-diagnostics", "version-control"]
+
+[editor.lsp]
+display-inlay-hints = true
+display-messages = true
+
+[editor.indent-guides]
+render = true
+character = "╎" # Some characters that work well: "▏", "┆", "┊", "⸽"
+
+[keys.normal]
+# https://github.com/helix-editor/helix/discussions/7898
+space.c = "toggle_comments"
+
+# https://github.com/helix-editor/helix/discussions/7908
+space.x = ":toggle whitespace.render all none"
+
+# Use system clipboard
+p = "paste_clipboard_before"
+y = "yank_main_selection_to_clipboard"
