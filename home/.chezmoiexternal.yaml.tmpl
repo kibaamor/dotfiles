@@ -172,3 +172,9 @@
   url: "https://github.com/wagoodman/dive/releases/download/v{{ .versions.dive }}/dive_{{ .versions.dive }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
   path: "dive{{ .exe_ext }}"
   executable: true
+
+".local/bin/lazydocker{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/jesseduffield/lazydocker/releases/download/v{{ .versions.lazydocker }}/lazydocker_{{ .versions.lazydocker }}_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  path: "lazydocker{{ .exe_ext }}"
+  executable: true
