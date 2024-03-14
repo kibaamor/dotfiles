@@ -1,9 +1,9 @@
 {{ if not .personal -}}
-export default_no_proxy = localhost,127.0.0.1,::1,kubernetes.docker.internal,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com
-export default_all_proxy = http://proxy.ubisoft.org:3128
+export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com
+export default_all_proxy=http://proxy.ubisoft.org:3128
 {{- else -}}
-export default_no_proxy = localhost,127.0.0.1,::1,kubernetes.docker.internal
-export default_all_proxy = http://localhost:7890
+export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal
+export default_all_proxy=http://localhost:7890
 {{- end }}
 
 test -e "${HOME}/.customrc.pre.sh" && source "${HOME}/.customrc.pre.sh"
