@@ -1,3 +1,11 @@
+{{ if not .personal -}}
+export default_no_proxy = localhost,127.0.0.1,::1,kubernetes.docker.internal,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com
+export default_all_proxy = http://proxy.ubisoft.org:3128
+{{- else -}}
+export default_no_proxy = localhost,127.0.0.1,::1,kubernetes.docker.internal
+export default_all_proxy = http://localhost:7890
+{{- end }}
+
 test -e "${HOME}/.customrc.pre.sh" && source "${HOME}/.customrc.pre.sh"
 
 export PATH=$HOME/.local/bin:$HOME/bin:/usr/local/bin:/snap/bin:$PATH
@@ -30,8 +38,8 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 ###################################################################################################
 # Proxy
 function enable_proxy() {
-  export no_proxy=localhost,127.0.0.1,::1,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com,kubernetes.docker.internal
-  export all_proxy=http://proxy.ubisoft.org:3128
+  export no_proxy=$default_no_proxy
+  export all_proxy=$default_all_proxy
   export https_proxy=$all_proxy
   export http_proxy=$all_proxy
   export ftp_proxy=$all_proxy
@@ -44,7 +52,7 @@ function enable_proxy() {
 }
 
 function disable_proxy() {
-  export no_proxy=localhost,127.0.0.1,::1,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com,kubernetes.docker.internal
+  export no_proxy=
   export all_proxy=
   export https_proxy=$all_proxy
   export http_proxy=$all_proxy
@@ -57,9 +65,7 @@ function disable_proxy() {
   export FTP_PROXY=$ftp_proxy
 }
 
-{{ if not .personal -}}
 enable_proxy
-{{- end }}
 
 ###################################################################################################
 # Powerlevel10k
