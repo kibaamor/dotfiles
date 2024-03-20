@@ -8,7 +8,7 @@ export default_proxy=http://localhost:7890
 
 test -e "${HOME}/.customrc.pre.sh" && source "${HOME}/.customrc.pre.sh"
 
-export PATH=$HOME/.local/bin:$HOME/bin:/usr/local/bin:/snap/bin:$PATH
+export PATH=$HOME/.local/sbin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/snap/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
 (( ${+commands[go]} )) && export PATH=$(go env GOPATH)/bin:$PATH
 
 export GO111MODULE=on
@@ -19,6 +19,7 @@ export GOPRIVATE="*.ubisoft.org,*.ubi.com"
 export GOPROXY=https://goproxy.cn,direct
 {{- end }}
 
+export SYSTEMD_EDITOR=vim
 export EDITOR=vim
 
 export HOMEBREW_API_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api"
