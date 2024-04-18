@@ -39,3 +39,5 @@ versions:
   jq: 1.7.1
   # https://github.com/mikefarah/yq
   yq: 4.43.1
+  # https://github.com/dundee/gdu
+  gdu: 5.27.0

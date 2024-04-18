@@ -182,7 +182,7 @@
 ".local/bin/jq{{ .exe_ext }}":
   type: file
 {{ if eq .chezmoi.os "darwin" }}
-  url: "https://github.com/jqlang/jq/releases/download/jq-{{ .versions.jq }}/jq-macos-{{ .chezmoi.arch }}{{ .exe_ext }}"
+  url: "https://github.com/jqlang/jq/releases/download/jq-{{ .versions.jq }}/jq-macos-{{ .chezmoi.arch }}"
 {{ else }}
   url: "https://github.com/jqlang/jq/releases/download/jq-{{ .versions.jq }}/jq-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
 {{ end }}
@@ -191,4 +191,14 @@
 ".local/bin/yq{{ .exe_ext }}":
   type: file
   url: "https://github.com/mikefarah/yq/releases/download/v{{ .versions.yq }}/yq_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .exe_ext }}"
+  executable: true
+
+".local/bin/gdu{{ .exe_ext }}":
+  type: archive-file
+{{ if eq .chezmoi.os "windows" }}
+  url: "https://github.com/dundee/gdu/releases/download/v{{ .versions.yq }}/gdu_windows_{{ .chezmoi.arch }}.exe.zip"
+{{ else }}
+  url: "https://github.com/dundee/gdu/releases/download/v{{ .versions.yq }}/gdu_{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tgz"
+{{ end }}
+  path: "gdu_{{ .chezmoi.os }}_{{ .chezmoi.arch }}"
   executable: true
