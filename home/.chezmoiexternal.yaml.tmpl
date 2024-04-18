@@ -182,13 +182,13 @@
 ".local/bin/jq{{ .exe_ext }}":
   type: file
 {{ if eq .chezmoi.os "darwin" }}
-  url: "https://github.com/jqlang/jq/releases/download/jq-{{ .versions.jq }}/jq-macos-{{ .uname_arch }}{{ .exe_ext }}"
+  url: "https://github.com/jqlang/jq/releases/download/jq-{{ .versions.jq }}/jq-macos-{{ .chezmoi.arch }}{{ .exe_ext }}"
 {{ else }}
-  url: "https://github.com/jqlang/jq/releases/download/jq-{{ .versions.jq }}/jq-{{ .chezmoi.os }}-{{ .uname_arch }}{{ .exe_ext }}"
+  url: "https://github.com/jqlang/jq/releases/download/jq-{{ .versions.jq }}/jq-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
 {{ end }}
   executable: true
 
 ".local/bin/yq{{ .exe_ext }}":
   type: file
-  url: "https://github.com/mikefarah/yq/releases/download/v{{ .versions.yq }}/yq_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .exe_ext }}"
+  url: "https://github.com/mikefarah/yq/releases/download/v{{ .versions.yq }}/yq_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .exe_ext }}"
   executable: true
