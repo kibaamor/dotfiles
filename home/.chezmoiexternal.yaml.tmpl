@@ -204,13 +204,14 @@
   executable: true
 
 ".local/bin/nali{{ .exe_ext }}":
-  type: archive-file
 {{ if eq .chezmoi.os "windows" }}
+  type: archive-file
   url: "https://github.com/zu1k/nali/releases/download/v{{ .versions.nali }}/nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}-v{{ .versions.nali }}.zip"
+  path: "nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
 {{ else }}
+  type: file
   url: "https://github.com/zu1k/nali/releases/download/v{{ .versions.nali }}/nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}-v{{ .versions.nali }}.gz"
   filter.command: "gzip"
   filter.args: ["-d", "-N"]
 {{ end }}
-  path: "nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
   executable: true
