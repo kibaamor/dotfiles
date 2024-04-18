@@ -212,6 +212,6 @@
   type: file
   url: "https://github.com/zu1k/nali/releases/download/v{{ .versions.nali }}/nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}-v{{ .versions.nali }}.gz"
   filter.command: "gzip"
-  filter.args: ["-d", "-N"]
+  filter.args: ["-d", "-c"]
 {{ end }}
   executable: true
