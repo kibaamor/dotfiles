@@ -41,3 +41,5 @@ versions:
   yq: 4.43.1
   # https://github.com/dundee/gdu
   gdu: 5.27.0
+  # https://github.com/zu1k/nali
+  nali: 0.8.1

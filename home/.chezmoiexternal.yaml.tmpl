@@ -202,3 +202,13 @@
 {{ end }}
   path: "gdu_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .exe_ext }}"
   executable: true
+
+".local/bin/nali{{ .exe_ext }}":
+  type: archive-file
+{{ if eq .chezmoi.os "windows" }}
+  url: "https://github.com/zu1k/nali/releases/download/v{{ .versions.nali }}/nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}-v{{ .versions.nali }}.zip"
+{{ else }}
+  url: "https://github.com/zu1k/nali/releases/download/v{{ .versions.nali }}/nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}-v{{ .versions.nali }}.gz"
+{{ end }}
+  path: "nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
+  executable: true
