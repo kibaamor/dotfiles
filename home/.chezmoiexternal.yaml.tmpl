@@ -196,9 +196,9 @@
 ".local/bin/gdu{{ .exe_ext }}":
   type: archive-file
 {{ if eq .chezmoi.os "windows" }}
-  url: "https://github.com/dundee/gdu/releases/download/v{{ .versions.yq }}/gdu_windows_{{ .chezmoi.arch }}.exe.zip"
+  url: "https://github.com/dundee/gdu/releases/download/v{{ .versions.gdu }}/gdu_windows_{{ .chezmoi.arch }}.exe.zip"
 {{ else }}
-  url: "https://github.com/dundee/gdu/releases/download/v{{ .versions.yq }}/gdu_{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tgz"
+  url: "https://github.com/dundee/gdu/releases/download/v{{ .versions.gdu }}/gdu_{{ .chezmoi.os }}_{{ .chezmoi.arch }}.tgz"
 {{ end }}
   path: "gdu_{{ .chezmoi.os }}_{{ .chezmoi.arch }}"
   executable: true
