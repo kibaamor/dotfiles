@@ -209,10 +209,10 @@
   url: "https://github.com/zu1k/nali/releases/download/v{{ .versions.nali }}/nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}-v{{ .versions.nali }}.zip"
   path: "nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
 {{ else }}
-  type: archive-file
+  type: file
   url: "https://github.com/zu1k/nali/releases/download/v{{ .versions.nali }}/nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}-v{{ .versions.nali }}.gz"
-  filter.command: "gzip"
-  filter.args: ["-d", "-N", "-k"]
-  path: "nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
+  filter:
+    command: "gzip"
+    args: ["-d", "-f", "-c"]
 {{ end }}
   executable: true
