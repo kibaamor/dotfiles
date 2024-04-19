@@ -42,6 +42,10 @@
   exact: true
   stripComponents: 1
 
+".gdbinit-gef.py":
+  type: file
+  url: "https://gef.blah.cat/py"
+
 ".local/bin/delta{{ .exe_ext }}":
   type: archive-file
   url: "https://github.com/dandavison/delta/releases/download/{{ .versions.delta }}/delta-{{ .versions.delta }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
