@@ -216,3 +216,29 @@
     args: ["-d", "-f", "-c"]
 {{ end }}
   executable: true
+
+".local/bin/kubefwd{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/txn2/kubefwd/releases/download/{{ .versions.kubefwd }}/kubefwd_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  path: "kubefwd{{ .exe_ext }}"
+  executable: true
+
+".local/bin/arkade{{ .exe_ext }}":
+  type: file
+{{ if eq .chezmoi.os "windows" }}
+  url: "https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade.exe"
+{{ else if eq .chezmoi.os "darwin" }}
+  url: "https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade-darwin"
+{{ else }}
+  url: "https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade"
+{{ end }}
+  executable: true
+
+".local/bin/kubeshark{{ .exe_ext }}":
+  type: file
+{{ if eq .chezmoi.os "windows" }}
+  url: "https://github.com/kubeshark/kubeshark/releases/download/v{{ .versions.kubeshark }}/kubeshark.exe"
+{{ else }}
+  url: "https://github.com/kubeshark/kubeshark/releases/download/v{{ .versions.kubeshark }}/kubeshark_{{ .chezmoi.os }}_{{ .chezmoi.arch }}"
+{{ end }}
+  executable: true

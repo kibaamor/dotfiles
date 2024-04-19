@@ -43,3 +43,9 @@ versions:
   gdu: 5.27.0
   # https://github.com/zu1k/nali
   nali: 0.8.1
+  # https://github.com/txn2/kubefwd
+  kubefwd: 1.22.5
+  # https://github.com/alexellis/arkade
+  arkade: 0.11.9
+  # https://github.com/kubeshark/kubeshark
+  kubeshark: 52.2.1
