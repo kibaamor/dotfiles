@@ -6,7 +6,7 @@ export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal
 export default_proxy=http://localhost:7890
 {{- end }}
 
-export PATH=$HOME/.local/sbin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/snap/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+export PATH=$HOME/.arkade/bin:$HOME/.local/sbin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/snap/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
 
 test -e "${HOME}/.customrc.pre.sh" && source "${HOME}/.customrc.pre.sh"
 
