@@ -2,7 +2,7 @@
 
 cd "$(dirname -- "${BASH_SOURCE[0]}")"
 
-filename="versions.yaml"
+filename="./home/.chezmoidata/versions.yaml"
 
 repos=(
     "romkatv/powerlevel10k"
