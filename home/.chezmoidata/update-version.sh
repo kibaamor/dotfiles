@@ -40,7 +40,7 @@ do
 
     echo "  # https://github.com/$repo" >> $filename
     name=$(echo $repo | cut -d '/' -f 2)
-    version=$(curl -s -L https://api.github.com/repos/$repo/releases/latest | jq '.tag_name' -r | tr -d 'v')
+    version=$(curl -s -L https://api.github.com/repos/$repo/releases/latest | jq '.tag_name' -r | tr -d '[a-z][A-Z] -')
     echo "  $name: $version" >> $filename
 
     sleep 1s

@@ -1,18 +1,51 @@
 versions:
   # https://github.com/romkatv/powerlevel10k
-  powerlevel10k: null
+  powerlevel10k: 1.20.0
   # https://github.com/dandavison/delta
-  delta: null
+  delta: 0.17.0
   # https://github.com/sharkdp/bat
-  bat: null
+  bat: 0.24.0
   # https://github.com/sharkdp/fd
-  fd: null
+  fd: 9.0.0
   # https://github.com/junegunn/fzf
-  fzf: null
+  fzf: 0.50.0
   # https://github.com/direnv/direnv
-  direnv: null
+  direnv: 2.34.0
   # https://github.com/BurntSushi/ripgrep
-  ripgrep: null
+  ripgrep: 14.1.0
   # https://github.com/lsd-rs/lsd
-  lsd: null
+  lsd: 1.1.2
   # https://github.com/muesli/duf
+  duf: 0.8.1
+  # https://github.com/FiloSottile/age
+  age: 1.1.1
+  # https://github.com/tldr-pages/tlrc
+  tlrc: 1.9.1
+  # https://github.com/fatedier/frp
+  frp: 0.57.0
+  # https://github.com/bcicen/ctop
+  ctop: 0.7.7
+  # https://github.com/kubecolor/kubecolor
+  kubecolor: 0.3.1
+  # https://github.com/ahmetb/kubectx
+  kubectx: 0.9.5
+  # https://github.com/derailed/k9s
+  k9s: 0.32.4
+  # https://github.com/wagoodman/dive
+  dive: 0.12.0
+  # https://github.com/jesseduffield/lazydocker
+  lazydocker: 0.23.1
+  # https://github.com/jqlang/jq
+  jq: 1.7.1
+  # https://github.com/mikefarah/yq
+  yq: 4.43.1
+  # https://github.com/dundee/gdu
+  gdu: 5.28.0
+  # https://github.com/zu1k/nali
+  nali: 0.8.1
+  # https://github.com/txn2/kubefwd
+  kubefwd: 1.22.5
+  # https://github.com/alexellis/arkade
+  arkade: 0.11.9
+  # https://github.com/kubeshark/kubeshark
+  kubeshark: 52.2.39
