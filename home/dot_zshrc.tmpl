@@ -203,7 +203,7 @@ fi
 (( ${+commands[nali]} )) && source <(nali completion zsh)
 (( ${+commands[kubefwd]} )) && source <(kubefwd completion zsh)
 (( ${+commands[arkade]} )) && source <(arkade completion zsh)
-(( ${+commands[kubeshark]} )) && source <(kubeshark completion zsh)
+(( ${+commands[kubeshark]} )) && source <(KUBESHARK_DISABLE_VERSION_CHECK="true" kubeshark completion zsh)
 (( ${+commands[etcdctl]} )) && export ETCDCTL_API=3 && source <(etcdctl completion zsh)
 
 alias ip="ip --color"
