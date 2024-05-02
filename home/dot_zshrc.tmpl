@@ -172,22 +172,39 @@ _fzf_comprun() {
   esac
 }
 
-(( ${+commands[go]} )) && alias kubectl="kubecolor"
-alias k="kubectl"
-alias ks="kubectl -n kube-system"
+if [[ "${+commands[kubectl]}" = "1" ]]; then
+  source <(kubectl completion zsh)
 
-# 'nslookup' command in busybox has issues.
-alias krnetdbg="kubectl run net-debug --image=nicolaka/netshoot --image-pull-policy=IfNotPresent -it --rm"
-alias kdelnetdbg="kubectl delete pod/net-debug"
+  if [[ "${+commands[kubecolor]}" = "1" ]]; then
+    alias kubectl=kubecolor
+    compdef kubecolor=kubectl
+  fi
 
-# run command `kubectl api-resources` to get all resources and its shortnames.
-alias kapires="kubectl api-resources"
+  alias k="kubectl"
+  alias ks="kubectl -n kube-system"
 
-alias mk="minikube"
+  # 'nslookup' command in busybox has issues.
+  alias krnetdbg="kubectl run net-debug --image=nicolaka/netshoot --image-pull-policy=IfNotPresent -it --rm"
+  alias kdelnetdbg="kubectl delete pod/net-debug"
 
-alias pc="proxychains4 -q"
+  # run command `kubectl api-resources` to get all resources and its shortnames.
+  alias kapires="kubectl api-resources"
+fi
 
+(( ${+commands[minikube]} )) && source <(minikube completion zsh) && alias mk="minikube"
+(( ${+commands[helm]} )) && source <(helm completion zsh)
+(( ${+commands[proxychains4]} )) && alias pc="proxychains4 -q"
 (( ${+commands[lsd]} )) && alias ls="lsd"
+(( ${+commands[delta]} )) && source <(delta --generate-completion zsh)
+(( ${+commands[frpc]} )) && source <(frpc completion zsh)
+(( ${+commands[frps]} )) && source <(frps completion zsh)
+(( ${+commands[k9s]} )) && source <(k9s completion zsh)
+(( ${+commands[yq]} )) && source <(yq shell-completion zsh)
+(( ${+commands[nali]} )) && source <(nali completion zsh)
+(( ${+commands[kubefwd]} )) && source <(kubefwd completion zsh)
+(( ${+commands[arkade]} )) && source <(arkade completion zsh)
+(( ${+commands[kubeshark]} )) && source <(kubeshark completion zsh)
+(( ${+commands[etcdctl]} )) && export ETCDCTL_API=3 && source <(etcdctl completion zsh)
 
 alias ip="ip --color"
 
