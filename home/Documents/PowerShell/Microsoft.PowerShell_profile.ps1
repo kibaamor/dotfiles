@@ -42,7 +42,7 @@ if (Get-Command k9s -ErrorAction SilentlyContinue) {
 }
 
 if (Get-Command yq -ErrorAction SilentlyContinue) {
-    yq completion powershell | Out-String | Invoke-Expression
+    yq shell-completion powershell | Out-String | Invoke-Expression
 }
 
 if (Get-Command nali -ErrorAction SilentlyContinue) {
@@ -58,7 +58,7 @@ if (Get-Command arkade -ErrorAction SilentlyContinue) {
 }
 
 if (Get-Command kubeshark -ErrorAction SilentlyContinue) {
-    $env:KUBESHARK_DISABLE_VERSION_CHECK = true
+    $env:KUBESHARK_DISABLE_VERSION_CHECK = "true"
     kubeshark completion powershell | Out-String | Invoke-Expression
 }
 
