@@ -17,12 +17,14 @@
 {{- /* find sudo command */ -}}
 {{- $sudo := findExecutable "sudo" (list "/bin" "/sbin" "/usr/bin" "/usr/sbin") -}}
 
-{{- /* checks if we want to install all resources */ -}}
-{{- $install_all_resources := (env "CHEZMOI_INSTALL_ALL_RESOURCES" | not) -}}
+{{- /* checks if we want to get all resources */ -}}
+{{- $get_all_resources := (env "CHEZMOI_GET_ALL_RESOURCES" | not) -}}
 
 format: yaml
 
 data:
+  get_all_resources: {{ $get_all_resources }}
+
   personal: {{ $personal }}
 
   interactive: {{ $interactive }}
