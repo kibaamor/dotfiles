@@ -54,7 +54,7 @@ if (Get-Command kubefwd -ErrorAction SilentlyContinue) {
 }
 
 if (Get-Command arkade -ErrorAction SilentlyContinue) {
-    arkade completion powershell | Out-String | Invoke-Expression
+    # arkade completion powershell | Out-String | Invoke-Expression
 }
 
 if (Get-Command kubeshark -ErrorAction SilentlyContinue) {

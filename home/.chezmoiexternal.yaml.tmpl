@@ -165,12 +165,6 @@
   path: "kubens{{ .exe_ext }}"
   executable: true
 
-".local/bin/k9s{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/derailed/k9s/releases/download/v{{ .versions.k9s }}/k9s_{{ .chezmoi.os | camelcase }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-  path: "k9s{{ .exe_ext }}"
-  executable: true
-
 ".local/bin/dive{{ .exe_ext }}":
   type: archive-file
   url: "https://github.com/wagoodman/dive/releases/download/v{{ .versions.dive }}/dive_{{ .versions.dive }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
@@ -221,12 +215,6 @@
 {{ end }}
   executable: true
 
-".local/bin/kubefwd{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/txn2/kubefwd/releases/download/{{ .versions.kubefwd }}/kubefwd_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
-  path: "kubefwd{{ .exe_ext }}"
-  executable: true
-
 ".local/bin/arkade{{ .exe_ext }}":
   type: file
 {{ if eq .chezmoi.os "windows" }}
@@ -238,6 +226,14 @@
 {{ end }}
   executable: true
 
+{{ if .install_all_resources }}
+
+".local/bin/kubefwd{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/txn2/kubefwd/releases/download/{{ .versions.kubefwd }}/kubefwd_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  path: "kubefwd{{ .exe_ext }}"
+  executable: true
+
 ".local/bin/kubeshark{{ .exe_ext }}":
   type: file
 {{ if eq .chezmoi.os "windows" }}
@@ -245,6 +241,12 @@
 {{ else }}
   url: "https://github.com/kubeshark/kubeshark/releases/download/v{{ .versions.kubeshark }}/kubeshark_{{ .chezmoi.os }}_{{ .chezmoi.arch }}"
 {{ end }}
+  executable: true
+
+".local/bin/k9s{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/derailed/k9s/releases/download/v{{ .versions.k9s }}/k9s_{{ .chezmoi.os | camelcase }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  path: "k9s{{ .exe_ext }}"
   executable: true
 
 ".local/bin/minikube{{ .exe_ext }}":
@@ -258,3 +260,5 @@
   path: "helm{{ .exe_ext }}"
   executable: true
   stripComponents: 1
+
+{{ end }}

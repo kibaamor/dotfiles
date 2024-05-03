@@ -20,18 +20,19 @@ repos=(
     "bcicen/ctop"
     "kubecolor/kubecolor"
     "ahmetb/kubectx"
-    "derailed/k9s"
     "wagoodman/dive"
     "jesseduffield/lazydocker"
     "jqlang/jq"
     "mikefarah/yq"
     "dundee/gdu"
     "zu1k/nali"
-    "txn2/kubefwd"
     "alexellis/arkade"
+
+    "txn2/kubefwd"
     "kubeshark/kubeshark"
     "kubernetes/minikube"
     "helm/helm"
+    "derailed/k9s"
 )
 
 echo "versions:" > $filename
