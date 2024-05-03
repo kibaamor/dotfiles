@@ -30,6 +30,7 @@ repos=(
     "txn2/kubefwd"
     "alexellis/arkade"
     "kubeshark/kubeshark"
+    "kubernetes/minikube"
 )
 
 echo "versions:" > $filename

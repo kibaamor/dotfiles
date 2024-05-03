@@ -246,3 +246,8 @@
   url: "https://github.com/kubeshark/kubeshark/releases/download/v{{ .versions.kubeshark }}/kubeshark_{{ .chezmoi.os }}_{{ .chezmoi.arch }}"
 {{ end }}
   executable: true
+
+".local/bin/minikube{{ .exe_ext }}":
+  type: file
+  url: "https://github.com/kubernetes/minikube/releases/download/v{{ .versions.minikube }}/minikube-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
+  executable: true

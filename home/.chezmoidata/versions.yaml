@@ -8,7 +8,7 @@ versions:
   # https://github.com/sharkdp/fd
   fd: 9.0.0
   # https://github.com/junegunn/fzf
-  fzf: 0.50.0
+  fzf: 0.51.0
   # https://github.com/direnv/direnv
   direnv: 2.34.0
   # https://github.com/BurntSushi/ripgrep
@@ -20,13 +20,13 @@ versions:
   # https://github.com/FiloSottile/age
   age: 1.1.1
   # https://github.com/tldr-pages/tlrc
-  tlrc: 1.9.1
+  tlrc: 1.9.2
   # https://github.com/fatedier/frp
   frp: 0.57.0
   # https://github.com/bcicen/ctop
   ctop: 0.7.7
   # https://github.com/kubecolor/kubecolor
-  kubecolor: 0.3.1
+  kubecolor: 0.3.2
   # https://github.com/ahmetb/kubectx
   kubectx: 0.9.5
   # https://github.com/derailed/k9s
@@ -46,6 +46,8 @@ versions:
   # https://github.com/txn2/kubefwd
   kubefwd: 1.22.5
   # https://github.com/alexellis/arkade
-  arkade: 0.11.9
+  arkade: 0.11.10
   # https://github.com/kubeshark/kubeshark
-  kubeshark: 52.2.39
+  kubeshark: 52.3.0
+  # https://github.com/kubernetes/minikube
+  minikube: 1.33.0
