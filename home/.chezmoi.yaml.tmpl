@@ -18,7 +18,7 @@
 {{- $sudo := findExecutable "sudo" (list "/bin" "/sbin" "/usr/bin" "/usr/sbin") -}}
 
 {{- /* checks if we want to get all resources */ -}}
-{{- $get_all_resources := (env "CHEZMOI_GET_ALL_RESOURCES" | not) -}}
+{{- $get_all_resources := (env "CHEZMOI_GET_ALL_RESOURCES" | ne "") -}}
 
 format: yaml
 
