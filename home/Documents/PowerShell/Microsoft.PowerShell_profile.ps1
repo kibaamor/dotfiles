@@ -2,3 +2,30 @@
 # winget install JanDeDobbeleer.OhMyPosh -s winget
 
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\markbull.omp.json" | Invoke-Expression
+
+if (Get-Command kubectl -ErrorAction SilentlyContinue) {
+    kubectl completion powershell | Out-String | Invoke-Expression
+    
+    if (Get-Command kubecolor -ErrorAction SilentlyContinue) {
+        Set-Alias -Name kubectl -Value kubecolor
+        Register-ArgumentCompleter -CommandName 'kubecolor' -ScriptBlock $__kubectlCompleterBlock
+    }
+
+    Set-Alias -Name k -Value kubectl
+    Register-ArgumentCompleter -CommandName 'k' -ScriptBlock $__kubectlCompleterBlock
+}
+
+if (Get-Command minikube -ErrorAction SilentlyContinue) {
+    minikube completion powershell | Out-String | Invoke-Expression
+
+    Set-Alias -Name mk -Value minikube
+    Register-ArgumentCompleter -CommandName 'mk' -ScriptBlock ${__minikubeCompleterBlock}
+}
+
+if (Get-Command helm -ErrorAction SilentlyContinue) {
+    helm completion powershell | Out-String | Invoke-Expression
+}
+
+if (Get-Command lsd -ErrorAction SilentlyContinue) {
+    Set-Alias -Name ls -Value lsd
+}

@@ -251,3 +251,10 @@
   type: file
   url: "https://github.com/kubernetes/minikube/releases/download/v{{ .versions.minikube }}/minikube-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
   executable: true
+
+".local/bin/helm{{ .exe_ext }}":
+  type: archive-file
+  url: "https://get.helm.sh/helm-v{{ .versions.helm }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  path: "helm{{ .exe_ext }}"
+  executable: true
+  stripComponents: 1

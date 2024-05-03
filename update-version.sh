@@ -31,6 +31,7 @@ repos=(
     "alexellis/arkade"
     "kubeshark/kubeshark"
     "kubernetes/minikube"
+    "helm/helm"
 )
 
 echo "versions:" > $filename
