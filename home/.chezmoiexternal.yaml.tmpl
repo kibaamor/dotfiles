@@ -226,7 +226,7 @@
 {{ end }}
   executable: true
 
-{{ if .get_all_resources }}
+{{ if not .basic_bins }}
 
 ".local/bin/kubefwd{{ .exe_ext }}":
   type: archive-file

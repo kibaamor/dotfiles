@@ -17,13 +17,13 @@
 {{- /* find sudo command */ -}}
 {{- $sudo := findExecutable "sudo" (list "/bin" "/sbin" "/usr/bin" "/usr/sbin") -}}
 
-{{- /* checks if we want to get all resources */ -}}
-{{- $get_all_resources := (env "CHEZMOI_GET_ALL_RESOURCES" | ne "") -}}
+{{- /* checks if we want to get basic binaries only */ -}}
+{{- $basic_bins := (env "DOTFILES_BASIC_BINS" | ne "") -}}
 
 format: yaml
 
 data:
-  get_all_resources: {{ $get_all_resources }}
+  basic_bins: {{ $basic_bins }}
 
   personal: {{ $personal }}
 
