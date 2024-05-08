@@ -26,9 +26,9 @@ if (Get-Command helm -ErrorAction SilentlyContinue) {
     helm completion powershell | Out-String | Invoke-Expression
 }
 
-if (Get-Command lsd -ErrorAction SilentlyContinue) {
-    Set-Alias -Name ls -Value lsd
-}
+#if (Get-Command lsd -ErrorAction SilentlyContinue) {
+#    Set-Alias -Name ls -Value lsd
+#}
 
 if (Get-Command frpc -ErrorAction SilentlyContinue) {
     frpc completion powershell | Out-String | Invoke-Expression
