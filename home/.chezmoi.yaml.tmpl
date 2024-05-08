@@ -1,15 +1,30 @@
 {{- /* https://www.chezmoi.io/reference/configuration-file/variables/ */ -}}
 {{- /* https://masterminds.github.io/sprig/ */ -}}
 
+{{- /* checks if we want to get basic binaries only */ -}}
+{{- $basic_bins := (env "DOTFILES_BASIC_BINS" | ne "") -}}
+
+{{- /* git user name */ -}}
+{{- $git_username := env "GIT_USERNAME" | quote -}}
+{{- if eq $git_username "" -}}
+{{-   $git_username = "Kiba Amor" -}}
+{{- end -}}
+
+{{- /* git user email */ -}}
+{{- $git_useremail := env "GIT_USEREMAIL" | quote -}}
+{{- if eq $git_useremail "" -}}
+{{-   $git_useremail = "5093911+kibaamor@users.noreply.github.com" -}}
+{{- end -}}
+
 {{- /* is personal workstation */ -}}
 {{- $personal := (or (contains "ubisoft" .chezmoi.fqdnHostname) (contains "-WKS-" .chezmoi.fqdnHostname)) | not -}}
 
 {{- /* checks if running interactively */ -}}
 {{- $interactive := and
-  stdinIsATTY
-  (env "ACT" | not)
-  (env "CODESPACES" | not)
-  (env "DEBIAN_FRONTEND" | ne "noninteractive") -}}
+      stdinIsATTY
+      (env "ACT" | not)
+      (env "CODESPACES" | not)
+      (env "DEBIAN_FRONTEND" | ne "noninteractive") -}}
 
 {{- /* we can execute sudo command or not */ -}}
 {{- $can_sudo := or $interactive (env "CODESPACES") -}}
@@ -17,13 +32,13 @@
 {{- /* find sudo command */ -}}
 {{- $sudo := findExecutable "sudo" (list "/bin" "/sbin" "/usr/bin" "/usr/sbin") -}}
 
-{{- /* checks if we want to get basic binaries only */ -}}
-{{- $basic_bins := (env "DOTFILES_BASIC_BINS" | ne "") -}}
-
 format: yaml
 
 data:
   basic_bins: {{ $basic_bins }}
+
+  git_username: {{ $git_username }}
+  git_useremail: {{ $git_useremail }}
 
   personal: {{ $personal }}
 
