@@ -5,13 +5,13 @@
 {{- $basic_bins := (env "DOTFILES_BASIC_BINS" | ne "") -}}
 
 {{- /* git user name */ -}}
-{{- $git_username := env "GIT_USERNAME" | quote -}}
+{{- $git_username := env "GIT_USERNAME" -}}
 {{- if eq $git_username "" -}}
 {{-   $git_username = "Kiba Amor" -}}
 {{- end -}}
 
 {{- /* git user email */ -}}
-{{- $git_useremail := env "GIT_USEREMAIL" | quote -}}
+{{- $git_useremail := env "GIT_USEREMAIL" -}}
 {{- if eq $git_useremail "" -}}
 {{-   $git_useremail = "5093911+kibaamor@users.noreply.github.com" -}}
 {{- end -}}
