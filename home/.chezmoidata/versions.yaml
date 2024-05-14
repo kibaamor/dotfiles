@@ -6,9 +6,9 @@ versions:
   # https://github.com/sharkdp/bat
   bat: 0.24.0
   # https://github.com/sharkdp/fd
-  fd: 9.0.0
+  fd: 10.1.0
   # https://github.com/junegunn/fzf
-  fzf: 0.51.0
+  fzf: 0.52.1
   # https://github.com/direnv/direnv
   direnv: 2.34.0
   # https://github.com/BurntSushi/ripgrep
@@ -22,7 +22,7 @@ versions:
   # https://github.com/tldr-pages/tlrc
   tlrc: 1.9.2
   # https://github.com/fatedier/frp
-  frp: 0.57.0
+  frp: 0.58.0
   # https://github.com/bcicen/ctop
   ctop: 0.7.7
   # https://github.com/kubecolor/kubecolor
@@ -36,19 +36,19 @@ versions:
   # https://github.com/jqlang/jq
   jq: 1.7.1
   # https://github.com/mikefarah/yq
-  yq: 4.43.1
+  yq: 4.44.1
   # https://github.com/dundee/gdu
   gdu: 5.28.0
   # https://github.com/zu1k/nali
   nali: 0.8.1
   # https://github.com/alexellis/arkade
-  arkade: 0.11.10
+  arkade: 0.11.11
   # https://github.com/txn2/kubefwd
   kubefwd: 1.22.5
   # https://github.com/kubeshark/kubeshark
   kubeshark: 52.3.0
   # https://github.com/kubernetes/minikube
-  minikube: 1.33.0
+  minikube: 1.33.1
   # https://github.com/helm/helm
   helm: 3.14.4
   # https://github.com/derailed/k9s
