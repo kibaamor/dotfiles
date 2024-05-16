@@ -243,22 +243,22 @@
 {{ end }}
   executable: true
 
-".local/bin/k9s{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/derailed/k9s/releases/download/v{{ .versions.k9s }}/k9s_{{ .chezmoi.os | camelcase }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-  path: "k9s{{ .exe_ext }}"
-  executable: true
-
-".local/bin/minikube{{ .exe_ext }}":
-  type: file
-  url: "https://github.com/kubernetes/minikube/releases/download/v{{ .versions.minikube }}/minikube-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
-  executable: true
-
-".local/bin/helm{{ .exe_ext }}":
-  type: archive-file
-  url: "https://get.helm.sh/helm-v{{ .versions.helm }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-  path: "helm{{ .exe_ext }}"
-  executable: true
-  stripComponents: 1
+# ".local/bin/k9s{{ .exe_ext }}":
+#   type: archive-file
+#   url: "https://github.com/derailed/k9s/releases/download/v{{ .versions.k9s }}/k9s_{{ .chezmoi.os | camelcase }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+#   path: "k9s{{ .exe_ext }}"
+#   executable: true
+#
+# ".local/bin/minikube{{ .exe_ext }}":
+#   type: file
+#   url: "https://github.com/kubernetes/minikube/releases/download/v{{ .versions.minikube }}/minikube-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
+#   executable: true
+#
+# ".local/bin/helm{{ .exe_ext }}":
+#   type: archive-file
+#   url: "https://get.helm.sh/helm-v{{ .versions.helm }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+#   path: "helm{{ .exe_ext }}"
+#   executable: true
+#   stripComponents: 1
 
 {{ end }}

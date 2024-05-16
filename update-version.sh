@@ -30,21 +30,20 @@ repos=(
 
     "txn2/kubefwd"
     "kubeshark/kubeshark"
-    "kubernetes/minikube"
-    "helm/helm"
-    "derailed/k9s"
+    # "kubernetes/minikube"
+    # "helm/helm"
+    # "derailed/k9s"
 )
 
-echo "versions:" > $filename
+echo "versions:" >$filename
 
-for repo in "${repos[@]}";
-do
+for repo in "${repos[@]}"; do
     echo "processing repo: $repo"
 
-    echo "  # https://github.com/$repo" >> $filename
+    echo "  # https://github.com/$repo" >>$filename
     name=$(echo $repo | cut -d '/' -f 2)
     version=$(curl -s -L https://api.github.com/repos/$repo/releases/latest | jq '.tag_name' -r | tr -d '[a-z][A-Z] -')
-    echo "  $name: $version" >> $filename
+    echo "  $name: $version" >>$filename
 
     sleep 1s
 done

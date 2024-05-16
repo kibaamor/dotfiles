@@ -192,6 +192,7 @@ if [[ "${+commands[kubectl]}" = "1" ]]; then
 fi
 
 (( ${+commands[minikube]} )) && source <(minikube completion zsh) && alias mk="minikube"
+(( ${+commands[kind]} )) && source <(kind completion zsh)
 (( ${+commands[helm]} )) && source <(helm completion zsh)
 (( ${+commands[proxychains4]} )) && alias pc="proxychains4 -q"
 (( ${+commands[lsd]} )) && alias ls="lsd"

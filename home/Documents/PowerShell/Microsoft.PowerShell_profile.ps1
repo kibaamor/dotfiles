@@ -5,7 +5,7 @@ oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\markbull.omp.json" | Invoke
 
 if (Get-Command kubectl -ErrorAction SilentlyContinue) {
     kubectl completion powershell | Out-String | Invoke-Expression
-    
+
     if (Get-Command kubecolor -ErrorAction SilentlyContinue) {
         Set-Alias -Name kubectl -Value kubecolor
         Register-ArgumentCompleter -CommandName 'kubecolor' -ScriptBlock $__kubectlCompleterBlock
@@ -20,6 +20,10 @@ if (Get-Command minikube -ErrorAction SilentlyContinue) {
 
     Set-Alias -Name mk -Value minikube
     Register-ArgumentCompleter -CommandName 'mk' -ScriptBlock ${__minikubeCompleterBlock}
+}
+
+if (Get-Command kind -ErrorAction SilentlyContinue) {
+    kind completion powershell | Out-String | Invoke-Expression
 }
 
 if (Get-Command helm -ErrorAction SilentlyContinue) {
