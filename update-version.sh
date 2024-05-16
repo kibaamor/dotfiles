@@ -30,9 +30,10 @@ repos=(
 
     "txn2/kubefwd"
     "kubeshark/kubeshark"
-    # "kubernetes/minikube"
-    # "helm/helm"
-    # "derailed/k9s"
+    "kubernetes/minikube"
+    "kubernetes-sigs/kind"
+    "derailed/k9s"
+    "helm/helm"
 )
 
 echo "versions:" >$filename
