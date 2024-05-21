@@ -43,6 +43,8 @@ versions:
   nali: 0.8.1
   # https://github.com/alexellis/arkade
   arkade: 0.11.12
+  # https://github.com/FiloSottile/mkcert
+  mkcert: 1.4.4
   # https://github.com/txn2/kubefwd
   kubefwd: 1.22.5
   # https://github.com/kubeshark/kubeshark

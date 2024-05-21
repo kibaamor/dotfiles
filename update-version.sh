@@ -27,6 +27,7 @@ repos=(
     "dundee/gdu"
     "zu1k/nali"
     "alexellis/arkade"
+    "FiloSottile/mkcert"
 
     "txn2/kubefwd"
     "kubeshark/kubeshark"

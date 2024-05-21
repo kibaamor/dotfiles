@@ -226,6 +226,11 @@
 {{ end }}
   executable: true
 
+".local/bin/mkcert{{ .exe_ext }}":
+  type: file
+  url: "https://github.com/FiloSottile/mkcert/releases/download/v{{ .versions.mkcert }}/mkcert-v{{ .versions.mkcert }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
+  executable: true
+
 {{ if not .basic_bins }}
 
 ".local/bin/kubefwd{{ .exe_ext }}":
