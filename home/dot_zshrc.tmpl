@@ -184,6 +184,7 @@ if [[ "${+commands[kubectl]}" = "1" ]]; then
 
   alias k="kubectl"
   alias ks="kubectl -n kube-system"
+  alias kn="kubectl -n ingress-nginx"
 
   # 'nslookup' command in busybox has issues.
   alias krnetdbg="kubectl run net-debug --image=nicolaka/netshoot --image-pull-policy=IfNotPresent -it --rm"
