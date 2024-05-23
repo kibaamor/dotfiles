@@ -194,6 +194,7 @@ if [[ "${+commands[kubectl]}" = "1" ]]; then
   alias kapires="kubectl api-resources"
 fi
 
+(( ${+commands[kubeconfig]} )) && source <(kubeconfig completion zsh)
 (( ${+commands[minikube]} )) && source <(minikube completion zsh) && alias mk="minikube"
 (( ${+commands[kind]} )) && source <(kind completion zsh)
 (( ${+commands[helm]} )) && source <(helm completion zsh)

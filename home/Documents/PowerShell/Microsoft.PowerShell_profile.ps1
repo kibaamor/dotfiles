@@ -14,6 +14,10 @@ oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\markbull.omp.json" | Invoke
 #    Register-ArgumentCompleter -CommandName 'k' -ScriptBlock $__kubectlCompleterBlock
 #}
 #
+#if (Get-Command kubeconfig -ErrorAction SilentlyContinue) {
+#    kubeconfig completion powershell | Out-String | Invoke-Expression
+#}
+#
 #if (Get-Command minikube -ErrorAction SilentlyContinue) {
 #    minikube completion powershell | Out-String | Invoke-Expression
 #
