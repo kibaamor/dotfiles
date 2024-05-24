@@ -48,7 +48,7 @@ for repo in "${repos[@]}"; do
 
     echo "  # https://github.com/$repo" >>$filename
 
-    name=$(echo "$repo" | cut -d '/' -f 2)
+    name=$(echo "$repo" | cut -d '/' -f 2 | tr -d '-')
     #version=$(curl -s -L https://api.github.com/repos/$repo/releases/latest | jq '.tag_name' -r | tr -d '[a-z][A-Z] -')
     version=$(
         gh api \

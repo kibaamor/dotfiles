@@ -2,11 +2,11 @@ versions:
   # https://github.com/romkatv/powerlevel10k
   powerlevel10k: 1.20.0
   # https://github.com/zsh-users/zsh-autosuggestions
-  zsh-autosuggestions: 0.7.0
+  zshautosuggestions: 0.7.0
   # https://github.com/zsh-users/zsh-syntax-highlighting
-  zsh-syntax-highlighting: 0.8.0
+  zshsyntaxhighlighting: 0.8.0
   # https://github.com/MichaelAquilina/zsh-you-should-use
-  zsh-you-should-use: 1.7.4
+  zshyoushoulduse: 1.7.4
   # https://github.com/dandavison/delta
   delta: 0.17.0
   # https://github.com/sharkdp/bat
