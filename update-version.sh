@@ -10,6 +10,8 @@ repos=(
     "zsh-users/zsh-syntax-highlighting"
     "MichaelAquilina/zsh-you-should-use"
 
+    "junegunn/vim-plug"
+
     "dandavison/delta"
     "sharkdp/bat"
     "sharkdp/fd"
