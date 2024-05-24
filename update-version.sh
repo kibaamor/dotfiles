@@ -1,11 +1,15 @@
 #!/bin/bash
 
-cd "$(dirname -- "${BASH_SOURCE[0]}")"
+cd "$(dirname -- "${BASH_SOURCE[0]}")" || exit
 
 filename="./home/.chezmoidata/versions.yaml"
 
 repos=(
     "romkatv/powerlevel10k"
+    "zsh-users/zsh-autosuggestions"
+    "zsh-users/zsh-syntax-highlighting"
+    "MichaelAquilina/zsh-you-should-use"
+
     "dandavison/delta"
     "sharkdp/bat"
     "sharkdp/fd"
@@ -43,9 +47,26 @@ for repo in "${repos[@]}"; do
     echo "processing repo: $repo"
 
     echo "  # https://github.com/$repo" >>$filename
-    name=$(echo $repo | cut -d '/' -f 2)
+
+    name=$(echo "$repo" | cut -d '/' -f 2)
     #version=$(curl -s -L https://api.github.com/repos/$repo/releases/latest | jq '.tag_name' -r | tr -d '[a-z][A-Z] -')
-    version=$(gh api --method GET --header 'Accept: application/vnd.github+json' https://api.github.com/repos/$repo/releases/latest | jq '.tag_name' -r | tr -d '[a-z][A-Z] -')
+    version=$(
+        gh api \
+            --method GET \
+            --header 'Accept: application/vnd.github+json' \
+            --jq '.tag_name' \
+            "https://api.github.com/repos/$repo/releases/latest" 2>/dev/null | grep -v 'Not Found' | tr -d '[a-z][A-Z] -'
+    )
+    if [[ -z "${version}" ]]; then
+        version=$(
+            gh api \
+                --method GET \
+                --header 'Accept: application/vnd.github+json' \
+                --jq '.[0].name' \
+                "https://api.github.com/repos/$repo/tags" | tr -d '[a-z][A-Z] -'
+        )
+    fi
+
     echo "  $name: $version" >>$filename
 
     sleep 1s

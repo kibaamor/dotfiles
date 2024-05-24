@@ -1,6 +1,12 @@
 versions:
   # https://github.com/romkatv/powerlevel10k
   powerlevel10k: 1.20.0
+  # https://github.com/zsh-users/zsh-autosuggestions
+  zsh-autosuggestions: 0.7.0
+  # https://github.com/zsh-users/zsh-syntax-highlighting
+  zsh-syntax-highlighting: 0.8.0
+  # https://github.com/MichaelAquilina/zsh-you-should-use
+  zsh-you-should-use: 1.7.4
   # https://github.com/dandavison/delta
   delta: 0.17.0
   # https://github.com/sharkdp/bat
@@ -26,7 +32,7 @@ versions:
   # https://github.com/bcicen/ctop
   ctop: 0.7.7
   # https://github.com/kubecolor/kubecolor
-  kubecolor: 0.3.2
+  kubecolor: 0.3.3
   # https://github.com/ahmetb/kubectx
   kubectx: 0.9.5
   # https://github.com/wagoodman/dive
@@ -56,4 +62,4 @@ versions:
   # https://github.com/derailed/k9s
   k9s: 0.32.4
   # https://github.com/helm/helm
-  helm: 3.15.0
+  helm: 3.15.1

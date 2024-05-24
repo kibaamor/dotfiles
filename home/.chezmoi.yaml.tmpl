@@ -33,6 +33,8 @@
 {{- $sudo := findExecutable "sudo" (list "/bin" "/sbin" "/usr/bin" "/usr/sbin") -}}
 
 format: yaml
+progress: true
+verbose: true
 
 data:
   basic_bins: {{ $basic_bins }}
