@@ -5,4 +5,5 @@ AppData/**
 !AppData/Roaming/helix/config.toml
 
 .oh-my-zsh/cache/**
+.oh-my-zsh/custom/themes/powerlevel10k/**/*.zwc
 {{ end }}
