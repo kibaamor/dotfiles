@@ -194,23 +194,14 @@ if [[ "${+commands[kubectl]}" = "1" ]]; then
   alias kapires="kubectl api-resources"
 fi
 
-(( ${+commands[kubeconfig]} )) && source <(kubeconfig completion zsh)
 (( ${+commands[minikube]} )) && source <(minikube completion zsh) && alias mk="minikube"
-(( ${+commands[kind]} )) && source <(kind completion zsh)
 (( ${+commands[helm]} )) && source <(helm completion zsh)
-(( ${+commands[proxychains4]} )) && alias pc="proxychains4 -q"
-(( ${+commands[lsd]} )) && alias ls="lsd"
-(( ${+commands[delta]} )) && source <(delta --generate-completion zsh)
 (( ${+commands[frpc]} )) && source <(frpc completion zsh)
-(( ${+commands[frps]} )) && source <(frps completion zsh)
-(( ${+commands[k9s]} )) && source <(k9s completion zsh)
-(( ${+commands[yq]} )) && source <(yq shell-completion zsh)
-(( ${+commands[nali]} )) && source <(nali completion zsh)
-(( ${+commands[kubefwd]} )) && source <(kubefwd completion zsh)
 (( ${+commands[arkade]} )) && source <(arkade completion zsh)
 (( ${+commands[kubeshark]} )) && source <(KUBESHARK_DISABLE_VERSION_CHECK="true" kubeshark completion zsh)
-(( ${+commands[etcdctl]} )) && export ETCDCTL_API=3 && source <(etcdctl completion zsh)
 (( ${+commands[chezmoi]} )) && source <(chezmoi completion zsh)
+
+(( ${+commands[proxychains4]} )) && alias pc="proxychains4 -q"
 
 alias ip="ip --color"
 
