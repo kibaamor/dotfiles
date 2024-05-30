@@ -40,7 +40,7 @@ versions:
   # https://github.com/wagoodman/dive
   dive: 0.12.0
   # https://github.com/jesseduffield/lazydocker
-  lazydocker: 0.23.1
+  lazydocker: 0.23.3
   # https://github.com/jqlang/jq
   jq: 1.7.1
   # https://github.com/mikefarah/yq
@@ -53,15 +53,15 @@ versions:
   arkade: 0.11.12
   # https://github.com/FiloSottile/mkcert
   mkcert: 1.4.4
-  # https://github.com/txn2/kubefwd
-  kubefwd: 1.22.5
-  # https://github.com/kubeshark/kubeshark
-  kubeshark: 52.3.0
-  # https://github.com/kubernetes/minikube
-  minikube: 1.33.1
   # https://github.com/kubernetes-sigs/kind
   kind: 0.23.0
+  # https://github.com/kubernetes/minikube
+  minikube: 1.33.1
   # https://github.com/derailed/k9s
   k9s: 0.32.4
+  # https://github.com/kubeshark/kubeshark
+  kubeshark: 52.3.59
   # https://github.com/helm/helm
   helm: 3.15.1
+  # https://github.com/txn2/kubefwd
+  kubefwd: 1.22.5

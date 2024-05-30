@@ -195,6 +195,7 @@ if [[ "${+commands[kubectl]}" = "1" ]]; then
 fi
 
 (( ${+commands[minikube]} )) && source <(minikube completion zsh) && alias mk="minikube"
+(( ${+commands[clusterctl]} )) && source <(clusterctl completion zsh)
 (( ${+commands[helm]} )) && source <(helm completion zsh)
 (( ${+commands[frpc]} )) && source <(frpc completion zsh)
 (( ${+commands[arkade]} )) && source <(arkade completion zsh)

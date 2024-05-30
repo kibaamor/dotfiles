@@ -34,13 +34,13 @@ repos=(
     "zu1k/nali"
     "alexellis/arkade"
     "FiloSottile/mkcert"
-
-    "txn2/kubefwd"
-    "kubeshark/kubeshark"
-    "kubernetes/minikube"
     "kubernetes-sigs/kind"
+
+    "kubernetes/minikube"
     "derailed/k9s"
+    "kubeshark/kubeshark"
     "helm/helm"
+    "txn2/kubefwd"
 )
 
 echo "versions:" >$filename

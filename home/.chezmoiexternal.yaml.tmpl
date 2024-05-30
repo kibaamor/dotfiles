@@ -231,12 +231,22 @@
   url: "https://github.com/FiloSottile/mkcert/releases/download/v{{ .versions.mkcert }}/mkcert-v{{ .versions.mkcert }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
   executable: true
 
+".local/bin/kind{{ .exe_ext }}":
+  type: file
+  url: "https://github.com/kubernetes-sigs/kind/releases/download/v{{ .versions.kind }}/kind-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
+  executable: true
+
 {{ if not .basic_bins }}
 
-".local/bin/kubefwd{{ .exe_ext }}":
+".local/bin/minikube{{ .exe_ext }}":
+  type: file
+  url: "https://github.com/kubernetes/minikube/releases/download/v{{ .versions.minikube }}/minikube-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
+  executable: true
+
+".local/bin/k9s{{ .exe_ext }}":
   type: archive-file
-  url: "https://github.com/txn2/kubefwd/releases/download/{{ .versions.kubefwd }}/kubefwd_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
-  path: "kubefwd{{ .exe_ext }}"
+  url: "https://github.com/derailed/k9s/releases/download/v{{ .versions.k9s }}/k9s_{{ .chezmoi.os | camelcase }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  path: "k9s{{ .exe_ext }}"
   executable: true
 
 ".local/bin/kubeshark{{ .exe_ext }}":
@@ -248,27 +258,17 @@
 {{ end }}
   executable: true
 
-".local/bin/minikube{{ .exe_ext }}":
-  type: file
-  url: "https://github.com/kubernetes/minikube/releases/download/v{{ .versions.minikube }}/minikube-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
-  executable: true
-
-".local/bin/kind{{ .exe_ext }}":
-  type: file
-  url: "https://github.com/kubernetes-sigs/kind/releases/download/v{{ .versions.kind }}/kind-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
-  executable: true
-
-".local/bin/k9s{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/derailed/k9s/releases/download/v{{ .versions.k9s }}/k9s_{{ .chezmoi.os | camelcase }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-  path: "k9s{{ .exe_ext }}"
-  executable: true
-
 ".local/bin/helm{{ .exe_ext }}":
   type: archive-file
   url: "https://get.helm.sh/helm-v{{ .versions.helm }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
   path: "helm{{ .exe_ext }}"
   executable: true
   stripComponents: 1
+
+".local/bin/kubefwd{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/txn2/kubefwd/releases/download/{{ .versions.kubefwd }}/kubefwd_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  path: "kubefwd{{ .exe_ext }}"
+  executable: true
 
 {{ end }}
