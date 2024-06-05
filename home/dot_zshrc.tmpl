@@ -1,16 +1,24 @@
+command_exists() {
+  type -p "$1" | grep -v "not found" >/dev/null 2>&1
+}
+
 {{ if not .personal -}}
 export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com
 export default_proxy=http://ctu-net-mwg.ubisoft.org:3128
 {{- else -}}
 export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal
-export default_proxy=
+if nc localhost 7890 >/dev/null 2>&1 ; then
+  export default_proxy=http://localhost:7890
+else
+  export default_proxy=
+fi
 {{- end }}
 
 export PATH=$HOME/.arkade/bin:$HOME/.local/sbin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/snap/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
 
 test -e "${HOME}/.customrc.pre.sh" && source "${HOME}/.customrc.pre.sh"
 
-(( ${+commands[go]} )) && export PATH=$(go env GOPATH)/bin:$PATH
+command_exists go && export PATH=$(go env GOPATH)/bin:$PATH
 
 export GO111MODULE=on
 {{ if not .personal -}}
@@ -28,7 +36,7 @@ export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bot
 export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
 export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
 export HOMEBREW_PIP_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"
-(( ${+command[brew]} )) && eval "$($(brew --prefix)/bin/brew shellenv)"
+command_exists brew && eval "$($(brew --prefix)/bin/brew shellenv)"
 
 # export MINIKUBE_HOME="${HOME}/.minikube"
 
@@ -37,7 +45,7 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=true
 test -e /opt/conda/etc/profile.d/conda.sh && source /opt/conda/etc/profile.d/conda.sh
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-# (( ${+commands[fleet]} )) && eval "$(fleet dev env 2>/dev/null)"
+# command_exists fleet && eval "$(fleet dev env 2>/dev/null)"
 
 ###################################################################################################
 # Proxy
@@ -87,13 +95,13 @@ else
 
   # Instant prompt
   # https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#how-do-i-initialize-direnv-when-using-instant-prompt
-  (( ${+commands[direnv]} )) && emulate zsh -c "$(direnv export zsh)"
+  command_exists direnv && emulate zsh -c "$(direnv export zsh)"
 
   if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
     source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
   fi
 
-  (( ${+commands[direnv]} )) && emulate zsh -c "$(direnv hook zsh)"
+  command_exists direnv && emulate zsh -c "$(direnv hook zsh)"
 fi
 
 ###################################################################################################
@@ -105,14 +113,6 @@ HIST_STAMPS="yyyy-mm-dd"
 
 plugins=(
   git
-  web-search
-  docker
-  docker-compose
-  kubectl
-  kubectx
-  microk8s
-  minikube
-  helm
   command-not-found
   sudo
   zsh-syntax-highlighting
@@ -174,10 +174,10 @@ _fzf_comprun() {
   esac
 }
 
-if [[ "${+commands[kubectl]}" = "1" ]]; then
+if command_exists kubectl ; then
   source <(kubectl completion zsh)
 
-  if [[ "${+commands[kubecolor]}" = "1" ]]; then
+  if command_exists kubecolor ; then
     alias kubectl=kubecolor
     compdef kubecolor=kubectl
   fi
@@ -194,15 +194,15 @@ if [[ "${+commands[kubectl]}" = "1" ]]; then
   alias kapires="kubectl api-resources"
 fi
 
-(( ${+commands[minikube]} )) && source <(minikube completion zsh) && alias mk="minikube"
-(( ${+commands[clusterctl]} )) && source <(clusterctl completion zsh)
-(( ${+commands[helm]} )) && source <(helm completion zsh)
-(( ${+commands[frpc]} )) && source <(frpc completion zsh)
-(( ${+commands[arkade]} )) && source <(arkade completion zsh)
-(( ${+commands[kubeshark]} )) && source <(KUBESHARK_DISABLE_VERSION_CHECK="true" kubeshark completion zsh)
-(( ${+commands[chezmoi]} )) && source <(chezmoi completion zsh)
+command_exists minikube && source <(minikube completion zsh) && alias mk="minikube"
+command_exists clusterctl && source <(clusterctl completion zsh)
+command_exists helm && source <(helm completion zsh)
+command_exists frpc && source <(frpc completion zsh)
+command_exists arkade && source <(arkade completion zsh)
+command_exists kubeshark && source <(KUBESHARK_DISABLE_VERSION_CHECK="true" kubeshark completion zsh)
+command_exists chezmoi && source <(chezmoi completion zsh)
 
-(( ${+commands[proxychains4]} )) && alias pc="proxychains4 -q"
+command_exists proxychains4 && alias pc="proxychains4 -q"
 
 alias ip="ip --color"
 
