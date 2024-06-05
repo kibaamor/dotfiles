@@ -30,7 +30,7 @@ versions:
   # https://github.com/tldr-pages/tlrc
   tlrc: 1.9.2
   # https://github.com/fatedier/frp
-  frp: 0.58.0
+  frp: 0.58.1
   # https://github.com/bcicen/ctop
   ctop: 0.7.7
   # https://github.com/kubecolor/kubecolor
@@ -60,7 +60,7 @@ versions:
   # https://github.com/derailed/k9s
   k9s: 0.32.4
   # https://github.com/kubeshark/kubeshark
-  kubeshark: 52.3.59
+  kubeshark: 52.3.62
   # https://github.com/helm/helm
   helm: 3.15.1
   # https://github.com/txn2/kubefwd
