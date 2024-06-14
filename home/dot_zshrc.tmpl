@@ -203,7 +203,7 @@ if command_exists kubectl ; then
 fi
 
 command_exists minikube && source <(minikube completion zsh) && alias mk="minikube"
-command_exists clusterctl && source <(clusterctl completion zsh)
+command_exists clusterctl && source <(CLUSTERCTL_DISABLE_VERSIONCHECK="true" clusterctl completion zsh)
 command_exists helm && source <(helm completion zsh)
 command_exists frpc && source <(frpc completion zsh)
 command_exists arkade && source <(arkade completion zsh)
