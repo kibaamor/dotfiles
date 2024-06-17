@@ -214,11 +214,7 @@ command_exists proxychains4 && alias pc="proxychains4 -q"
 
 alias ip="ip --color"
 
-if [[ -d "$HOME/snap/helix/current" ]] ; then
-  mkdir -p -- "$HOME/snap/helix/current/.config/helix"
-  cp -f -- "$HOME/.config/helix/config.toml" "$HOME/snap/helix/current/.config/helix/config.toml"
-fi
-
+# sync htop config
 if [[ -d "$HOME/snap/htop/current" ]] ; then
   mkdir -p -- "$HOME/snap/htop/current/.config/htop"
   cp -f -- "$HOME/.config/htop/htoprc" "$HOME/snap/htop/current/.config/htop/htoprc"
