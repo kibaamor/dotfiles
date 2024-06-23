@@ -46,7 +46,7 @@ versions:
   # https://github.com/mikefarah/yq
   yq: 4.44.2
   # https://github.com/dundee/gdu
-  gdu: 5.28.0
+  gdu: 5.29.0
   # https://github.com/zu1k/nali
   nali: 0.8.1
   # https://github.com/alexellis/arkade
@@ -55,6 +55,8 @@ versions:
   mkcert: 1.4.4
   # https://github.com/kubernetes-sigs/kind
   kind: 0.23.0
+  # https://github.com/kevwan/tproxy
+  tproxy: 0.8.1
   # https://github.com/kubernetes/minikube
   minikube: 1.33.1
   # https://github.com/derailed/k9s

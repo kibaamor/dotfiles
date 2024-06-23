@@ -35,6 +35,7 @@ repos=(
     "alexellis/arkade"
     "FiloSottile/mkcert"
     "kubernetes-sigs/kind"
+    "kevwan/tproxy"
 
     "kubernetes/minikube"
     "derailed/k9s"

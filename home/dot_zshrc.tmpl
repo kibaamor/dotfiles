@@ -194,6 +194,7 @@ if command_exists kubectl ; then
   alias k="kubectl"
   alias ks="kubectl -n kube-system"
   alias kn="kubectl -n ingress-nginx"
+  alias ki="kubectl -n istio-system"
 
   # 'nslookup' command in busybox has issues.
   alias krnetdbg="kubectl run net-debug --image=nicolaka/netshoot --image-pull-policy=IfNotPresent -it --rm"

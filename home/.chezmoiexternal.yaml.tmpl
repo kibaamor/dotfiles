@@ -236,6 +236,12 @@
   url: "https://github.com/kubernetes-sigs/kind/releases/download/v{{ .versions.kind }}/kind-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
   executable: true
 
+".local/bin/tproxy{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/kevwan/tproxy/releases/download/v{{ .versions.tproxy }}/tproxy-v{{ .versions.tproxy }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  path: "tproxy{{ .exe_ext }}"
+  executable: true
+
 {{ if not .basic_bins }}
 
 ".local/bin/minikube{{ .exe_ext }}":
