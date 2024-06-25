@@ -1,3 +1,5 @@
+set -u # Treat unset variables as an error when substituting
+
 command_exists() {
   type -p "$1" | grep -v "not found" >/dev/null 2>&1
 }
@@ -16,7 +18,7 @@ fi
 
 export PATH=$HOME/.arkade/bin:$HOME/.local/sbin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/snap/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
 
-test -e "${HOME}/.customrc.pre.sh" && source "${HOME}/.customrc.pre.sh"
+[[ -s "$HOME/.customrc.pre.sh" ]] && \. "$HOME/.customrc.pre.sh"
 
 command_exists go && export PATH=$(go env GOPATH)/bin:$PATH
 
@@ -39,12 +41,12 @@ export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebr
 export HOMEBREW_PIP_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"
 command_exists brew && eval "$($(brew --prefix)/bin/brew shellenv)"
 
-# export MINIKUBE_HOME="${HOME}/.minikube"
+# export MINIKUBE_HOME="$HOME/.minikube"
 
 export DOTNET_CLI_TELEMETRY_OPTOUT=true
 
-test -e /opt/conda/etc/profile.d/conda.sh && source /opt/conda/etc/profile.d/conda.sh
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+[[ -s /opt/conda/etc/profile.d/conda.sh ]] && \. /opt/conda/etc/profile.d/conda.sh
+[[ -s "$HOME/.iterm2_shell_integration.zsh" ]] && \. "$HOME/.iterm2_shell_integration.zsh"
 
 # command_exists fleet && eval "$(fleet dev env 2>/dev/null)"
 
@@ -92,14 +94,14 @@ if [[ "`printf '%s\n' $(zsh --version | cut -d ' ' -f2) '5.1' | sort -V -r | hea
   ZSH_THEME="robbyrussell"
 else
   ZSH_THEME="powerlevel10k/powerlevel10k"
-  [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+  [[ -s "$HOME/.p10k.zsh" ]] && \. "$HOME/.p10k.zsh"
 
   # Instant prompt
   # https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#how-do-i-initialize-direnv-when-using-instant-prompt
   command_exists direnv && emulate zsh -c "$(direnv export zsh)"
 
   if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    \. "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
   fi
 
   command_exists direnv && emulate zsh -c "$(direnv hook zsh)"
@@ -132,7 +134,7 @@ plugins=(
   zsh-bat
   cp
 )
-[[ -f $ZSH/oh-my-zsh.sh ]] && source $ZSH/oh-my-zsh.sh
+[[ -s "$ZSH/oh-my-zsh.sh" ]] && \. "$ZSH/oh-my-zsh.sh"
 
 typeset -g ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=12'
 
@@ -144,8 +146,8 @@ export BAT_THEME=Dracula
 ###################################################################################################
 # Fzf
 # https://github.com/junegunn/fzf
-[[ -f ~/.fzf.key-bindings.zsh ]] && source ~/.fzf.key-bindings.zsh
-[[ -f ~/.fzf.completion.zsh ]] && source ~/.fzf.completion.zsh
+[[ -s "$HOME/.fzf.key-bindings.zsh" ]] && \. "$HOME/.fzf.key-bindings.zsh"
+[[ -s "$HOME/.fzf.completion.zsh" ]] && \. "$HOME/.fzf.completion.zsh"
 
 export FZF_DEFAULT_COMMAND='fd --type file --type directory --follow --hidden --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -222,4 +224,8 @@ if [[ -d "$HOME/snap/htop/current" ]] ; then
   cp -f -- "$HOME/.config/htop/htoprc" "$HOME/snap/htop/current/.config/htop/htoprc"
 fi
 
-test -e "${HOME}/.customrc.post.sh" && source "${HOME}/.customrc.post.sh"
+[[ -s "$HOME/.customrc.post.sh" ]] && \. "$HOME/.customrc.post.sh"
+
+export NVM_DIR="$HOME/.nvm"
+[[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"
+[[ -s "$NVM_DIR/bash_completion" ]] && \. "$NVM_DIR/bash_completion"
