@@ -77,8 +77,9 @@ EOF
 log_iptables_port() {
   if [[ $# -eq 0 ]] ; then
     echo "must provide target port"
-    exit 1
+    return 1
   fi
+
   for port in "$@"; do
     echo "log port $port"
   cat <<- EOF | sudo bash
