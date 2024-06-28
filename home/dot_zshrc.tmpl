@@ -1,6 +1,4 @@
-command_exists() {
-  type -p "$1" | grep -v "not found" >/dev/null 2>&1
-}
+[[ -s "$HOME/.utilities.sh" ]] && \. "$HOME/.utilities.sh"
 
 {{ if not .personal -}}
 export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com
@@ -50,30 +48,6 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=true
 
 ###################################################################################################
 # Proxy
-function enable_proxy() {
-  export no_proxy=$default_no_proxy
-  export https_proxy=$default_proxy
-  export http_proxy=$default_proxy
-  export ftp_proxy=$default_proxy
-
-  export NO_PROXY=$no_proxy
-  export HTTPS_PROXY=$https_proxy
-  export HTTP_PROXY=$http_proxy
-  export FTP_PROXY=$ftp_proxy
-}
-
-function disable_proxy() {
-  export no_proxy=
-  export https_proxy=
-  export http_proxy=
-  export ftp_proxy=
-
-  export NO_PROXY=$no_proxy
-  export HTTPS_PROXY=$https_proxy
-  export HTTP_PROXY=$http_proxy
-  export FTP_PROXY=$ftp_proxy
-}
-
 enable_proxy
 
 ###################################################################################################

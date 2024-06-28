@@ -15,6 +15,7 @@ trim_trailing_whitespace = false
 indent_size = 2
 
 [*.{sh,bash,csh}]
+indent_size = 2
 end_of_line = lf
 
 [*.{bat,cmd,ps1}]
