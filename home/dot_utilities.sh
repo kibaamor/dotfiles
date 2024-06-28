@@ -74,7 +74,7 @@ flush_ip6tables() {
 EOF
 }
 
-iptables_log_port() {
+log_iptables_port() {
   if [[ $# -eq 0 ]] ; then
     echo "must provide target port"
     exit 1
