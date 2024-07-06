@@ -86,6 +86,7 @@ export ZSH="$HOME/.oh-my-zsh"
 
 HIST_STAMPS="yyyy-mm-dd"
 
+# https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins
 plugins=(
   git
   web-search
@@ -95,6 +96,8 @@ plugins=(
   kubectx
   microk8s
   minikube
+  kind
+  istioctl
   helm
   command-not-found
   sudo
@@ -178,9 +181,9 @@ if command_exists kubectl ; then
   alias kapires="kubectl api-resources"
 fi
 
-command_exists minikube && source <(minikube completion zsh) && alias mk="minikube"
+command_exists minikube && alias mk="minikube"
+command_exists istioctl && alias i="istioctl"
 command_exists clusterctl && source <(CLUSTERCTL_DISABLE_VERSIONCHECK="true" clusterctl completion zsh)
-command_exists helm && source <(helm completion zsh)
 command_exists frpc && source <(frpc completion zsh)
 command_exists arkade && source <(arkade completion zsh)
 command_exists kubeshark && source <(KUBESHARK_DISABLE_VERSION_CHECK="true" kubeshark completion zsh)
