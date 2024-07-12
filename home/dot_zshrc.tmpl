@@ -12,12 +12,12 @@ else
 fi
 {{- end }}
 
-export PATH=/usr/local/sbin:/usr/local/bin:/snap/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
-export PATH=$HOME/.krew/bin:$HOME/.arkade/bin:$HOME/.local/sbin:$HOME/.local/bin
+export PATH="$HOME/.local/sbin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/snap/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$HOME/.arkade/bin:$PATH"
 
 [[ -s "$HOME/.customrc.pre.sh" ]] && \. "$HOME/.customrc.pre.sh"
 
-command_exists go && export PATH=$(go env GOPATH)/bin:$PATH
+command_exists go && export PATH="$(go env GOPATH)/bin:$PATH"
 
 export GO111MODULE=on
 {{ if not .personal -}}
