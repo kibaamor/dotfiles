@@ -16,7 +16,7 @@ versions:
   # https://github.com/sharkdp/fd
   fd: 10.1.0
   # https://github.com/junegunn/fzf
-  fzf: 0.54.0
+  fzf: 0.54.1
   # https://github.com/direnv/direnv
   direnv: 2.34.0
   # https://github.com/BurntSushi/ripgrep
@@ -64,6 +64,6 @@ versions:
   # https://github.com/kubeshark/kubeshark
   kubeshark: 52.3.69
   # https://github.com/helm/helm
-  helm: 3.15.2
+  helm: 3.15.3
   # https://github.com/txn2/kubefwd
   kubefwd: 1.22.5

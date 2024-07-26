@@ -72,5 +72,5 @@ for repo in "${repos[@]}"; do
 
     echo "  $name: $version" >>$filename
 
-    sleep 1s
+    # sleep 1s
 done
