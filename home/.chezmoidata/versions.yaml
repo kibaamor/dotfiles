@@ -16,7 +16,7 @@ versions:
   # https://github.com/sharkdp/fd
   fd: 10.1.0
   # https://github.com/junegunn/fzf
-  fzf: 0.54.2
+  fzf: 0.54.3
   # https://github.com/direnv/direnv
   direnv: 2.34.0
   # https://github.com/BurntSushi/ripgrep
@@ -28,7 +28,7 @@ versions:
   # https://github.com/FiloSottile/age
   age: 1.2.0
   # https://github.com/tldr-pages/tlrc
-  tlrc: 1.9.2
+  tlrc: 1.9.3
   # https://github.com/fatedier/frp
   frp: 0.59.0
   # https://github.com/bcicen/ctop
@@ -44,7 +44,7 @@ versions:
   # https://github.com/jqlang/jq
   jq: 1.7.1
   # https://github.com/mikefarah/yq
-  yq: 4.44.2
+  yq: 4.44.3
   # https://github.com/dundee/gdu
   gdu: 5.29.0
   # https://github.com/zu1k/nali
