@@ -130,20 +130,20 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND='fd --type directory --follow --hidden --exclude .git'
 
 ### CTRL-T Paste the selected files and directories onto the command-line
-export FZF_CTRL_T_OPTS="
-  --height 100%
-  --preview 'if [ -d {} ]; then (tree -C {} | head -500) else (bat -n --color=always --theme Dracula -r :500 {}) fi'
+export FZF_CTRL_T_OPTS="\
+  --height 100%\
+  --preview 'if [ -d {} ]; then (tree -C {} | head -500) else (bat -n --color=always --theme Dracula -r :500 {}) fi'\
   --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
 ### CTRL-R Paste the selected command from history onto the command-line
 # CTRL-/ to toggle small preview window to see the full command
 # CTRL-Y to copy the command into clipboard using pbcopy
-export FZF_CTRL_R_OPTS="
-  --height 100%
-  --preview 'echo {}' --preview-window up:3:hidden:wrap
-  --bind 'ctrl-/:toggle-preview'
-  --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
-  --color header:italic
+export FZF_CTRL_R_OPTS="\
+  --height 100%\
+  --preview 'echo {}' --preview-window up:3:hidden:wrap\
+  --bind 'ctrl-/:toggle-preview'\
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'\
+  --color header:italic\
   --header 'Press CTRL-Y to copy command into clipboard(pbcopy command required)'"
 
 ### cd into the selected directory
