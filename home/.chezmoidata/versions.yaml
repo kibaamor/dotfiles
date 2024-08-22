@@ -10,7 +10,7 @@ versions:
   # https://github.com/junegunn/vim-plug
   vimplug: 0.14.0
   # https://github.com/dandavison/delta
-  delta: 0.17.0
+  delta: 0.18.0
   # https://github.com/sharkdp/bat
   bat: 0.24.0
   # https://github.com/sharkdp/fd
@@ -22,7 +22,7 @@ versions:
   # https://github.com/BurntSushi/ripgrep
   ripgrep: 14.1.0
   # https://github.com/lsd-rs/lsd
-  lsd: 1.1.2
+  lsd: 1.1.5
   # https://github.com/muesli/duf
   duf: 0.8.1
   # https://github.com/FiloSottile/age
@@ -30,7 +30,7 @@ versions:
   # https://github.com/tldr-pages/tlrc
   tlrc: 1.9.3
   # https://github.com/fatedier/frp
-  frp: 0.59.0
+  frp: 0.60.0
   # https://github.com/bcicen/ctop
   ctop: 0.7.7
   # https://github.com/kubecolor/kubecolor
@@ -50,11 +50,11 @@ versions:
   # https://github.com/zu1k/nali
   nali: 0.8.1
   # https://github.com/alexellis/arkade
-  arkade: 0.11.19
+  arkade: 0.11.20
   # https://github.com/FiloSottile/mkcert
   mkcert: 1.4.4
   # https://github.com/kubernetes-sigs/kind
-  kind: 0.23.0
+  kind: 0.24.0
   # https://github.com/kevwan/tproxy
   tproxy: 0.8.1
   # https://github.com/kubernetes/minikube
@@ -62,7 +62,7 @@ versions:
   # https://github.com/derailed/k9s
   k9s: 0.32.5
   # https://github.com/kubeshark/kubeshark
-  kubeshark: 52.3.74
+  kubeshark: 52.3.78
   # https://github.com/helm/helm
   helm: 3.15.4
   # https://github.com/txn2/kubefwd
