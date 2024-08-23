@@ -130,34 +130,41 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_ALT_C_COMMAND='fd --type directory --follow --hidden --exclude .git'
 
 ### CTRL-T Paste the selected files and directories onto the command-line
+# CTRL-/ to toggle small preview window to see the full command
 export FZF_CTRL_T_OPTS="\
   --height 100%\
-  --preview 'if [ -d {} ]; then (tree -C {} | head -500) else (bat -n --color=always --theme Dracula -r :500 {}) fi'\
-  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+  --preview 'if [ -d {} ]; then (tree -C {} | head -1000) else (bat -n --color=always --theme Dracula -r :1000 {}) fi'\
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'\
+  --color header:italic\
+  --header 'Only first 1000 lines are showed'"
 
 ### CTRL-R Paste the selected command from history onto the command-line
 # CTRL-/ to toggle small preview window to see the full command
+# ALT-/ to toggle line wrap
 # CTRL-Y to copy the command into clipboard using pbcopy
 export FZF_CTRL_R_OPTS="\
+  --wrap\
   --height 100%\
-  --preview 'echo {}' --preview-window up:3:hidden:wrap\
+  --preview 'bat -pl zsh --color=always {f2..}'\
+  --preview-window up:3:wrap\
   --bind 'ctrl-/:toggle-preview'\
+  --bind 'alt-/:toggle-wrap'\
   --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'\
   --color header:italic\
   --header 'Press CTRL-Y to copy command into clipboard(pbcopy command required)'"
 
 ### cd into the selected directory
-export FZF_ALT_C_OPTS="--height 100% --preview 'tree -C {} | head -500'"
+export FZF_ALT_C_OPTS="--height 100% --preview 'tree -C {} | head -1000'"
 
 _fzf_comprun() {
   local command=$1
   shift
 
   case "$command" in
-    cd)           fzf --height 100% --preview 'tree -C {} | head -500'                                                                                 "$@" ;;
-    export|unset) fzf --height 100% --preview "eval 'echo \$'{}"                                                                                       "$@" ;;
-    ssh)          fzf --height 100% --preview 'dig {}'                                                                                                 "$@" ;;
-    *)            fzf --height 100% --preview 'if [ -d {} ]; then (tree -C {} | head -500) else (bat -n --color=always --theme Dracula -r :500 {}) fi' "$@" ;;
+    cd)           fzf --height 100% --preview 'tree -C {} | head -1000'                                                                                  "$@" ;;
+    export|unset) fzf --height 100% --preview "eval 'echo \$'{}"                                                                                         "$@" ;;
+    ssh)          fzf --height 100% --preview 'dig {}'                                                                                                   "$@" ;;
+    *)            fzf --height 100% --preview 'if [ -d {} ]; then (tree -C {} | head -1000) else (bat -n --color=always --theme Dracula -r :1000 {}) fi' "$@" ;;
   esac
 }
 
