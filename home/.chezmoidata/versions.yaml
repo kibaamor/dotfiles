@@ -34,7 +34,7 @@ versions:
   # https://github.com/bcicen/ctop
   ctop: 0.7.7
   # https://github.com/kubecolor/kubecolor
-  kubecolor: 0.3.3
+  kubecolor: 0.4.0
   # https://github.com/ahmetb/kubectx
   kubectx: 0.9.5
   # https://github.com/wagoodman/dive
