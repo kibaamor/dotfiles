@@ -1,11 +1,14 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
+[[ -s "$HOME/.utilities.sh" ]] && \. "$HOME/.utilities.sh"
+
+# Instant prompt
+# https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#how-do-i-initialize-direnv-when-using-instant-prompt
+command_exists direnv && emulate zsh -c "$(direnv export zsh)"
+
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  \. "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-[[ -s "$HOME/.utilities.sh" ]] && \. "$HOME/.utilities.sh"
+command_exists direnv && emulate zsh -c "$(direnv hook zsh)"
 
 {{ if not .personal -}}
 export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com
@@ -76,16 +79,6 @@ if [[ "`printf '%s\n' $(zsh --version | cut -d ' ' -f2) '5.1' | sort -V -r | hea
 else
   ZSH_THEME="powerlevel10k/powerlevel10k"
   [[ -s "$HOME/.p10k.zsh" ]] && \. "$HOME/.p10k.zsh"
-
-  # Instant prompt
-  # https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#how-do-i-initialize-direnv-when-using-instant-prompt
-  command_exists direnv && emulate zsh -c "$(direnv export zsh)"
-
-  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    \. "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-  fi
-
-  command_exists direnv && emulate zsh -c "$(direnv hook zsh)"
 fi
 
 ###################################################################################################
