@@ -10,7 +10,7 @@ versions:
   # https://github.com/junegunn/vim-plug
   vimplug: 0.14.0
   # https://github.com/dandavison/delta
-  delta: 0.18.1
+  delta: 0.18.2
   # https://github.com/sharkdp/bat
   bat: 0.24.0
   # https://github.com/sharkdp/fd
@@ -64,6 +64,6 @@ versions:
   # https://github.com/kubeshark/kubeshark
   kubeshark: 52.3.79
   # https://github.com/helm/helm
-  helm: 3.15.4
+  helm: 3.16.1
   # https://github.com/txn2/kubefwd
   kubefwd: 1.22.5
