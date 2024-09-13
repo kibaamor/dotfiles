@@ -1,37 +1,33 @@
+###################################################################################################
+# Load utilities
+
 [[ -s "$HOME/.utilities.sh" ]] && \. "$HOME/.utilities.sh"
 
-# Instant prompt
+
+###################################################################################################
+# powerlevel10k instant prompt
 # https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#how-do-i-initialize-direnv-when-using-instant-prompt
-command_exists direnv && emulate zsh -c "$(direnv export zsh)"
+
+command_exists bash && command_exists direnv && emulate zsh -c "$(direnv export zsh)"
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   \. "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-command_exists direnv && emulate zsh -c "$(direnv hook zsh)"
+command_exists bash && command_exists direnv && emulate zsh -c "$(direnv hook zsh)"
 
-{{ if not .personal -}}
-export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com
-export default_proxy=http://ctu-net-mwg.ubisoft.org:3128
-{{- else -}}
-export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal
-if nc localhost 7890 >/dev/null 2>&1 ; then
-  export default_proxy=http://localhost:7890
-else
-  export default_proxy=
-fi
-{{- end }}
+
+###################################################################################################
+# Environment variables
 
 export PATH="$HOME/.local/sbin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/snap/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$HOME/.arkade/bin:$PATH"
-
-[[ -s "$HOME/.customrc.pre.sh" ]] && \. "$HOME/.customrc.pre.sh"
 
 command_exists go && export PATH="$(go env GOPATH)/bin:$PATH"
 
 export GO111MODULE=on
 {{ if not .personal -}}
-export GOPROXY=https://artifactory.ubisoft.org/artifactory/go,https://goproxy.io,direct
+export GOPROXY=https://artifactory.ubisoft.org/artifactory/go,direct
 export GOPRIVATE="*.ubisoft.org,*.ubi.com"
 {{- else -}}
 export GOPROXY=https://goproxy.cn,direct
@@ -53,14 +49,27 @@ command_exists brew && eval "$($(brew --prefix)/bin/brew shellenv)"
 
 export DOTNET_CLI_TELEMETRY_OPTOUT=true
 
-[[ -s /opt/conda/etc/profile.d/conda.sh ]] && \. /opt/conda/etc/profile.d/conda.sh
-[[ -s "$HOME/.iterm2_shell_integration.zsh" ]] && \. "$HOME/.iterm2_shell_integration.zsh"
+{{ if not .personal -}}
+export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com
+export default_proxy=http://ctu-net-mwg.ubisoft.org:3128
+{{- else -}}
+export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal
+if nc localhost 7890 >/dev/null 2>&1 ; then
+  export default_proxy=http://localhost:7890
+else
+  export default_proxy=
+fi
+{{- end }}
 
-# command_exists fleet && eval "$(fleet dev env 2>/dev/null)"
+###################################################################################################
+# Execute custom script
+[[ -s "$HOME/.customrc.pre.sh" ]] && \. "$HOME/.customrc.pre.sh"
+
 
 ###################################################################################################
 # Proxy
 enable_proxy
+
 
 ###################################################################################################
 # Powerlevel10k
@@ -81,12 +90,13 @@ else
   [[ -s "$HOME/.p10k.zsh" ]] && \. "$HOME/.p10k.zsh"
 fi
 
+
 ###################################################################################################
 # Oh my zsh
 # https://github.com/ohmyzsh/ohmyzsh
 export ZSH="$HOME/.oh-my-zsh"
 
-HIST_STAMPS="yyyy-mm-dd"
+export HIST_STAMPS="yyyy-mm-dd"
 
 # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins
 plugins=(
@@ -118,10 +128,12 @@ plugins=(
 
 typeset -g ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=12'
 
+
 ###################################################################################################
 # Bat
 # https://github.com/sharkdp/bat
 export BAT_THEME=Dracula
+
 
 ###################################################################################################
 # Fzf
@@ -171,6 +183,10 @@ _fzf_comprun() {
   esac
 }
 
+
+###################################################################################################
+# Alias and completion
+
 if command_exists kubectl ; then
   source <(kubectl completion zsh)
 
@@ -210,14 +226,26 @@ alias ip="ip --color"
 
 alias python=python3
 
+
+###################################################################################################
+# Snap config sync
+
 # sync htop config
 if [[ -d "$HOME/snap/htop/current" ]] ; then
   mkdir -p -- "$HOME/snap/htop/current/.config/htop"
   cp -f -- "$HOME/.config/htop/htoprc" "$HOME/snap/htop/current/.config/htop/htoprc"
 fi
 
+
+###################################################################################################
+# Execute custom script
 [[ -s "$HOME/.customrc.post.sh" ]] && \. "$HOME/.customrc.post.sh"
 
 export NVM_DIR="$HOME/.nvm"
 [[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"
 [[ -s "$NVM_DIR/bash_completion" ]] && \. "$NVM_DIR/bash_completion"
+
+[[ -s /opt/conda/etc/profile.d/conda.sh ]] && \. /opt/conda/etc/profile.d/conda.sh
+[[ -s "$HOME/.iterm2_shell_integration.zsh" ]] && \. "$HOME/.iterm2_shell_integration.zsh"
+
+# command_exists fleet && eval "$(fleet dev env 2>/dev/null)"
