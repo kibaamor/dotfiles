@@ -193,8 +193,11 @@ _fzf_comprun() {
   esac
 }
 
+
+###################################################################################################
 # fzf-git
 # https://github.com/junegunn/fzf-git.sh
+
 [[ -s "$HOME/.fzf-git.sh" ]] && \. "$HOME/.fzf-git.sh"
 
 export FZF_GIT_PAGER='delta --color-only'
@@ -207,6 +210,18 @@ _fzf_git_fzf() {
     --preview-window='right,50%,border-left'\
     --bind='ctrl-/:change-preview-window(down,50%,border-top|hidden|)' "$@"
 }
+
+# https://github.com/junegunn/fzf-git.sh?tab=readme-ov-file#list-of-bindings
+# use CTRL-G {key} instead of CTRL-G CTRL-{KEY}
+# CTRL-G CTRL-F for Files
+# CTRL-G CTRL-B for Branches
+# CTRL-G CTRL-T for Tags
+# CTRL-G CTRL-R for Remotes
+# CTRL-G CTRL-H for commit Hashes
+# CTRL-G CTRL-S for Stashes
+# CTRL-G CTRL-L for reflogs
+# CTRL-G CTRL-W for Worktrees
+# CTRL-G CTRL-E for Each ref ( git for-each-ref )
 
 
 ###################################################################################################
