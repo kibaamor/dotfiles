@@ -69,11 +69,7 @@
 
 ".local/bin/fzf{{ .exe_ext }}":
   type: archive-file
-{{ if eq .chezmoi.os "darwin" }}
-  url: "https://github.com/junegunn/fzf/releases/download/v{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}.zip"
-{{ else }}
   url: "https://github.com/junegunn/fzf/releases/download/v{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-{{ end }}
   path: "fzf{{ .exe_ext }}"
   executable: true
 {{ if ne .chezmoi.os "windows" }}
