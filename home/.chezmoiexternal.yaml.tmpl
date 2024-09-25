@@ -241,6 +241,19 @@
   path: "tproxy{{ .exe_ext }}"
   executable: true
 
+".local/bin/gping{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/orf/gping/releases/download/gping-v{{ .versions.gping }}/gping-{{ .chezmoi.os | camelcase }}-{{ .uname_arch }}{{ .pkg_postfix }}"
+  path: "gping{{ .exe_ext }}"
+  executable: true
+
+".local/bin/doggo{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/mr-karan/doggo/releases/download/v{{ .versions.doggo }}/doggo_{{ .versions.doggo }}_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  path: "doggo{{ .exe_ext }}"
+  executable: true
+  stripComponents: 1
+
 {{ if not .basic_bins }}
 
 ".local/bin/minikube{{ .exe_ext }}":
