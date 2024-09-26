@@ -1,8 +1,10 @@
 {{- /* https://www.chezmoi.io/reference/configuration-file/variables/ */ -}}
+
+{{- /* https://pkg.go.dev/text/template */ -}}
 {{- /* https://masterminds.github.io/sprig/ */ -}}
 
-{{- /* checks if we want to get basic binaries only */ -}}
-{{- $basic_bins := (env "DOTFILES_BASIC_BINS" | ne "") -}}
+{{- /* checks if we want to install extra binaries */ -}}
+{{- $extra_bins := (env "DOTFILES_INSTALL_EXTRA_BINS" | ne "") -}}
 
 {{- /* git user name */ -}}
 {{- $git_username := env "GIT_USERNAME" -}}
@@ -36,7 +38,7 @@ format: yaml
 progress: true
 
 data:
-  basic_bins: {{ $basic_bins }}
+  extra_bins: {{ $extra_bins }}
 
   git_username: {{ $git_username }}
   git_useremail: {{ $git_useremail }}

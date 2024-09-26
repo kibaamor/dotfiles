@@ -5,8 +5,8 @@ Personal dotfiles.
 ## Install
 
 ```bash
-# Set the environment variable 'DOTFILES_BASIC_BINS' to install only the basic binaries.
-export DOTFILES_BASIC_BINS=true
+# Set the environment variable 'DOTFILES_INSTALL_EXTRA_BINS' to a value other than '' to install extra binaries.
+export DOTFILES_INSTALL_EXTRA_BINS=1
 # Set the environment variable 'TMPDIR' if the directory '/tmp' is mounted with 'noexec'
 export TMPDIR=~/.tmp
 # Set the environment variable 'GIT_USERNAME' to set the default git user name

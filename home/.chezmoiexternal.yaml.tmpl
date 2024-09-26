@@ -254,7 +254,7 @@
   executable: true
   stripComponents: 1
 
-{{ if not .basic_bins }}
+{{ if .extra_bins }}
 
 ".local/bin/minikube{{ .exe_ext }}":
   type: file

@@ -39,6 +39,8 @@ repos=(
   "orf/gping"
   "mr-karan/doggo"
 
+  # extra binaries
+
   "kubernetes/minikube"
   "derailed/k9s"
   "kubeshark/kubeshark"
