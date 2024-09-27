@@ -249,8 +249,6 @@ if command_exists kubectl ; then
   alias kapires="kubectl api-resources"
 fi
 
-command_exists minikube && alias mk="minikube"
-command_exists istioctl && alias i="istioctl"
 command_exists clusterctl && source <(CLUSTERCTL_DISABLE_VERSIONCHECK="true" clusterctl completion zsh)
 command_exists cmctl && source <(cmctl completion zsh)
 command_exists frpc && source <(frpc completion zsh)
@@ -258,12 +256,14 @@ command_exists arkade && source <(arkade completion zsh)
 command_exists kubeshark && source <(KUBESHARK_DISABLE_VERSION_CHECK="true" kubeshark completion zsh)
 command_exists chezmoi && source <(chezmoi completion zsh)
 
+# if you can not pull docker image, try to disable http proxy before create minikube cluster
+command_exists minikube && alias mk=minikube
+command_exists istioctl && alias i=istioctl
+command_exists lazydocker && alias lzd=lazydocker
 command_exists proxychains4 && alias pc="proxychains4 -q"
-
 command_exists lsd && alias ls=lsd
 
 alias ip="ip --color"
-
 alias python=python3
 
 
@@ -287,5 +287,3 @@ export NVM_DIR="$HOME/.nvm"
 
 [[ -s /opt/conda/etc/profile.d/conda.sh ]] && \. /opt/conda/etc/profile.d/conda.sh
 [[ -s "$HOME/.iterm2_shell_integration.zsh" ]] && \. "$HOME/.iterm2_shell_integration.zsh"
-
-# command_exists fleet && eval "$(fleet dev env 2>/dev/null)"

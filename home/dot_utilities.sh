@@ -17,19 +17,19 @@ enable_proxy() {
 }
 
 disable_proxy() {
-  export no_proxy=
-  export https_proxy=
-  export http_proxy=
-  export ftp_proxy=
+  unset no_proxy
+  unset https_proxy
+  unset http_proxy
+  unset ftp_proxy
 
-  export NO_PROXY=$no_proxy
-  export HTTPS_PROXY=$https_proxy
-  export HTTP_PROXY=$http_proxy
-  export FTP_PROXY=$ftp_proxy
+  unset NO_PROXY
+  unset HTTPS_PROXY
+  unset HTTP_PROXY
+  unset FTP_PROXY
 }
 
 flush_iptables() {
-  cat <<- 'EOF' | sudo bash
+  cat <<-'EOF' | sudo bash
     iptables -P INPUT ACCEPT
     iptables -P FORWARD ACCEPT
     iptables -P OUTPUT ACCEPT
@@ -52,7 +52,7 @@ EOF
 }
 
 flush_ip6tables() {
-  cat <<- 'EOF' | sudo bash
+  cat <<-'EOF' | sudo bash
     ip6tables -P INPUT ACCEPT
     ip6tables -P FORWARD ACCEPT
     ip6tables -P OUTPUT ACCEPT
@@ -75,14 +75,14 @@ EOF
 }
 
 log_iptables_port() {
-  if [[ $# -eq 0 ]] ; then
+  if [[ $# -eq 0 ]]; then
     echo "must provide target port"
     return 1
   fi
 
   for port in "$@"; do
     echo "log port $port"
-  cat <<- EOF | sudo bash
+    cat <<-EOF | sudo bash
     iptables -A PREROUTING -t raw -p tcp --dport $port -j LOG --log-prefix "[PREROUTING:raw:$port] "
     iptables -A PREROUTING -t mangle -p tcp --dport $port -j LOG --log-prefix "[PREROUTING:mangle:$port] "
     iptables -A PREROUTING -t nat -p tcp --dport $port -j LOG --log-prefix "[PREROUTING:nat:$port] "
