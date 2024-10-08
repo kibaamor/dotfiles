@@ -24,6 +24,7 @@ export PATH="$HOME/.local/sbin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$HOME/.arkade/bin:$PATH"
 
 command_exists go && export PATH="$(go env GOPATH)/bin:$PATH"
+[[ -s "$HOME/.cargo/env" ]] && \. "$HOME/.cargo/env"
 
 export GO111MODULE=on
 {{ if not .personal -}}
@@ -60,6 +61,7 @@ else
   export default_proxy=
 fi
 {{- end }}
+
 
 ###################################################################################################
 # Execute custom script
