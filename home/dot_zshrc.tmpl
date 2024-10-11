@@ -55,7 +55,7 @@ export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal,.ubis
 export default_proxy=http://ctu-net-mwg.ubisoft.org:3128
 {{- else -}}
 export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal
-if nc localhost 7890 >/dev/null 2>&1 ; then
+if echo "" | nc localhost 7890 >/dev/null 2>&1 ; then
   export default_proxy=http://localhost:7890
 else
   export default_proxy=
