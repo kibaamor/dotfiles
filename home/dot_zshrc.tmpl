@@ -289,3 +289,5 @@ export NVM_DIR="$HOME/.nvm"
 
 [[ -s /opt/conda/etc/profile.d/conda.sh ]] && \. /opt/conda/etc/profile.d/conda.sh
 [[ -s "$HOME/.iterm2_shell_integration.zsh" ]] && \. "$HOME/.iterm2_shell_integration.zsh"
+
+command_exists bash && command_exists direnv && eval "$(direnv hook zsh)"
