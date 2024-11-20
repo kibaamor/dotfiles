@@ -2,7 +2,7 @@ versions:
   # https://github.com/romkatv/powerlevel10k
   powerlevel10k: 1.20.0
   # https://github.com/zsh-users/zsh-autosuggestions
-  zshautosuggestions: 0.7.0
+  zshautosuggestions: 0.7.1
   # https://github.com/zsh-users/zsh-syntax-highlighting
   zshsyntaxhighlighting: 0.8.0
   # https://github.com/MichaelAquilina/zsh-you-should-use
@@ -16,7 +16,7 @@ versions:
   # https://github.com/sharkdp/fd
   fd: 10.2.0
   # https://github.com/junegunn/fzf
-  fzf: 0.56.1
+  fzf: 0.56.3
   # https://github.com/direnv/direnv
   direnv: 2.35.0
   # https://github.com/BurntSushi/ripgrep
@@ -44,7 +44,7 @@ versions:
   # https://github.com/jqlang/jq
   jq: 1.7.1
   # https://github.com/mikefarah/yq
-  yq: 4.44.3
+  yq: 4.44.5
   # https://github.com/dundee/gdu
   gdu: 5.29.0
   # https://github.com/zu1k/nali
@@ -58,16 +58,16 @@ versions:
   # https://github.com/kevwan/tproxy
   tproxy: 0.8.1
   # https://github.com/orf/gping
-  gping: 1.17.3
+  gping: 1.18.0
   # https://github.com/mr-karan/doggo
   doggo: 1.0.5
   # https://github.com/kubernetes/minikube
   minikube: 1.34.0
   # https://github.com/derailed/k9s
-  k9s: 0.32.6
+  k9s: 0.32.7
   # https://github.com/kubeshark/kubeshark
   kubeshark: 52.3.89
   # https://github.com/helm/helm
-  helm: 3.16.2
+  helm: 3.16.3
   # https://github.com/txn2/kubefwd
   kubefwd: 1.22.5
