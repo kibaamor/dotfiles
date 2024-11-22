@@ -66,7 +66,7 @@ versions:
   # https://github.com/derailed/k9s
   k9s: 0.32.7
   # https://github.com/kubeshark/kubeshark
-  kubeshark: 52.3.89
+  kubeshark: 52.3.90
   # https://github.com/helm/helm
   helm: 3.16.3
   # https://github.com/txn2/kubefwd

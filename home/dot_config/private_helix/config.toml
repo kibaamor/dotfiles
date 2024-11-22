@@ -20,6 +20,10 @@ insert = "bar"
 normal = "block"
 select = "underline"
 
+# https://docs.helix-editor.com/master/editor.html#editorfile-picker-section
+[editor.file-picker]
+hidden = false
+
 # https://docs.helix-editor.com/master/configuration.html#editorsoft-wrap-section
 [editor.soft-wrap]
 enable = true
