@@ -26,7 +26,7 @@ versions:
   # https://github.com/muesli/duf
   duf: 0.8.1
   # https://github.com/FiloSottile/age
-  age: 1.2.0
+  age: 1.2.1
   # https://github.com/tldr-pages/tlrc
   tlrc: 1.9.3
   # https://github.com/fatedier/frp
@@ -58,7 +58,7 @@ versions:
   # https://github.com/kevwan/tproxy
   tproxy: 0.8.1
   # https://github.com/orf/gping
-  gping: 1.18.0
+  gping: 1.19.0
   # https://github.com/mr-karan/doggo
   doggo: 1.0.5
   # https://github.com/kubernetes/minikube
