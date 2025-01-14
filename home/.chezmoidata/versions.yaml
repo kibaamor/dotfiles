@@ -12,7 +12,7 @@ versions:
   # https://github.com/dandavison/delta
   delta: 0.18.2
   # https://github.com/sharkdp/bat
-  bat: 0.24.0
+  bat: 0.25.0
   # https://github.com/sharkdp/fd
   fd: 10.2.0
   # https://github.com/junegunn/fzf
@@ -34,7 +34,7 @@ versions:
   # https://github.com/bcicen/ctop
   ctop: 0.7.7
   # https://github.com/kubecolor/kubecolor
-  kubecolor: 0.4.0
+  kubecolor: 0.5.0
   # https://github.com/ahmetb/kubectx
   kubectx: 0.9.5
   # https://github.com/wagoodman/dive
@@ -44,7 +44,7 @@ versions:
   # https://github.com/jqlang/jq
   jq: 1.7.1
   # https://github.com/mikefarah/yq
-  yq: 4.44.6
+  yq: 4.45.1
   # https://github.com/dundee/gdu
   gdu: 5.30.1
   # https://github.com/zu1k/nali
@@ -66,7 +66,7 @@ versions:
   # https://github.com/derailed/k9s
   k9s: 0.32.7
   # https://github.com/kubeshark/kubeshark
-  kubeshark: 52.3.94
+  kubeshark: 52.3.95
   # https://github.com/helm/helm
   helm: 3.16.4
   # https://github.com/txn2/kubefwd
