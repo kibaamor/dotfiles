@@ -5,10 +5,10 @@ command_exists() {
 }
 
 enable_proxy() {
-  export no_proxy=$default_no_proxy
-  export https_proxy=$default_proxy
-  export http_proxy=$default_proxy
-  export ftp_proxy=$default_proxy
+  export no_proxy=${default_no_proxy:-}
+  export https_proxy=${default_proxy:-}
+  export http_proxy=$https_proxy
+  export ftp_proxy=$https_proxy
 
   export NO_PROXY=$no_proxy
   export HTTPS_PROXY=$https_proxy
@@ -104,4 +104,13 @@ EOF
   done
 
   echo "If you can not find the log in 'dmesg' command, try execute command 'echo 1 > /proc/sys/net/netfilter/nf_log_all_netns'"
+}
+
+# https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/2254-cgroup-v2#phase-1-convert-from-cgroups-v1-settings-to-v2
+cpu_shares_to_weight() {
+  awk "BEGIN {printf \"%.3f\n\", 1 + (($1 - 2) * 9999) / 262142}"
+}
+
+cpu_weight_to_shares() {
+  awk "BEGIN {printf \"%.3f\n\", (($1 - 1) * 262142) / 9999 + 2}"
 }
