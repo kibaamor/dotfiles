@@ -114,3 +114,16 @@ cpu_shares_to_weight() {
 cpu_weight_to_shares() {
   awk "BEGIN {printf \"%.3f\n\", (($1 - 1) * 262142) / 9999 + 2}"
 }
+
+# https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/index.html
+# https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html
+dump_docker_resources() {
+  cgroup_id=$(docker inspect -f '{{ .HostConfig.CgroupParent }}' "$1")
+  cgroup_path=$(find /sys/fs/cgroup -name "$cgroup_id")
+  for file in cpu.shares cpu.cfs_quota_us cpu.cfs_period_us memory.limit_in_bytes \
+    cpu.max cpu.weight cpu.weight.nice memory.current memory.min \
+    memory.low memory.high memory.max memory.swap.current memory.swap.high \
+    memory.swap.max; do
+    [[ -f "$cgroup_path/$file" ]] && echo "$file: $(cat "$cgroup_path/$file")"
+  done
+}
