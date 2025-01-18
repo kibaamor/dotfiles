@@ -243,7 +243,11 @@
 
 ".local/bin/gping{{ .exe_ext }}":
   type: archive-file
+  {{ if eq .chezmoi.os "darwin" }}
+  url: "https://github.com/orf/gping/releases/download/gping-v{{ .versions.gping }}/gping-macOS{{ .pkg_runtime }}-{{ .uname_arch }}{{ .pkg_postfix }}"
+  {{ else }}
   url: "https://github.com/orf/gping/releases/download/gping-v{{ .versions.gping }}/gping-{{ .chezmoi.os | camelcase }}{{ .pkg_runtime }}-{{ .uname_arch }}{{ .pkg_postfix }}"
+  {{ end }}
   path: "gping{{ .exe_ext }}"
   executable: true
 
