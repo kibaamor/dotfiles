@@ -38,6 +38,7 @@ repos=(
   "kevwan/tproxy"
   "orf/gping"
   "mr-karan/doggo"
+  "nxtrace/NTrace-core"
 
   # extra binaries
 
