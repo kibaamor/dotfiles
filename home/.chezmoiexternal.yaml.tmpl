@@ -258,6 +258,12 @@
   executable: true
   stripComponents: 1
 
+".local/bin/nexttrace{{ .exe_ext }}":
+  type: file
+  url: "https://github.com/nxtrace/NTrace-core/releases/download/v{{ .versions.NTracecore }}/nexttrace_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .exe_ext }}"
+  path: "nexttrace{{ .exe_ext }}"
+  executable: true
+
 {{ if .extra_bins }}
 
 ".local/bin/minikube{{ .exe_ext }}":
