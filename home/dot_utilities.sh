@@ -118,12 +118,16 @@ cpu_weight_to_shares() {
 # https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/index.html
 # https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html
 dump_docker_resources() {
-  cgroup_id=$(docker inspect -f '{{ .HostConfig.CgroupParent }}' "$1")
-  cgroup_path=$(find /sys/fs/cgroup -name "$cgroup_id")
-  for file in cpu.shares cpu.cfs_quota_us cpu.cfs_period_us memory.limit_in_bytes \
-    cpu.max cpu.weight cpu.weight.nice memory.current memory.min \
-    memory.low memory.high memory.max memory.swap.current memory.swap.high \
-    memory.swap.max; do
-    [[ -f "$cgroup_path/$file" ]] && echo "$file: $(cat "$cgroup_path/$file")"
+  container_id=$(docker inspect -f '{{ .Id }}' "$1")
+  cgroup_path=$(find /sys/fs/cgroup -type d -name "*$container_id*")
+  echo "cgroup_path: $cgroup_path"
+  for file in cpu.max cpu.max.burst cpu.weight cpu.weight.nice \
+    cpuset.cpus cpuset.cpus.effective cpuset.cpus.partition cpuset.mems cpuset.mems.effective \
+    memory.current memory.low memory.high memory.min memory.max \
+    memory.swap.current memory.swap.high memory.swap.max \
+    memory.low memory.high memory.max memory.swap.current memory.swap.high memory.swap.max \
+    cgroup.controllers cgroup.events memory.events pids.events \
+    cpu.shares cpu.cfs_quota_us cpu.cfs_period_us memory.limit_in_bytes; do
+    [[ -f "$cgroup_path/$file" ]] && echo "$file: $(tr '\n' ',' <"$cgroup_path/$file" | sed 's/,$/\n/')"
   done
 }

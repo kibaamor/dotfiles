@@ -16,7 +16,7 @@ versions:
   # https://github.com/sharkdp/fd
   fd: 10.2.0
   # https://github.com/junegunn/fzf
-  fzf: 0.57.0
+  fzf: 0.58.0
   # https://github.com/direnv/direnv
   direnv: 2.35.0
   # https://github.com/BurntSushi/ripgrep
