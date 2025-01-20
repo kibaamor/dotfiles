@@ -18,7 +18,5 @@ export GIT_USERNAME=x
 export GIT_USEREMAIL=x@x.x
 EOF
 
-source ~/.customrc.pre.sh
-
-sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin init --apply kibaamor && exec zsh -l
+curl kibazen.cn/install.sh | sh
 ```
