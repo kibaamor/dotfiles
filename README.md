@@ -18,5 +18,5 @@ export GIT_USERNAME=x
 export GIT_USEREMAIL=x@x.x
 EOF
 
-curl kibazen.cn/install.sh | sh
+sh -c "$(curl kibazen.cn/install.sh)"
 ```

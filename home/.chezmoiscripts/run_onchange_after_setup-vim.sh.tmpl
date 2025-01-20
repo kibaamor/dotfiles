@@ -3,6 +3,8 @@
 
 set -euf
 
-vim +PlugInstall +qa!
+if command -v vim &> /dev/null; then
+  vim +PlugInstall +qa!
+fi
 
 {{- end -}}
