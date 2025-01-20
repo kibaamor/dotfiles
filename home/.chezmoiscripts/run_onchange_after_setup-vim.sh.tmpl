@@ -1,7 +1,7 @@
 {{- if ne .chezmoi.os "windows" -}}
 #!/bin/bash
 
-set -eufo pipefail
+set -euf
 
 vim +PlugInstall +qa!
 

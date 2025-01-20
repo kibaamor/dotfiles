@@ -1,9 +1,9 @@
 {{- if and (not (eq .chezmoi.os "windows")) .interactive -}}
 #!/bin/bash
 
-set -eufo pipefail
+set -euf
 
-if [[ "$(basename "$SHELL")" = "zsh" ]]; then
+if [ "$(basename "$SHELL")" = "zsh" ]; then
   exit 0
 fi
 
