@@ -126,7 +126,7 @@ dump_docker_resources() {
     memory.current memory.low memory.high memory.min memory.max \
     memory.swap.current memory.swap.high memory.swap.max \
     memory.low memory.high memory.max memory.swap.current memory.swap.high memory.swap.max \
-    cgroup.controllers cgroup.events memory.events pids.events \
+    cpu.stat cgroup.controllers cgroup.events memory.events pids.events \
     cpu.shares cpu.cfs_quota_us cpu.cfs_period_us memory.limit_in_bytes; do
     [[ -f "$cgroup_path/$file" ]] && echo "$file: $(tr '\n' ',' <"$cgroup_path/$file" | sed 's/,$/\n/')"
   done
