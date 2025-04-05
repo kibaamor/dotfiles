@@ -49,6 +49,7 @@ command_exists brew && eval "$($(brew --prefix)/bin/brew shellenv)"
 # export MINIKUBE_HOME="$HOME/.minikube"
 
 export DOTNET_CLI_TELEMETRY_OPTOUT=true
+export COMPOSE_BAKE=true
 
 {{ if not .personal -}}
 export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com
