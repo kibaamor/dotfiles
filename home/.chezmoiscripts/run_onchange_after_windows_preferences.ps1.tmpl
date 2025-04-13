@@ -1,13 +1,12 @@
 # https://github.com/neersighted/dotfiles/blob/master/home/.chezmoiscripts/run_onchange_after_windows_preferences.ps1
 
-# Re-execute as admin if we're not already elevated.
-if (!(new-object System.Security.Principal.WindowsPrincipal([System.Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    $elevated = new-object System.Diagnostics.ProcessStartInfo 'powershell.exe'
-    $elevated.Arguments = $myInvocation.MyCommand.Definition + @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-WindowStyle', 'hidden')
-    $elevated.Verb = 'runas'
-    $child = [System.Diagnostics.Process]::Start($elevated)
-    $child.WaitForExit()
-    return
+# Self-elevate the script if required
+if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+  if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
+    $CommandLine = "-NoExit -File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+    Start-Process -Wait -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
+    Exit
+  }
 }
 
 # Set my shell preferences.
