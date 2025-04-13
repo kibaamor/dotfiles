@@ -1,3 +1,5 @@
+# https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles
+
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\markbull.omp.json" | Invoke-Expression
 
 # WinGet (https://github.com/microsoft/winget-cli)
