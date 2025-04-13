@@ -23,17 +23,19 @@ Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer
 $bin = "$env:USERPROFILE\.local\bin"
 $path = [Environment]::GetEnvironmentVariable('PATH', 'User').Split(';')
 if (!$path.Contains($bin)) {
-    Write-Host "Adding $bin to PATH"
-    $path = [String]::Join(';', $path + $PSScriptRoot)
-    [Environment]::SetEnvironmentVariable('PATH', $path, 'User')
+  Write-Host "Adding $bin to PATH"
+  $path = [String]::Join(';', $path + $PSScriptRoot)
+  [Environment]::SetEnvironmentVariable('PATH', $path, 'User')
 }
 
 {{ range $feature := .windows.features }}
-    Write-Host 'Enable {{ $feature }}...'
-    Enable-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}'
+if (!(Get-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}').State) {
+  Write-Host 'Enable {{ $feature }}...'
+  Enable-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}'
+}
 {{ end }}
 
 {{ range $package := .packages.windows }}
-    Write-Host 'Install {{ $package }}...'
-    winget install --id '{{ $package }}'
+Write-Host 'Install {{ $package }}...'
+winget install --id '{{ $package }}'
 {{ end }}
