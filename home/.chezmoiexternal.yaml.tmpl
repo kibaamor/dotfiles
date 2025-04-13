@@ -6,6 +6,7 @@
   url: "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
   exact: true
   stripComponents: 1
+  refreshPeriod: "168h"
 ".oh-my-zsh/custom/themes/powerlevel10k":
   type: archive
   url: "https://github.com/romkatv/powerlevel10k/archive/refs/tags/v{{ .versions.powerlevel10k }}.tar.gz"
@@ -26,6 +27,7 @@
   url: "https://github.com/fdellwing/zsh-bat/archive/master.tar.gz"
   exact: true
   stripComponents: 1
+  refreshPeriod: "168h"
 ".oh-my-zsh/custom/plugins/zsh-you-should-use":
   type: archive
   url: "https://github.com/MichaelAquilina/zsh-you-should-use/archive/refs/tags/{{ .versions.zshyoushoulduse }}.tar.gz"
@@ -41,10 +43,12 @@
   url: "https://github.com/kibaamor/vimconf/archive/main.tar.gz"
   exact: true
   stripComponents: 1
+  refreshPeriod: "168h"
 
 ".gdbinit-gef.py":
   type: file
   url: "https://gef.blah.cat/py"
+  refreshPeriod: "168h"
 
 ".local/bin/delta{{ .exe_ext }}":
   type: archive-file
@@ -76,12 +80,15 @@
 ".fzf.key-bindings.zsh":
   type: file
   url: "https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"
+  refreshPeriod: "168h"
 ".fzf.completion.zsh":
   type: file
   url: "https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh"
+  refreshPeriod: "168h"
 ".fzf-git.sh":
   type: file
   url: "https://raw.githubusercontent.com/junegunn/fzf-git.sh/main/fzf-git.sh"
+  refreshPeriod: "168h"
 {{ end }}
 
 ".local/bin/direnv{{ .exe_ext }}":
