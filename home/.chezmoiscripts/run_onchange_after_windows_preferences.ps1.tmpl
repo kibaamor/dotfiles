@@ -34,7 +34,7 @@ if (!$path.Contains($bin)) {
     Enable-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}'
 {{ end }}
 
-{{ range $package := .windows.packages }}
+{{ range $package := .packages.windows }}
     Write-Host 'Install {{ $package }}...'
     winget install --id '{{ $package }}'
 {{ end }}

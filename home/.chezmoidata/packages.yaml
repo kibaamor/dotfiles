@@ -1,3 +1,13 @@
 packages:
   debian: "git zsh tree vim-nox"
   centos: "git zsh tree vim-enhanced"
+  windows:
+    - 'Microsoft.WindowsTerminal'
+    - 'Microsoft.VisualStudioCode'
+    - 'Microsoft.PowerToys'
+    - 'Microsoft.Sysinternals'
+    - 'GeekUninstaller.GeekUninstaller'
+    - 'Fork.Fork'
+    - 'Microsoft.PowerShell'
+    - 'JanDeDobbeleer.OhMyPosh'
+    - 'MartiCliment.UniGetUI'
