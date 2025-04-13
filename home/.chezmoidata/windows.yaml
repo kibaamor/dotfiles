@@ -17,3 +17,7 @@ windows:
     - 'Microsoft.Sysinternals'
     - 'GeekUninstaller.GeekUninstaller'
     - 'Fork.Fork'
+    - 'Microsoft.PowerShell'
+    - 'JanDeDobbeleer.OhMyPosh'
+    - 'MartiCliment.UniGetUI'
+
