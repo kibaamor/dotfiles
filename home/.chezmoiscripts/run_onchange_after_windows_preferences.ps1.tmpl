@@ -33,6 +33,8 @@ if (!$path.Contains($bin)) {
 if (!(Get-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}').State) {
   Write-Host 'Enable {{ $feature }}...'
   Enable-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}'
+} else {
+  Write-Host '{{ $feature }} is already enabled.'
 }
 {{ end }}
 
@@ -40,5 +42,7 @@ if (!(Get-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}').State) {
 if (-not (winget list --id '{{ $package }}' | Select-String '{{ $package }}')) {
   Write-Host 'Install {{ $package }}...'
   winget install --id '{{ $package }}'
+} else {
+  Write-Host '{{ $package }} is already installed.'
 }
 {{ end }}
