@@ -1,0 +1,19 @@
+windows:
+  features:
+    # Hyper-V
+    - 'Microsoft-Hyper-V-All'
+    # Virtual Machine Platform.
+    - 'VirtualMachinePlatform'
+    # WSL
+    - 'Microsoft-Windows-Subsystem-Linux'
+    # Sandbox
+    - 'Containers-DisposableClientVM'
+    # Telnet
+    - 'TelnetClient'
+  packages:
+    - 'Microsoft.WindowsTerminal'
+    - 'Microsoft.VisualStudioCode'
+    - 'Microsoft.PowerToys'
+    - 'Microsoft.Sysinternals'
+    - 'GeekUninstaller.GeekUninstaller'
+    - 'Fork.Fork'

@@ -29,16 +29,12 @@ if (!$path.Contains($bin)) {
     [Environment]::SetEnvironmentVariable('PATH', $path, 'User')
 }
 
-# Enable Hyper-V/WSL.
-if (!(Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All).State) {
-    Write-Host 'Enabling Hyper-V...'
-    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-All
-}
-if (!(Get-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform).State) {
-    Write-Host 'Enabling Virtual Machine Platform...'
-    Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
-}
-if (!(Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux).State) {
-    Write-Host 'Enabling WSL...'
-    Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
-}
+{{ range $feature := .windows.features }}
+    Write-Host 'Enable {{ $feature }}...'
+    Enable-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}'
+{{ end }}
+
+{{ range $package := .windows.packages }}
+    Write-Host 'Install {{ $package }}...'
+    winget install --id '{{ $package }}'
+{{ end }}
