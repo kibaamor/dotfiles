@@ -33,7 +33,6 @@
   url: "https://github.com/MichaelAquilina/zsh-you-should-use/archive/refs/tags/{{ .versions.zshyoushoulduse }}.tar.gz"
   exact: true
   stripComponents: 1
-{{ end }}
 
 ".vim/autoload/plug.vim":
   type: file
@@ -49,6 +48,7 @@
   type: file
   url: "https://gef.blah.cat/py"
   refreshPeriod: "168h"
+{{ end }}
 
 ".local/bin/delta{{ .exe_ext }}":
   type: archive-file
