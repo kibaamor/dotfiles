@@ -43,6 +43,7 @@ if (!(Get-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}').State) {
 {{ end }}
 
 # Modules
+Install-PackageProvider -Name NuGet -Force
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 {{ range $module := .windows.modules }}
 if (-not (Get-Module -ListAvailable -Name '{{ $module }}')) {
