@@ -11,3 +11,4 @@ packages:
     - 'Microsoft.PowerShell'
     - 'JanDeDobbeleer.OhMyPosh'
     - 'MartiCliment.UniGetUI'
+    - 'rsteube.Carapace'

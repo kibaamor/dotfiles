@@ -12,3 +12,22 @@ Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
       [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
     }
 }
+
+Import-Module PSReadLine
+Set-PSReadLineOption -BellStyle None
+Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -PredictionViewStyle ListView
+Set-PSReadLineOption -EditMode Windows
+
+Import-Module PSFzf
+Set-PSFzfOption -PSReadLineChordProvider 'ctrl+t' -PSReadLineChordReverseHistory 'ctrl+r'
+
+Import-Module Terminal-Icons
+Import-Module z
+Import-Module cd-extras
+Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
+
+$env:CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
+Set-PSReadLineOption -Colors @{ "Selection" = "`e[7m" }
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+carapace _carapace | Out-String | Invoke-Expression

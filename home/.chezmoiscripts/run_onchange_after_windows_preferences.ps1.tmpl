@@ -12,13 +12,16 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 
 # Set my shell preferences.
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name Hidden -Value 1
-Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name HideFileExt -Value 0
-Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name ShowSuperHidden -Value 0
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name HideDrivesWithNoMedia -Value 1
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name HideFileExt -Value 0
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name NavPaneExpandToCurrentFolder -Value 0
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name NavPaneShowAllFolders -Value 0
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name SeparateProcess -Value 1
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name ShowSecondsInSystemClock -Value 1
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name ShowSuperHidden -Value 0
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name LaunchTo -Value 1
-Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name MMTaskbarMode -Value 2
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name MMTaskbarMode -Value 0
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState' -Name FullPath -Value 1
 
 # Add %USERPROFILE%\.local\bin to the PATH.
 $bin = "$env:USERPROFILE\.local\bin"
@@ -32,22 +35,34 @@ if (!$path.Contains($bin)) {
 # Windows features
 {{ range $feature := .windows.features }}
 if (!(Get-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}').State) {
-  Write-Host 'Enable {{ $feature }}...'
+  Write-Host 'Enable feature {{ $feature }}...'
   Enable-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}'
 } else {
-  Write-Host '{{ $feature }} is already enabled.'
+  Write-Host 'Feature {{ $feature }} is already enabled.'
 }
 {{ end }}
 
 # Softwares
 {{ range $package := .packages.windows }}
 if (-not (winget list --id '{{ $package }}' | Select-String '{{ $package }}')) {
-  Write-Host 'Install {{ $package }}...'
+  Write-Host 'Install package {{ $package }}...'
   winget install --id '{{ $package }}'
 } else {
-  Write-Host '{{ $package }} is already installed.'
+  Write-Host 'Package {{ $package }} is already installed.'
 }
 {{ end }}
+
+# Modules
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+{{ range $module := .packages.modules }}
+if (-not (Get-Module -ListAvailable -Name '{{ $module }}')) {
+  Write-Host 'Install module {{ $module }}...'
+  Install-Module -Name '{{ $module }}' -Force -AllowClobber
+} else {
+  Write-Host 'Module {{ $module }} is already installed.'
+}
+{{ end }}
+Update-Module
 
 # Scoop
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
