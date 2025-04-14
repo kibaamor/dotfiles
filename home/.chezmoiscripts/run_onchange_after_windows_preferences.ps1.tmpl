@@ -29,6 +29,7 @@ if (!$path.Contains($bin)) {
   [Environment]::SetEnvironmentVariable('PATH', $path, 'User')
 }
 
+# Windows features
 {{ range $feature := .windows.features }}
 if (!(Get-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}').State) {
   Write-Host 'Enable {{ $feature }}...'
@@ -38,6 +39,7 @@ if (!(Get-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}').State) {
 }
 {{ end }}
 
+# Softwares
 {{ range $package := .packages.windows }}
 if (-not (winget list --id '{{ $package }}' | Select-String '{{ $package }}')) {
   Write-Host 'Install {{ $package }}...'
@@ -46,3 +48,10 @@ if (-not (winget list --id '{{ $package }}' | Select-String '{{ $package }}')) {
   Write-Host '{{ $package }} is already installed.'
 }
 {{ end }}
+
+# Scoop
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+scoop install git
+scoop bucket add nerd-fonts
+scoop install CascadiaMono-NF-Propo

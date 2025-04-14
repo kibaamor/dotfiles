@@ -4,6 +4,8 @@ Personal dotfiles.
 
 ## Install
 
+### Linux
+
 ```bash
 # "~/.customrc.pre.sh" is a custom shell script that runs before most other commands
 # There is also a custom shell script "~/.customrc.post.sh" that runs after most other commands
@@ -19,4 +21,14 @@ export GIT_USEREMAIL=x@x.x
 EOF
 
 sh -c "$(curl kibazen.cn/install.sh)"
+```
+
+### Windows
+
+```powershell
+winget install --id twpayne.chezmoi
+
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+
+chezmoi init --apply kibaamor
 ```
