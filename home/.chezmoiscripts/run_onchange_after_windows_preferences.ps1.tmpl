@@ -42,6 +42,18 @@ if (!(Get-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}').State) {
 }
 {{ end }}
 
+# Modules
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+{{ range $module := .windows.modules }}
+if (-not (Get-Module -ListAvailable -Name '{{ $module }}')) {
+  Write-Host 'Install module {{ $module }}...'
+  Install-Module -Name '{{ $module }}' -Force -AllowClobber
+} else {
+  Write-Host 'Module {{ $module }} is already installed.'
+}
+{{ end }}
+Update-Module
+
 # Softwares
 {{ range $package := .packages.windows }}
 if (-not (winget list --id '{{ $package }}' | Select-String '{{ $package }}')) {
@@ -51,18 +63,6 @@ if (-not (winget list --id '{{ $package }}' | Select-String '{{ $package }}')) {
   Write-Host 'Package {{ $package }} is already installed.'
 }
 {{ end }}
-
-# Modules
-Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-{{ range $module := .packages.modules }}
-if (-not (Get-Module -ListAvailable -Name '{{ $module }}')) {
-  Write-Host 'Install module {{ $module }}...'
-  Install-Module -Name '{{ $module }}' -Force -AllowClobber
-} else {
-  Write-Host 'Module {{ $module }} is already installed.'
-}
-{{ end }}
-Update-Module
 
 # Scoop
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
