@@ -26,7 +26,10 @@ sh -c "$(curl kibazen.cn/install.sh)"
 ### Windows
 
 ```powershell
-winget install --id twpayne.chezmoi
+# Install WinGet on Windows Sandbox
+# https://learn.microsoft.com/en-us/windows/package-manager/winget/#install-winget-on-windows-sandbox
+
+winget install --id twpayne.chezmoi --accept-source-agreements
 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
 
