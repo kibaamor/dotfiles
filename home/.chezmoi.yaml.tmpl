@@ -5,6 +5,8 @@
 
 {{- /* checks if we want to install extra binaries */ -}}
 {{- $extra_bins := (env "DOTFILES_INSTALL_EXTRA_BINS" | ne "") -}}
+{{- /* checks if we want to install all binaries that can be installed via arkade */ -}}
+{{- $arkade_bins := (env "DOTFILES_INSTALL_ARKADE_BINS" | ne "") -}}
 
 {{- /* git user name */ -}}
 {{- $git_username := env "GIT_USERNAME" -}}
@@ -39,6 +41,7 @@ progress: true
 
 data:
   extra_bins: {{ $extra_bins }}
+  arkade_bins: {{ $arkade_bins }}
 
   git_username: {{ $git_username }}
   git_useremail: {{ $git_useremail }}

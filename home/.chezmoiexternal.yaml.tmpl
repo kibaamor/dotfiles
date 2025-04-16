@@ -135,54 +135,6 @@
   path: "tldr{{ .exe_ext }}"
   executable: true
 
-#{{ if .personal }}
-#".local/bin/frpc{{ .exe_ext }}":
-#  type: archive-file
-#  url: "https://github.com/fatedier/frp/releases/download/v{{ .versions.frp }}/frp_{{ .versions.frp }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-#  path: "frpc{{ .exe_ext }}"
-#  executable: true
-#  stripComponents: 1
-#".local/bin/frps{{ .exe_ext }}":
-#  type: archive-file
-#  url: "https://github.com/fatedier/frp/releases/download/v{{ .versions.frp }}/frp_{{ .versions.frp }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-#  path: "frps{{ .exe_ext }}"
-#  executable: true
-#  stripComponents: 1
-#{{ end }}
-
-".local/bin/ctop{{ .exe_ext }}":
-  type: file
-  url: "https://github.com/bcicen/ctop/releases/download/v{{ .versions.ctop }}/ctop-{{ .versions.ctop }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
-  executable: true
-
-".local/bin/kubecolor{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/kubecolor/kubecolor/releases/download/v{{ .versions.kubecolor }}/kubecolor_{{ .versions.kubecolor }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-  path: "kubecolor{{ .exe_ext }}"
-  executable: true
-".local/bin/kubectx{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubectx_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
-  path: "kubectx{{ .exe_ext }}"
-  executable: true
-".local/bin/kubens{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubens_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
-  path: "kubens{{ .exe_ext }}"
-  executable: true
-
-".local/bin/dive{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/wagoodman/dive/releases/download/v{{ .versions.dive }}/dive_{{ .versions.dive }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-  path: "dive{{ .exe_ext }}"
-  executable: true
-
-".local/bin/lazydocker{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/jesseduffield/lazydocker/releases/download/v{{ .versions.lazydocker }}/lazydocker_{{ .versions.lazydocker }}_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
-  path: "lazydocker{{ .exe_ext }}"
-  executable: true
-
 ".local/bin/jq{{ .exe_ext }}":
   type: file
 {{ if eq .chezmoi.os "darwin" }}
@@ -221,27 +173,6 @@
 {{ end }}
   executable: true
 
-".local/bin/arkade{{ .exe_ext }}":
-  type: file
-{{ if eq .chezmoi.os "windows" }}
-  url: "https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade.exe"
-{{ else if eq .chezmoi.os "darwin" }}
-  url: "https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade-darwin"
-{{ else }}
-  url: "https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade"
-{{ end }}
-  executable: true
-
-".local/bin/mkcert{{ .exe_ext }}":
-  type: file
-  url: "https://github.com/FiloSottile/mkcert/releases/download/v{{ .versions.mkcert }}/mkcert-v{{ .versions.mkcert }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
-  executable: true
-
-".local/bin/kind{{ .exe_ext }}":
-  type: file
-  url: "https://github.com/kubernetes-sigs/kind/releases/download/v{{ .versions.kind }}/kind-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
-  executable: true
-
 ".local/bin/tproxy{{ .exe_ext }}":
   type: archive-file
   url: "https://github.com/kevwan/tproxy/releases/download/v{{ .versions.tproxy }}/tproxy-v{{ .versions.tproxy }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
@@ -271,19 +202,35 @@
   path: "nexttrace{{ .exe_ext }}"
   executable: true
 
-{{ if .extra_bins }}
-
-".local/bin/minikube{{ .exe_ext }}":
+".local/bin/ctop{{ .exe_ext }}":
   type: file
-  url: "https://github.com/kubernetes/minikube/releases/download/v{{ .versions.minikube }}/minikube-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
+  url: "https://github.com/bcicen/ctop/releases/download/v{{ .versions.ctop }}/ctop-{{ .versions.ctop }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
   executable: true
 
-".local/bin/k9s{{ .exe_ext }}":
+".local/bin/kubecolor{{ .exe_ext }}":
   type: archive-file
-  url: "https://github.com/derailed/k9s/releases/download/v{{ .versions.k9s }}/k9s_{{ .chezmoi.os | camelcase }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
-  path: "k9s{{ .exe_ext }}"
+  url: "https://github.com/kubecolor/kubecolor/releases/download/v{{ .versions.kubecolor }}/kubecolor_{{ .versions.kubecolor }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  path: "kubecolor{{ .exe_ext }}"
   executable: true
 
+#{{ if .personal }}
+#".local/bin/frpc{{ .exe_ext }}":
+#  type: archive-file
+#  url: "https://github.com/fatedier/frp/releases/download/v{{ .versions.frp }}/frp_{{ .versions.frp }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+#  path: "frpc{{ .exe_ext }}"
+#  executable: true
+#  stripComponents: 1
+#".local/bin/frps{{ .exe_ext }}":
+#  type: archive-file
+#  url: "https://github.com/fatedier/frp/releases/download/v{{ .versions.frp }}/frp_{{ .versions.frp }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+#  path: "frps{{ .exe_ext }}"
+#  executable: true
+#  stripComponents: 1
+#{{ end }}
+
+########################################################################################################################
+# Install extra binaries that can be installed via arkade.
+{{ if .extra_bins }}
 ".local/bin/kubeshark{{ .exe_ext }}":
   type: file
 {{ if eq .chezmoi.os "windows" }}
@@ -293,17 +240,75 @@
 {{ end }}
   executable: true
 
+".local/bin/kubefwd{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/txn2/kubefwd/releases/download/{{ .versions.kubefwd }}/kubefwd_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  path: "kubefwd{{ .exe_ext }}"
+  executable: true
+{{ end }}
+
+".local/bin/arkade{{ .exe_ext }}":
+  type: file
+{{ if eq .chezmoi.os "windows" }}
+  url: "https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade.exe"
+{{ else if eq .chezmoi.os "darwin" }}
+  url: "https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade-darwin"
+{{ else }}
+  url: "https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade"
+{{ end }}
+  executable: true
+
+########################################################################################################################
+# Install all binaries that can be installed via arkade.
+{{ if .arkade_bins }}
+".local/bin/mkcert{{ .exe_ext }}":
+  type: file
+  url: "https://github.com/FiloSottile/mkcert/releases/download/v{{ .versions.mkcert }}/mkcert-v{{ .versions.mkcert }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
+  executable: true
+
+".local/bin/dive{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/wagoodman/dive/releases/download/v{{ .versions.dive }}/dive_{{ .versions.dive }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  path: "dive{{ .exe_ext }}"
+  executable: true
+
+".local/bin/lazydocker{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/jesseduffield/lazydocker/releases/download/v{{ .versions.lazydocker }}/lazydocker_{{ .versions.lazydocker }}_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  path: "lazydocker{{ .exe_ext }}"
+  executable: true
+
+".local/bin/minikube{{ .exe_ext }}":
+  type: file
+  url: "https://github.com/kubernetes/minikube/releases/download/v{{ .versions.minikube }}/minikube-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
+  executable: true
+
+".local/bin/kind{{ .exe_ext }}":
+  type: file
+  url: "https://github.com/kubernetes-sigs/kind/releases/download/v{{ .versions.kind }}/kind-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
+  executable: true
+
+".local/bin/kubectx{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubectx_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  path: "kubectx{{ .exe_ext }}"
+  executable: true
+".local/bin/kubens{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubens_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  path: "kubens{{ .exe_ext }}"
+  executable: true
+
+".local/bin/k9s{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/derailed/k9s/releases/download/v{{ .versions.k9s }}/k9s_{{ .chezmoi.os | camelcase }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  path: "k9s{{ .exe_ext }}"
+  executable: true
+
 ".local/bin/helm{{ .exe_ext }}":
   type: archive-file
   url: "https://get.helm.sh/helm-v{{ .versions.helm }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
   path: "helm{{ .exe_ext }}"
   executable: true
   stripComponents: 1
-
-".local/bin/kubefwd{{ .exe_ext }}":
-  type: archive-file
-  url: "https://github.com/txn2/kubefwd/releases/download/{{ .versions.kubefwd }}/kubefwd_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
-  path: "kubefwd{{ .exe_ext }}"
-  executable: true
-
 {{ end }}

@@ -12,6 +12,8 @@ repos=(
 
   "junegunn/vim-plug"
 
+  ##############################################################
+  # Default Installed Binaries
   "dandavison/delta"
   "sharkdp/bat"
   "sharkdp/fd"
@@ -22,31 +24,34 @@ repos=(
   "muesli/duf"
   "FiloSottile/age"
   "tldr-pages/tlrc"
-  "fatedier/frp"
-  "bcicen/ctop"
-  "kubecolor/kubecolor"
-  "ahmetb/kubectx"
-  "wagoodman/dive"
-  "jesseduffield/lazydocker"
+  #"fatedier/frp"
   "jqlang/jq"
   "mikefarah/yq"
   "dundee/gdu"
   "zu1k/nali"
-  "alexellis/arkade"
-  "FiloSottile/mkcert"
-  "kubernetes-sigs/kind"
   "kevwan/tproxy"
   "orf/gping"
   "mr-karan/doggo"
   "nxtrace/NTrace-core"
+  "bcicen/ctop"
+  "kubecolor/kubecolor"
+  "alexellis/arkade"
 
-  # extra binaries
-
-  "kubernetes/minikube"
-  "derailed/k9s"
+  ##############################################################
+  # Extra Binaries
   "kubeshark/kubeshark"
-  "helm/helm"
   "txn2/kubefwd"
+
+  ##############################################################
+  # Extra Binaries
+  "FiloSottile/mkcert"
+  "wagoodman/dive"
+  "jesseduffield/lazydocker"
+  "kubernetes/minikube"
+  "kubernetes-sigs/kind"
+  "ahmetb/kubectx"
+  "derailed/k9s"
+  "helm/helm"
 )
 
 echo "versions:" >$filename
