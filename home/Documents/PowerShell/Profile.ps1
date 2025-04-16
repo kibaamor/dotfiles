@@ -19,8 +19,30 @@ Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
 Set-PSReadLineOption -EditMode Windows
 
-Import-Module PSFzf
-Set-PSFzfOption -PSReadLineChordProvider 'ctrl+t' -PSReadLineChordReverseHistory 'ctrl+r'
+if(Get-Module -ListAvailable -Name "PSFzf" -ErrorAction Stop) {
+  $env:FZF_DEFAULT_COMMAND='--strip-cwd-prefix --follow --hidden --exclude .git --exclude node_modules'
+  $env:FZF_CTRL_T_COMMAND="fd --type f $env:FZF_DEFAULT_COMMAND"
+  $env:FZF_ALT_C_COMMAND="fd --type d $env:FZF_DEFAULT_COMMAND"
+  # CTRL-T Paste the selected files and directories onto the command-line
+  $env:FZF_CTRL_T_OPTS="`
+    --height 100%`
+    --preview 'bat -n --color=always --theme Dracula -r :1000 {}'`
+    --bind 'ctrl-\:change-preview-window(down|hidden|)'`
+    --color header:italic`
+    --header 'Press ALT-/ to toggle line wrap, CTRL-\ to toggle preview(Only first 1000 lines are showed)'"
+  # CTRL-R Paste the selected command from history onto the command-line
+  $env:FZF_CTRL_R_OPTS="`
+    --height 100%`
+    --preview 'bat -pl ps1 --color=always {f2..}'`
+    --preview-window up:3:wrap`
+    --bind 'ctrl-\:toggle-preview'`
+    --color header:italic`
+    --header 'Press ALT-/ to toggle line wrap, CTRL-\ to toggle preview'"
+  # cd into the selected directory
+  $env:FZF_ALT_C_OPTS="--height 100% --preview 'lsd --tree {}'"
+  Import-Module PSFzf
+  Set-PSFzfOption -PSReadLineChordProvider 'ctrl+t' -PSReadLineChordReverseHistory 'ctrl+r' -EnableFd -EnableFzf -FzfCommand 'fzf --height 40% --reverse --inline-info --info=inline --ansi --preview "bat --style=numbers --color=always {}"'
+}
 
 Import-Module Terminal-Icons
 Import-Module z

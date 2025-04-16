@@ -150,36 +150,30 @@ export BAT_THEME=Dracula
 [[ -s "$HOME/.fzf.key-bindings.zsh" ]] && \. "$HOME/.fzf.key-bindings.zsh"
 [[ -s "$HOME/.fzf.completion.zsh" ]] && \. "$HOME/.fzf.completion.zsh"
 
-export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --follow --hidden --exclude .git --exclude node_modules'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND='fd --type d --strip-cwd-prefix --follow --hidden --exclude .git --exclude node_modules'
+export FZF_DEFAULT_COMMAND='--strip-cwd-prefix --follow --hidden --exclude .git --exclude node_modules'
+export FZF_CTRL_T_COMMAND="fd --type f $FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --type d $FZF_DEFAULT_COMMAND"
 
 export FZF_DEFAULT_OPTS=
 
-### CTRL-T Paste the selected files and directories onto the command-line
-# CTRL-/ to toggle line wrap
-# CTRL-\ to toggle small preview window to see the full command
+# CTRL-T Paste the selected files and directories onto the command-line
 export FZF_CTRL_T_OPTS="\
   --height 100%\
   --preview 'if [ -d {} ]; then (tree -C {} | head -1000) else (bat -n --color=always --theme Dracula -r :1000 {}) fi'\
   --bind 'ctrl-\\:change-preview-window(down|hidden|)'\
   --color header:italic\
-  --header 'Only first 1000 lines are showed'"
+  --header 'Press ALT-/ to toggle line wrap, CTRL-\ to toggle preview(Only first 1000 lines are showed)'"
 
-### CTRL-R Paste the selected command from history onto the command-line
-# CTRL-/ to toggle line wrap
-# CTRL-\ to toggle small preview window to see the full command
-# CTRL-Y to copy the command into clipboard using pbcopy
+# CTRL-R Paste the selected command from history onto the command-line
 export FZF_CTRL_R_OPTS="\
   --height 100%\
-  --preview 'bat -pl zsh --color=always {f2..}'\
+  --preview 'bat -pl bash --color=always {f2..}'\
   --preview-window up:3:wrap\
   --bind 'ctrl-\\:toggle-preview'\
-  --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'\
   --color header:italic\
-  --header 'Press CTRL-Y to copy command into clipboard(pbcopy command required)'"
+  --header 'Press ALT-/ to toggle line wrap, CTRL-\ to toggle preview'"
 
-### cd into the selected directory
+# cd into the selected directory
 export FZF_ALT_C_OPTS="--height 100% --preview 'tree -C {} | head -1000'"
 
 _fzf_compgen_path() {
