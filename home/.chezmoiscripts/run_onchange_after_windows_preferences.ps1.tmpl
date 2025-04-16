@@ -43,8 +43,16 @@ if (!(Get-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}').State) {
 {{ end }}
 
 # Modules
-Install-PackageProvider -Name NuGet -Force
+
+Write-Host 'Install package provider NuGet...'
+Install-PackageProvider -Name NuGet -Force | Out-Null
+
+Write-Host 'Trust package repository PSGallery...'
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+
+Write-Host 'Enable winget proxy command line options...'
+winget settings --enable ProxyCommandLineOptions
+
 {{ range $module := .windows.modules }}
 if (-not (Get-Module -ListAvailable -Name '{{ $module }}')) {
   Write-Host 'Install module {{ $module }}...'
