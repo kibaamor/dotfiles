@@ -29,6 +29,8 @@ versions:
   age: 1.2.1
   # https://github.com/tldr-pages/tlrc
   tlrc: 1.11.0
+  # https://github.com/fatedier/frp
+  frp: 0.62.0
   # https://github.com/jqlang/jq
   jq: 1.7.1
   # https://github.com/mikefarah/yq
@@ -52,7 +54,7 @@ versions:
   # https://github.com/alexellis/arkade
   arkade: 0.11.38
   # https://github.com/kubeshark/kubeshark
-  kubeshark: 52.6.0
+  kubeshark: 52.7.0
   # https://github.com/txn2/kubefwd
   kubefwd: 1.22.5
   # https://github.com/FiloSottile/mkcert
