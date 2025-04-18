@@ -14,13 +14,16 @@ Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
     }
 }
 
-Import-Module PSReadLine
-Set-PSReadLineOption -BellStyle None
-Set-PSReadLineOption -PredictionSource History
-Set-PSReadLineOption -PredictionViewStyle ListView
-Set-PSReadLineOption -EditMode Windows
+if (Get-Module -ListAvailable -Name "PSReadLine") {
+  Import-Module PSReadLine
+  Set-PSReadLineOption -BellStyle None
+  Set-PSReadLineOption -PredictionSource History
+  Set-PSReadLineOption -PredictionViewStyle ListView
+  Set-PSReadLineOption -EditMode Windows
+  Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
+}
 
-if(Get-Module -ListAvailable -Name "PSFzf" -ErrorAction Stop) {
+if (Get-Module -ListAvailable -Name "PSFzf") {
   $env:FZF_DEFAULT_COMMAND='--strip-cwd-prefix --follow --hidden --exclude .git --exclude node_modules'
   $env:FZF_CTRL_T_COMMAND="fd --type f $env:FZF_DEFAULT_COMMAND"
   $env:FZF_ALT_C_COMMAND="fd --type d $env:FZF_DEFAULT_COMMAND"
@@ -45,12 +48,20 @@ if(Get-Module -ListAvailable -Name "PSFzf" -ErrorAction Stop) {
   Set-PSFzfOption -PSReadLineChordProvider 'ctrl+t' -PSReadLineChordReverseHistory 'ctrl+r' -EnableFd -EnableFzf -FzfCommand 'fzf --height 40% --reverse --inline-info --info=inline --ansi --preview "bat --style=numbers --color=always {}"'
 }
 
-Import-Module Terminal-Icons
-Import-Module z
-Import-Module cd-extras
-Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
+if (Get-Module -ListAvailable -Name "Terminal-Icons") {
+  Import-Module Terminal-Icons
+}
+if (Get-Module -ListAvailable -Name "z") {
+  Import-Module z
+}
+if (Get-Module -ListAvailable -Name "cd-extras") {
+  Import-Module cd-extras
+}
 
-$env:CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
-Set-PSReadLineOption -Colors @{ "Selection" = "`e[7m" }
-Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
-carapace _carapace | Out-String | Invoke-Expression
+try {
+  $env:CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
+  Set-PSReadLineOption -Colors @{ "Selection" = "`e[7m" }
+  #Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+  carapace _carapace | Out-String | Invoke-Expression
+} catch {
+}

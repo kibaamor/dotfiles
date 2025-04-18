@@ -35,3 +35,36 @@ if (-not (Get-Module -ListAvailable -Name '{{ $module }}')) {
   Write-Host 'Powershell module {{ $module }} is already installed.'
 }
 {{ end }}
+
+function Install-Scoop {
+  $zipUrl = "https://github.com/ScoopInstaller/Install/archive/refs/heads/master.zip"
+
+  try {
+    # Download ZIP and load in memory
+    $zip = [System.IO.Compression.ZipArchive]::new(
+        [System.IO.MemoryStream]::new((Invoke-WebRequest $zipUrl -UseBasicParsing).Content)
+    )
+
+    # Find install.ps1 in the archive
+    $entry = $zip.Entries | Where-Object FullName -like "*install.ps1"
+
+    if (-not $entry) {
+        Write-Host "Fail to install scoop: install.ps1 not found in archive."
+        return
+    }
+
+    # Read and execute install.ps1
+    $ps1 = [System.IO.StreamReader]::new($entry.Open()).ReadToEnd()
+    Invoke-Expression $ps1
+  }
+  catch {
+    Write-Host "An error occurred when installing scoop: $_"
+  }
+}
+
+Write-Host "Install scoop..."
+Install-Scoop
+Write-Host "Add nerd-fonts bucket..."
+scoop bucket add nerd-fonts
+Write-Host "Install font CascadiaMono-NF-Propo..."
+scoop install CascadiaMono-NF-Propo
