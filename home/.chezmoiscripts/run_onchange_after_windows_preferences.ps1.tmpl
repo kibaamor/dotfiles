@@ -36,7 +36,7 @@ if (!$path.Contains($bin)) {
 {{ range $feature := .windows.features }}
 if (!(Get-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}').State) {
   Write-Host 'Enable feature {{ $feature }}...'
-  Enable-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}'
+  Enable-WindowsOptionalFeature -Online -All -NoRestart -FeatureName '{{ $feature }}'
 } else {
   Write-Host 'Feature {{ $feature }} is already enabled.'
 }
