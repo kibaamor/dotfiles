@@ -50,6 +50,9 @@ Install-PackageProvider -Name NuGet -Force | Out-Null
 Write-Host 'Trust package repository PSGallery...'
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 
+Write-Host 'Upgrade winget...'
+winget upgrade Microsoft.AppInstaller --accept-package-agreements --accept-source-agreements --force
+
 Write-Host 'Enable winget proxy command line options...'
 winget settings --enable ProxyCommandLineOptions
 
@@ -67,7 +70,7 @@ Update-Module
 {{ range $package := .packages.windows }}
 if (-not (winget list --id '{{ $package }}' | Select-String '{{ $package }}')) {
   Write-Host 'Install package {{ $package }}...'
-  winget install --accept-source-agreements --force --id '{{ $package }}'
+  winget install --id '{{ $package }}' --accept-package-agreements --accept-source-agreements --force
 } else {
   Write-Host 'Package {{ $package }} is already installed.'
 }
@@ -75,7 +78,10 @@ if (-not (winget list --id '{{ $package }}' | Select-String '{{ $package }}')) {
 
 # Scoop
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+Write-Host 'Install scoop...'
 Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+Write-Host 'Install git...'
 scoop install git
+Write-Host 'Install CascadiaMono-NF-Propo...'
 scoop bucket add nerd-fonts
 scoop install CascadiaMono-NF-Propo
