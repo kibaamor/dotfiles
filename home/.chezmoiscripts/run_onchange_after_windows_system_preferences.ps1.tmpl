@@ -33,11 +33,5 @@ if (!(Get-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}').State) {
 }
 {{ end }}
 
-Write-Host 'Install package provider NuGet...'
-Install-PackageProvider -Name NuGet -Force -Scope AllUsers | Out-Null
-
-Write-Host 'Upgrade winget...'
-winget upgrade Microsoft.AppInstaller --accept-package-agreements --accept-source-agreements --force
-
 Write-Host 'Enable winget proxy command line options...'
 winget settings --enable ProxyCommandLineOptions

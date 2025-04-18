@@ -7,6 +7,12 @@ if (!$path.Contains($bin)) {
   [Environment]::SetEnvironmentVariable('PATH', $path, 'User')
 }
 
+Write-Host 'Upgrade winget...'
+winget upgrade Microsoft.AppInstaller --accept-package-agreements --accept-source-agreements --force --scope user
+
+Write-Host 'Install package provider NuGet...'
+Install-PackageProvider -Name NuGet -Force -Scope AllUsers | Out-Null
+
 # Softwares
 {{ range $package := .packages.windows }}
 if (-not (winget list --id '{{ $package }}' | Select-String '{{ $package }}')) {
@@ -28,21 +34,4 @@ if (-not (Get-Module -ListAvailable -Name '{{ $module }}')) {
 } else {
   Write-Host 'Powershell module {{ $module }} is already installed.'
 }
-Import-Module -Name '{{ $module }}' -Force
-{{ end }}
-
-# PSResources
-{{ range $resource := .powershell.resources }}
-if (-not (Get-InstalledPSResource -Name '{{ $resource }}' -ErrorAction SilentlyContinue)) {
-  Write-Host 'Install powershell resource {{ $resource }}...'
-  Install-PSResource -Name '{{ $resource }}' -Scope CurrentUser -AcceptLicense
-} else {
-  Write-Host 'Powershell resource {{ $resource }} is already installed.'
-}
-Import-Module -Name '{{ $resource }}' -Force
-{{ end }}
-
-# Fonts
-{{ range $font := .powershell.fonts }}
-Install-NerdFont -Name '{{ $font }}' -Scope CurrentUser -Force
 {{ end }}
