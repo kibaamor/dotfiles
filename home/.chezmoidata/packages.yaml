@@ -7,7 +7,6 @@ packages:
     - 'Microsoft.PowerToys'
     - 'Microsoft.Sysinternals'
     - 'GeekUninstaller.GeekUninstaller'
-    - 'Git.Git'
     - 'Fork.Fork'
     - 'Microsoft.PowerShell'
     - 'JanDeDobbeleer.OhMyPosh'

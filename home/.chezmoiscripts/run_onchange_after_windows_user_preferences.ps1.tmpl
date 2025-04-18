@@ -64,6 +64,8 @@ function Install-Scoop {
 
 Write-Host "Install scoop..."
 Install-Scoop
+Write-Host "Install git..."
+scoop install git
 Write-Host "Add nerd-fonts bucket..."
 scoop bucket add nerd-fonts
 Write-Host "Install font CascadiaMono-NF-Propo..."
