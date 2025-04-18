@@ -11,7 +11,7 @@ Write-Host 'Upgrade winget...'
 winget upgrade Microsoft.AppInstaller --accept-package-agreements --accept-source-agreements --force --scope user
 
 Write-Host 'Install package provider NuGet...'
-Install-PackageProvider -Name NuGet -Force -Scope AllUsers | Out-Null
+Install-PackageProvider -Name NuGet -Force -Scope CurrentUser | Out-Null
 
 # Softwares
 {{ range $package := .packages.windows }}
