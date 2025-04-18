@@ -33,7 +33,7 @@ Import-Module -Name '{{ $module }}' -Force
 
 # PSResources
 {{ range $resource := .powershell.resources }}
-if (-not (Get-InstalledPSResource -Name '{{ $resource }}')) {
+if (-not (Get-InstalledPSResource -Name '{{ $resource }}' -ErrorAction SilentlyContinue)) {
   Write-Host 'Install powershell resource {{ $resource }}...'
   Install-PSResource -Name '{{ $resource }}' -Scope CurrentUser -AcceptLicense
 } else {

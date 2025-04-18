@@ -7,7 +7,6 @@ powershell:
     - z
     - cd-extras
   resources:
-    - Fonts
     - NerdFonts
   fonts:
     - FiraCode
