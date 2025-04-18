@@ -34,50 +34,10 @@ if (!(Get-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}').State) {
 {{ end }}
 
 Write-Host 'Install package provider NuGet...'
-Install-PackageProvider -Name NuGet -Force | Out-Null
+Install-PackageProvider -Name NuGet -Force -Scope AllUsers | Out-Null
 
 Write-Host 'Upgrade winget...'
 winget upgrade Microsoft.AppInstaller --accept-package-agreements --accept-source-agreements --force
 
 Write-Host 'Enable winget proxy command line options...'
 winget settings --enable ProxyCommandLineOptions
-
-# Softwares
-{{ range $package := .packages.windows }}
-if (-not (winget list --id '{{ $package }}' | Select-String '{{ $package }}')) {
-  Write-Host 'Install package {{ $package }}...'
-  winget install --id '{{ $package }}' --accept-package-agreements --accept-source-agreements --force --scope machine
-} else {
-  Write-Host 'Package {{ $package }} is already installed.'
-}
-{{ end }}
-
-Write-Host 'Trust package repository PSGallery...'
-Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-
-# Modules
-{{ range $module := .powershell.modules }}
-if (-not (Get-Module -ListAvailable -Name '{{ $module }}')) {
-  Write-Host 'Install powershell module {{ $module }}...'
-  Install-Module -Name '{{ $module }}' -Force -AllowClobber -Scope AllUsers
-} else {
-  Write-Host 'Powershell module {{ $module }} is already installed.'
-}
-Import-Module -Name '{{ $module }}' -Force
-{{ end }}
-
-# PSResources
-{{ range $resource := .powershell.resources }}
-if (-not (Get-InstalledPSResource -Name '{{ $resource }}')) {
-  Write-Host 'Install powershell resource {{ $resource }}...'
-  Install-PSResource -Name '{{ $resource }}' -Scope AllUsers -AcceptLicense -Confirm
-} else {
-  Write-Host 'Powershell resource {{ $resource }} is already installed.'
-}
-Import-Module -Name '{{ $resource }}' -Force
-{{ end }}
-
-# Fonts
-{{ range $font := .powershell.fonts }}
-Install-NerdFont -Name '{{ $font }}' -Scope AllUsers -Force
-{{ end }}
