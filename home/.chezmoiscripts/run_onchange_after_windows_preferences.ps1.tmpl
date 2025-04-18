@@ -67,7 +67,7 @@ Update-Module
 {{ range $package := .packages.windows }}
 if (-not (winget list --id '{{ $package }}' | Select-String '{{ $package }}')) {
   Write-Host 'Install package {{ $package }}...'
-  winget install --id '{{ $package }}'
+  winget install --accept-source-agreements --force --id '{{ $package }}'
 } else {
   Write-Host 'Package {{ $package }} is already installed.'
 }
