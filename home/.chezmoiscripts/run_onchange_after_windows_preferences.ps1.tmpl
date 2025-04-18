@@ -28,7 +28,7 @@ $bin = "$env:USERPROFILE\.local\bin"
 $path = [Environment]::GetEnvironmentVariable('PATH', 'User').Split(';')
 if (!$path.Contains($bin)) {
   Write-Host "Adding $bin to PATH"
-  $path = [String]::Join(';', $path + $PSScriptRoot)
+  $path = [String]::Join(';', $path + $bin)
   [Environment]::SetEnvironmentVariable('PATH', $path, 'User')
 }
 
