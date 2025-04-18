@@ -3,8 +3,8 @@
 # Self-elevate the script if required
 if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
   if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
-    $CommandLine = "-NoExit -File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
-    #$CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+    #$CommandLine = "-NoExit -File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+    $CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
     Start-Process -Wait -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
     Exit
   }
@@ -22,15 +22,6 @@ Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name LaunchTo -Value 1
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name MMTaskbarMode -Value 0
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState' -Name FullPath -Value 1
-
-# Add %USERPROFILE%\.local\bin to the PATH.
-$bin = "$env:USERPROFILE\.local\bin"
-$path = [Environment]::GetEnvironmentVariable('PATH', 'User').Split(';')
-if (!$path.Contains($bin)) {
-  Write-Host "Adding $bin to PATH"
-  $path = [String]::Join(';', $path + $bin)
-  [Environment]::SetEnvironmentVariable('PATH', $path, 'User')
-}
 
 # Windows features
 {{ range $feature := .windows.features }}
@@ -55,33 +46,3 @@ winget upgrade Microsoft.AppInstaller --accept-package-agreements --accept-sourc
 
 Write-Host 'Enable winget proxy command line options...'
 winget settings --enable ProxyCommandLineOptions
-
-{{ range $module := .windows.modules }}
-if (-not (Get-Module -ListAvailable -Name '{{ $module }}')) {
-  Write-Host 'Install module {{ $module }}...'
-  Install-Module -Name '{{ $module }}' -Force -AllowClobber
-} else {
-  Write-Host 'Module {{ $module }} is already installed.'
-}
-{{ end }}
-Update-Module
-
-# Softwares
-{{ range $package := .packages.windows }}
-if (-not (winget list --id '{{ $package }}' | Select-String '{{ $package }}')) {
-  Write-Host 'Install package {{ $package }}...'
-  winget install --id '{{ $package }}' --accept-package-agreements --accept-source-agreements --force
-} else {
-  Write-Host 'Package {{ $package }} is already installed.'
-}
-{{ end }}
-
-# Scoop
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
-Write-Host 'Install scoop...'
-Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
-Write-Host 'Install git...'
-scoop install git
-Write-Host 'Install CascadiaMono-NF-Propo...'
-scoop bucket add nerd-fonts
-scoop install CascadiaMono-NF-Propo
