@@ -17,10 +17,12 @@ Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
 $installedModules = Get-Module -ListAvailable | Select-Object -ExpandProperty Name -Unique
 
 if (-not $installedModules.Contains("Microsoft.PowerShell.PSResourceGet")) {
+  Write-Host "Install module Microsoft.PowerShell.PSResourceGet..."
   Install-Module -Name "Microsoft.PowerShell.PSResourceGet" -Force -AllowClobber -Scope CurrentUser
 }
 
 if (-not $installedModules.Contains("PSReadLine")) {
+  Write-Host "Install module PSReadLine..."
   Install-Module -Name "PSReadLine" -Force -AllowClobber -Scope CurrentUser
 }
 if ($installedModules.Contains("PSReadLine")) {
@@ -33,6 +35,7 @@ if ($installedModules.Contains("PSReadLine")) {
 }
 
 if (-not $installedModules.Contains("PSFzf")) {
+  Write-Host "Install module PSFzf..."
   Install-Module -Name "PSFzf" -Force -AllowClobber -Scope CurrentUser
 }
 if ($installedModules.Contains("PSFzf")) {
@@ -61,6 +64,7 @@ if ($installedModules.Contains("PSFzf")) {
 }
 
 if (-not $installedModules.Contains("Terminal-Icons")) {
+  Write-Host "Install module Terminal-Icons..."
   Install-Module -Name "Terminal-Icons" -Force -AllowClobber -Scope CurrentUser
 }
 if ($installedModules.Contains("Terminal-Icons")) {
@@ -68,6 +72,7 @@ if ($installedModules.Contains("Terminal-Icons")) {
 }
 
 if (-not $installedModules.Contains("z")) {
+  Write-Host "Install module z..."
   Install-Module -Name "z" -Force -AllowClobber -Scope CurrentUser
 }
 if ($installedModules.Contains("z")) {
@@ -75,6 +80,7 @@ if ($installedModules.Contains("z")) {
 }
 
 if (-not $installedModules.Contains("cd-extras")) {
+  Write-Host "Install module cd-extras..."
   Install-Module -Name "cd-extras" -Force -AllowClobber -Scope CurrentUser
 }
 if ($installedModules.Contains("cd-extras")) {
