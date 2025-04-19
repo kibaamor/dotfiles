@@ -1,3 +1,11 @@
+# execute this script in a new powershell process
+if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
+  #$CommandLine = "-NoExit -File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+  $CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+  Start-Process -Wait -FilePath PowerShell.exe -ArgumentList $CommandLine
+  Exit
+}
+
 # Add %USERPROFILE%\.local\bin to the PATH.
 $bin = "$env:USERPROFILE\.local\bin"
 $path = [Environment]::GetEnvironmentVariable('PATH', 'User').Split(';')
@@ -61,8 +69,13 @@ function Install-Scoop {
   }
 }
 
-Write-Host "Install scoop..."
-Install-Scoop
+if (Test-Path "$env:USERPROFILE\scoop") {
+  Write-Host "Scoop is already installed."
+} else {
+  Write-Host "Install scoop..."
+  Install-Scoop
+}
+
 Write-Host "Install git..."
 scoop install git
 Write-Host "Add nerd-fonts bucket..."
