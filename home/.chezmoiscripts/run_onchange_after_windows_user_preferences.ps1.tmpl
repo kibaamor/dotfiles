@@ -22,7 +22,7 @@ $installedPackages = winget list
 {{ range $package := .packages.windows }}
 if (-not ($installedPackages | Select-String '{{ $package }}')) {
   Write-Host 'Install package {{ $package }}...'
-  winget install --id '{{ $package }}' --accept-package-agreements --accept-source-agreements --force --scope user
+  winget install --id '{{ $package }}' --accept-package-agreements --accept-source-agreements --force
 } else {
   Write-Host 'Package {{ $package }} is already installed.'
 }
@@ -40,9 +40,11 @@ if (-not $installedModules.Contains('{{ $module }}')) {
 {{ end }}
 
 function Install-Scoop {
-  $zipUrl = "https://github.com/ScoopInstaller/Install/archive/refs/heads/master.zip"
-
   try {
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+
+    $zipUrl = "https://github.com/ScoopInstaller/Install/archive/refs/heads/master.zip"
+
     # Download ZIP and load in memory
     $zip = [System.IO.Compression.ZipArchive]::new(
         [System.IO.MemoryStream]::new((Invoke-WebRequest $zipUrl -UseBasicParsing).Content)
@@ -65,18 +67,20 @@ function Install-Scoop {
   }
 }
 
-if (Test-Path "$env:USERPROFILE\scoop") {
-  Write-Host "Scoop is already installed."
-} else {
+if (-not Test-Path "$env:USERPROFILE\scoop") {
   Write-Host "Install scoop..."
   Install-Scoop
+} else {
+  Write-Host "Scoop is already installed."
 }
 
-Write-Host "Install git..."
-scoop install git
-Write-Host "Add nerd-fonts bucket..."
-scoop bucket add nerd-fonts
-Write-Host "Install font CascadiaMono-NF-Propo..."
-scoop install CascadiaMono-NF-Propo
-Write-Host "Install snipaste..."
-scoop install snipaste
+if (Test-Path "$env:USERPROFILE\scoop") {
+  Write-Host "Install git..."
+  scoop install git
+  Write-Host "Add nerd-fonts bucket..."
+  scoop bucket add nerd-fonts
+  Write-Host "Install font CascadiaMono-NF-Propo..."
+  scoop install CascadiaMono-NF-Propo
+  Write-Host "Install snipaste..."
+  scoop install snipaste
+}
