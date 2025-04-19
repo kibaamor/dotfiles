@@ -14,8 +14,9 @@ Write-Host 'Install package provider NuGet...'
 Install-PackageProvider -Name NuGet -Force -Scope CurrentUser | Out-Null
 
 # Softwares
+$installedPackages = winget list
 {{ range $package := .packages.windows }}
-if (-not (winget list --id '{{ $package }}' | Select-String '{{ $package }}')) {
+if (-not (installedPackages | Select-String '{{ $package }}')) {
   Write-Host 'Install package {{ $package }}...'
   winget install --id '{{ $package }}' --accept-package-agreements --accept-source-agreements --force --scope user
 } else {
@@ -27,8 +28,9 @@ Write-Host 'Trust package repository PSGallery...'
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 
 # Modules
+$installedModules = Get-Module -ListAvailable | Select-Object -ExpandProperty Name -Unique
 {{ range $module := .powershell.modules }}
-if (-not (Get-Module -ListAvailable -Name '{{ $module }}')) {
+if (-not $installedModules.Contains('{{ $module }}')) {
   Write-Host 'Install powershell module {{ $module }}...'
   Install-Module -Name '{{ $module }}' -Force -AllowClobber -Scope CurrentUser
 } else {
@@ -40,8 +42,6 @@ function Install-Scoop {
   $zipUrl = "https://github.com/ScoopInstaller/Install/archive/refs/heads/master.zip"
 
   try {
-    Add-Type -AssemblyName System.IO.Compression.FileSystem
-
     # Download ZIP and load in memory
     $zip = [System.IO.Compression.ZipArchive]::new(
         [System.IO.MemoryStream]::new((Invoke-WebRequest $zipUrl -UseBasicParsing).Content)

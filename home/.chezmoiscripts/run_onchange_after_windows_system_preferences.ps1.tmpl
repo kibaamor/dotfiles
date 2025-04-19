@@ -24,14 +24,22 @@ Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer
 Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState' -Name FullPath -Value 1
 
 # Windows features
-{{ range $feature := .windows.features }}
-if (!(Get-WindowsOptionalFeature -Online -FeatureName '{{ $feature }}').State) {
-  Write-Host 'Enable feature {{ $feature }}...'
-  Enable-WindowsOptionalFeature -Online -All -NoRestart -FeatureName '{{ $feature }}'
-} else {
-  Write-Host 'Feature {{ $feature }} is already enabled.'
+try {
+  $enabledFeatures = Get-WindowsOptionalFeature -Online |
+    Where-Object State -eq 'Enabled' |
+    Select-Object -ExpandProperty FeatureName
+
+  {{ range $feature := .windows.features }}
+  if (-not $enabledFeatures.Contains('{{ $feature }}')) {
+    Write-Host 'Enable feature {{ $feature }}...'
+    Enable-WindowsOptionalFeature -Online -All -NoRestart -FeatureName '{{ $feature }}'
+  } else {
+    Write-Host 'Feature {{ $feature }} is already enabled.'
+  }
+  {{ end }}
+} catch {
+  Write-Warning "Unable to query Windows Optional Features: $_"
 }
-{{ end }}
 
 Write-Host 'Enable winget proxy command line options...'
 winget settings --enable ProxyCommandLineOptions
