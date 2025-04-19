@@ -67,7 +67,7 @@ function Install-Scoop {
   }
 }
 
-if (-not Test-Path "$env:USERPROFILE\scoop") {
+if (-not (Test-Path "$env:USERPROFILE\scoop")) {
   Write-Host "Install scoop..."
   Install-Scoop
 } else {
