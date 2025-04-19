@@ -37,6 +37,8 @@ winget install --id twpayne.chezmoi --accept-source-agreements
 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
 
+$env:HTTP_PROXY = 'http://localhost:7890'
+$env:HTTPS_PROXY = 'http://localhost:7890'
 chezmoi init --apply kibaamor
 ```
 
