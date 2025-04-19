@@ -1,8 +1,8 @@
 # execute self with normal user privileges
 if (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
   if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
-    $CommandLine = "-NoExit -File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
-    #$CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+    #$CommandLine = "-NoExit -File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+    $CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
     Start-Process -Wait -FilePath PowerShell.exe -ArgumentList $CommandLine
     Exit
   }
@@ -81,10 +81,16 @@ if (-not (Test-Path "$env:USERPROFILE\scoop")) {
 if (Test-Path "$env:USERPROFILE\scoop") {
   Write-Host "Install git..."
   scoop install git
-  Write-Host "Add nerd-fonts bucket..."
+
+  Write-Host "Add bucket nerd-fonts..."
   scoop bucket add nerd-fonts
+
   Write-Host "Install font CascadiaMono-NF-Propo..."
   scoop install CascadiaMono-NF-Propo
+
+  Write-Host "Add bucket extras..."
+  scoop bucket add extras
+
   Write-Host "Install snipaste..."
   scoop install snipaste
 }
