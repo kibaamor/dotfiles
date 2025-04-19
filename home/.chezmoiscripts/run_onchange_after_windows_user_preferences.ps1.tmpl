@@ -18,9 +18,6 @@ if (-not ($installedPackages | Select-String '{{ $package }}')) {
 }
 {{ end }}
 
-Write-Host 'Trust package repository PSGallery...'
-Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-
 # Modules
 $installedModules = Get-Module -ListAvailable | Select-Object -ExpandProperty Name -Unique
 {{ range $module := .powershell.modules }}
