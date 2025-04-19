@@ -1,3 +1,13 @@
+# execute self with normal user privileges
+if (([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+  if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
+    $CommandLine = "-NoExit -File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+    #$CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+    Start-Process -Wait -FilePath PowerShell.exe -ArgumentList $CommandLine
+    Exit
+  }
+}
+
 # Add %USERPROFILE%\.local\bin to the PATH.
 $bin = "$env:USERPROFILE\.local\bin"
 $path = [Environment]::GetEnvironmentVariable('PATH', 'User').Split(';')
@@ -68,3 +78,5 @@ Write-Host "Add nerd-fonts bucket..."
 scoop bucket add nerd-fonts
 Write-Host "Install font CascadiaMono-NF-Propo..."
 scoop install CascadiaMono-NF-Propo
+Write-Host "Install snipaste..."
+scoop install snipaste
