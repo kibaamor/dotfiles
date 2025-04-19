@@ -7,15 +7,6 @@ if (!$path.Contains($bin)) {
   [Environment]::SetEnvironmentVariable('PATH', $path, 'User')
 }
 
-Get-Module -ListAvailable PackageManagement
-
-Install-Module PowerShellGet -Force -Scope CurrentUser
-Install-Module -Name PackageManagement -Force -Scope CurrentUser
-Import-Module PackageManagement
-
-Write-Host 'Install package provider NuGet...'
-Install-PackageProvider -Name NuGet -Force -Scope CurrentUser | Out-Null
-
 # Softwares
 $installedPackages = winget list
 {{ range $package := .packages.windows }}

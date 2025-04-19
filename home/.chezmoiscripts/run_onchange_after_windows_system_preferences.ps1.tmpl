@@ -43,3 +43,6 @@ try {
 
 Write-Host 'Enable winget proxy command line options...'
 winget settings --enable ProxyCommandLineOptions
+
+Write-Host 'Install package provider NuGet...'
+Install-PackageProvider -Name NuGet -Force
