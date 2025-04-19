@@ -18,17 +18,6 @@ if (-not ($installedPackages | Select-String '{{ $package }}')) {
 }
 {{ end }}
 
-# Modules
-$installedModules = Get-Module -ListAvailable | Select-Object -ExpandProperty Name -Unique
-{{ range $module := .powershell.modules }}
-if (-not $installedModules.Contains('{{ $module }}')) {
-  Write-Host 'Install powershell module {{ $module }}...'
-  Install-Module -Name '{{ $module }}' -Force -AllowClobber -Scope CurrentUser
-} else {
-  Write-Host 'Powershell module {{ $module }} is already installed.'
-}
-{{ end }}
-
 function Install-Scoop {
   try {
     $url = "https://github.com/ScoopInstaller/Install/archive/refs/heads/master.tar.gz"

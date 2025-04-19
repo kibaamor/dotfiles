@@ -14,7 +14,16 @@ Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
     }
 }
 
-if (Get-Module -ListAvailable -Name "PSReadLine") {
+$installedModules = Get-Module -ListAvailable | Select-Object -ExpandProperty Name -Unique
+
+if (-not $installedModules.Contains("Microsoft.PowerShell.PSResourceGet")) {
+  Install-Module -Name "Microsoft.PowerShell.PSResourceGet" -Force -AllowClobber -Scope CurrentUser
+}
+
+if (-not $installedModules.Contains("PSReadLine")) {
+  Install-Module -Name "PSReadLine" -Force -AllowClobber -Scope CurrentUser
+}
+if ($installedModules.Contains("PSReadLine")) {
   Import-Module PSReadLine
   Set-PSReadLineOption -BellStyle None
   Set-PSReadLineOption -PredictionSource History
@@ -23,7 +32,10 @@ if (Get-Module -ListAvailable -Name "PSReadLine") {
   Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
 }
 
-if (Get-Module -ListAvailable -Name "PSFzf") {
+if (-not $installedModules.Contains("PSFzf")) {
+  Install-Module -Name "PSFzf" -Force -AllowClobber -Scope CurrentUser
+}
+if ($installedModules.Contains("PSFzf")) {
   $env:FZF_DEFAULT_COMMAND='--strip-cwd-prefix --follow --hidden --exclude .git --exclude node_modules'
   $env:FZF_CTRL_T_COMMAND="fd --type f $env:FZF_DEFAULT_COMMAND"
   $env:FZF_ALT_C_COMMAND="fd --type d $env:FZF_DEFAULT_COMMAND"
@@ -48,15 +60,28 @@ if (Get-Module -ListAvailable -Name "PSFzf") {
   Set-PSFzfOption -PSReadLineChordProvider 'ctrl+t' -PSReadLineChordReverseHistory 'ctrl+r' -EnableFd -EnableFzf -FzfCommand 'fzf --height 40% --reverse --inline-info --info=inline --ansi --preview "bat --style=numbers --color=always {}"'
 }
 
-if (Get-Module -ListAvailable -Name "Terminal-Icons") {
+if (-not $installedModules.Contains("Terminal-Icons")) {
+  Install-Module -Name "Terminal-Icons" -Force -AllowClobber -Scope CurrentUser
+}
+if ($installedModules.Contains("Terminal-Icons")) {
   Import-Module Terminal-Icons
 }
-if (Get-Module -ListAvailable -Name "z") {
+
+if (-not $installedModules.Contains("z")) {
+  Install-Module -Name "z" -Force -AllowClobber -Scope CurrentUser
+}
+if ($installedModules.Contains("z")) {
   Import-Module z
 }
-if (Get-Module -ListAvailable -Name "cd-extras") {
+
+if (-not $installedModules.Contains("cd-extras")) {
+  Install-Module -Name "cd-extras" -Force -AllowClobber -Scope CurrentUser
+}
+if ($installedModules.Contains("cd-extras")) {
   Import-Module cd-extras
 }
+
+Remove-Variable -Name installedModules -ErrorAction SilentlyContinue
 
 try {
   $env:CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional

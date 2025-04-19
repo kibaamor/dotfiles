@@ -1,8 +1,0 @@
-powershell:
-  modules:
-    - Microsoft.PowerShell.PSResourceGet
-    - PSFzf
-    - PSReadLine
-    - Terminal-Icons
-    - z
-    - cd-extras
