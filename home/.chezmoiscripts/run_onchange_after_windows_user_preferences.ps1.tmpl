@@ -7,16 +7,13 @@ if (!$path.Contains($bin)) {
   [Environment]::SetEnvironmentVariable('PATH', $path, 'User')
 }
 
-Write-Host 'Upgrade winget...'
-winget upgrade Microsoft.AppInstaller --accept-package-agreements --accept-source-agreements --force --scope user
-
 Write-Host 'Install package provider NuGet...'
 Install-PackageProvider -Name NuGet -Force -Scope CurrentUser | Out-Null
 
 # Softwares
 $installedPackages = winget list
 {{ range $package := .packages.windows }}
-if (-not (installedPackages | Select-String '{{ $package }}')) {
+if (-not ($installedPackages | Select-String '{{ $package }}')) {
   Write-Host 'Install package {{ $package }}...'
   winget install --id '{{ $package }}' --accept-package-agreements --accept-source-agreements --force --scope user
 } else {
