@@ -41,26 +41,30 @@ if (-not $installedModules.Contains('{{ $module }}')) {
 
 function Install-Scoop {
   try {
-    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $url = "https://github.com/ScoopInstaller/Install/archive/refs/heads/master.tar.gz"
 
-    $zipUrl = "https://github.com/ScoopInstaller/Install/archive/refs/heads/master.zip"
-
-    # Download ZIP and load in memory
-    $zip = [System.IO.Compression.ZipArchive]::new(
-        [System.IO.MemoryStream]::new((Invoke-WebRequest $zipUrl -UseBasicParsing).Content)
+    $gz = New-Object IO.Compression.GzipStream (
+        [IO.MemoryStream]::new((Invoke-WebRequest $url -UseBasicParsing).Content),
+        [IO.Compression.CompressionMode]::Decompress
     )
 
-    # Find install.ps1 in the archive
-    $entry = $zip.Entries | Where-Object FullName -like "*install.ps1"
+    $tar = New-Object IO.MemoryStream
+    $buf = New-Object byte[] 4096
+    while (($n = $gz.Read($buf, 0, $buf.Length)) -gt 0) { $tar.Write($buf, 0, $n) }
+    $gz.Close(); $tar.Position = 0
 
-    if (-not $entry) {
-        Write-Host "Fail to install scoop: install.ps1 not found in archive."
-        return
+    while ($tar.Position -lt $tar.Length) {
+        $h = New-Object byte[] 512; $tar.Read($h, 0, 512) > $null
+        $name = ([Text.Encoding]::ASCII.GetString($h, 0, 100)).Trim("`0")
+        if (-not $name) { break }
+        $size = [Convert]::ToInt64(([Text.Encoding]::ASCII.GetString($h,124,12)).Trim("`0"), 8)
+        if ($name -like '*install.ps1') {
+            $b = New-Object byte[] $size; $tar.Read($b,0,$size) > $null
+            iex ([Text.Encoding]::UTF8.GetString($b)); break
+        } else {
+            $tar.Seek(([math]::Ceiling($size/512)*512), 'Current') > $null
+        }
     }
-
-    # Read and execute install.ps1
-    $ps1 = [System.IO.StreamReader]::new($entry.Open()).ReadToEnd()
-    Invoke-Expression $ps1
   }
   catch {
     Write-Host "An error occurred when installing scoop: $_"
