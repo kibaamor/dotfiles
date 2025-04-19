@@ -40,6 +40,8 @@ function Install-Scoop {
   $zipUrl = "https://github.com/ScoopInstaller/Install/archive/refs/heads/master.zip"
 
   try {
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+
     # Download ZIP and load in memory
     $zip = [System.IO.Compression.ZipArchive]::new(
         [System.IO.MemoryStream]::new((Invoke-WebRequest $zipUrl -UseBasicParsing).Content)
