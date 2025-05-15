@@ -17,7 +17,11 @@
     quotepath = false
 
     safecrlf = warn
-    autocrlf = false
+{{ if eq .chezmoi.os "windows" }}
+    autocrlf = true
+{{ else }}
+    autocrlf = input
+{{ end }}
     #eol = native
 
 [gui]
