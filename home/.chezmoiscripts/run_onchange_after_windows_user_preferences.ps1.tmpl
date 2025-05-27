@@ -1,11 +1,16 @@
-# Add %USERPROFILE%\.local\bin to the PATH.
-$bin = "$env:USERPROFILE\.local\bin"
-$path = [Environment]::GetEnvironmentVariable('PATH', 'User').Split(';')
-if (!$path.Contains($bin)) {
-  Write-Host "Adding $bin to PATH"
-  $path = [String]::Join(';', $path + $bin)
-  [Environment]::SetEnvironmentVariable('PATH', $path, 'User')
+function Add-PathToUserPath {
+  param ([string]$NewPath)
+
+  $envPath = [System.Environment]::GetEnvironmentVariable("PATH", "User")
+  if ($envPath -split ";" -contains $NewPath) {
+    Write-Host "$NewPath is already in PATH"
+  } else {
+    Write-Host "Adding $NewPath to PATH"
+    [System.Environment]::SetEnvironmentVariable("PATH", "$NewPath;$envPath", "User")
+  }
 }
+Add-PathToUserPath "$env:USERPROFILE\.local\bin"
+Add-PathToUserPath "$env:USERPROFILE\go\bin"
 
 # Softwares
 $installedPackages = winget list
