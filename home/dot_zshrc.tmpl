@@ -295,3 +295,5 @@ export NVM_DIR="$HOME/.nvm"
 [[ -s "$HOME/.iterm2_shell_integration.zsh" ]] && \. "$HOME/.iterm2_shell_integration.zsh"
 
 command_exists bash && command_exists direnv && eval "$(direnv hook zsh)"
+command_exists pnpm && alias pn=pnpm
+command_exists npx && alias np=npx
