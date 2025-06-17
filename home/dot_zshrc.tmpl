@@ -228,6 +228,28 @@ _fzf_git_fzf() {
 
 
 ###################################################################################################
+# Snap config sync
+
+# sync htop config
+if [[ -d "$HOME/snap/htop/current" ]] ; then
+  mkdir -p -- "$HOME/snap/htop/current/.config/htop"
+  cp -f -- "$HOME/.config/htop/htoprc" "$HOME/snap/htop/current/.config/htop/htoprc"
+fi
+
+
+###################################################################################################
+# Execute custom script
+[[ -s "$HOME/.customrc.post.sh" ]] && \. "$HOME/.customrc.post.sh"
+
+export NVM_DIR="$HOME/.nvm"
+[[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"
+[[ -s "$NVM_DIR/bash_completion" ]] && \. "$NVM_DIR/bash_completion"
+
+[[ -s /opt/conda/etc/profile.d/conda.sh ]] && \. /opt/conda/etc/profile.d/conda.sh
+[[ -s "$HOME/.iterm2_shell_integration.zsh" ]] && \. "$HOME/.iterm2_shell_integration.zsh"
+
+
+###################################################################################################
 # Alias and completion
 
 if command_exists kubectl ; then
@@ -271,28 +293,6 @@ command_exists systemd-cgtop && alias cgtop="systemd-cgtop"
 
 alias ip="ip --color"
 alias python=python3
-
-
-###################################################################################################
-# Snap config sync
-
-# sync htop config
-if [[ -d "$HOME/snap/htop/current" ]] ; then
-  mkdir -p -- "$HOME/snap/htop/current/.config/htop"
-  cp -f -- "$HOME/.config/htop/htoprc" "$HOME/snap/htop/current/.config/htop/htoprc"
-fi
-
-
-###################################################################################################
-# Execute custom script
-[[ -s "$HOME/.customrc.post.sh" ]] && \. "$HOME/.customrc.post.sh"
-
-export NVM_DIR="$HOME/.nvm"
-[[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"
-[[ -s "$NVM_DIR/bash_completion" ]] && \. "$NVM_DIR/bash_completion"
-
-[[ -s /opt/conda/etc/profile.d/conda.sh ]] && \. /opt/conda/etc/profile.d/conda.sh
-[[ -s "$HOME/.iterm2_shell_integration.zsh" ]] && \. "$HOME/.iterm2_shell_integration.zsh"
 
 command_exists bash && command_exists direnv && eval "$(direnv hook zsh)"
 command_exists pnpm && alias pn=pnpm
