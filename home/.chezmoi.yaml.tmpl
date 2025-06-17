@@ -21,14 +21,18 @@
 {{- end -}}
 
 {{- /* is personal workstation */ -}}
-{{- $personal := (or (contains "ubisoft" .chezmoi.fqdnHostname) (contains "-WKS-" .chezmoi.fqdnHostname)) | not -}}
+{{- $personal := (or
+    (contains "ubisoft" .chezmoi.fqdnHostname)
+    (contains "-WKS-" .chezmoi.fqdnHostname)
+    (env "DOTFILES_NONPERSONAL" | ne "")
+  ) | not -}}
 
 {{- /* checks if running interactively */ -}}
 {{- $interactive := and
-      stdinIsATTY
-      (env "ACT" | not)
-      (env "CODESPACES" | not)
-      (env "DEBIAN_FRONTEND" | ne "noninteractive") -}}
+  stdinIsATTY
+  (env "ACT" | not)
+  (env "CODESPACES" | not)
+  (env "DEBIAN_FRONTEND" | ne "noninteractive") -}}
 
 {{- /* we can execute sudo command or not */ -}}
 {{- $can_sudo := or $interactive (env "CODESPACES") -}}
