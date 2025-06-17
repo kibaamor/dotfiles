@@ -1,7 +1,8 @@
 #!/bin/bash
 
 command_exists() {
-  type -p "$1" | grep -v "not found" >/dev/null 2>&1
+  # type -p "$1" | grep -v "not found" >/dev/null 2>&1
+  command -v "$1" >/dev/null 2>&1
 }
 
 enable_proxy() {

@@ -228,6 +228,34 @@ _fzf_git_fzf() {
 
 
 ###################################################################################################
+# SSH_AUTH_SOCK
+
+SSH_AGENT_ENV="$HOME/.ssh/ssh-agent.env"
+SSH_AGENT_SOCKET="$HOME/.ssh/ssh-agent.socket"
+
+mkdir -p "$(dirname "$SSH_AGENT_ENV")"
+
+[ -f "$SSH_AGENT_ENV" ] && \. "$SSH_AGENT_ENV" > /dev/null
+
+if ! kill -0 "$SSH_AGENT_PID" 2>/dev/null || [ "$SSH_AUTH_SOCK" != "$SSH_AGENT_SOCKET" ]; then
+  eval "$(ssh-agent -a "$SSH_AGENT_SOCKET" -s)" > /dev/null
+  echo "export SSH_AUTH_SOCK=$SSH_AGENT_SOCKET" > "$SSH_AGENT_ENV"
+  echo "export SSH_AGENT_PID=$SSH_AGENT_PID" >> "$SSH_AGENT_ENV"
+fi
+
+loaded_fingerprints=$(ssh-add -l 2>/dev/null | awk '{print $2}' | tr '\n' ' ')
+
+SSH_KEYS=("$HOME/.ssh/id_rsa" "$HOME/.ssh/id_ed25519")
+
+for key in "${SSH_KEYS[@]}"; do
+  [ -f "$key" ] || continue
+  fingerprint=$(ssh-keygen -lf "$key" | awk '{print $2}')
+  if [[ ! " $loaded_fingerprints " =~ " $fingerprint " ]]; then
+    ssh-add "$key"
+  fi
+done
+
+###################################################################################################
 # Snap config sync
 
 # sync htop config
