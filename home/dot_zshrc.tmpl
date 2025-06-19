@@ -95,16 +95,16 @@ if command_exists git ; then
   fi
 
   if [[ -n "$default_proxy" ]]; then
-    CURRENT_HTTP_PROXY=$(git config --global http.proxy)
+    CURRENT_HTTP_PROXY=$(git config --includes --global http.proxy)
     if [[ "$CURRENT_HTTP_PROXY" != "$default_proxy" ]]; then
       echo "Updating git global http.proxy from '$CURRENT_HTTP_PROXY' to '$default_proxy'"
-      git config --global http.proxy "$default_proxy"
+      git config --file ~/.gitconfig-proxy --global http.proxy "$default_proxy"
     fi
 
-    CURRENT_HTTPS_PROXY=$(git config --global https.proxy)
+    CURRENT_HTTPS_PROXY=$(git config --includes --global https.proxy)
     if [[ "$CURRENT_HTTPS_PROXY" != "$default_proxy" ]]; then
       echo "Updating git global https.proxy from '$CURRENT_HTTPS_PROXY' to '$default_proxy'"
-      git config --global https.proxy "$default_proxy"
+      git config --file ~/.gitconfig-proxy --global https.proxy "$default_proxy"
     fi
   fi
 fi
