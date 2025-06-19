@@ -56,7 +56,7 @@ export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal,.ubis
 export default_proxy=http://ctu-net-mwg.ubisoft.org:3128
 {{- else -}}
 export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal
-if echo "" | nc localhost 7890 >/dev/null 2>&1 ; then
+if command_exists nc && nc -z localhost 7890 >/dev/null 2>&1 ; then
   export default_proxy=http://localhost:7890
 else
   export default_proxy=
@@ -254,7 +254,7 @@ _fzf_git_fzf() {
 SSH_AGENT_ENV="$HOME/.ssh/ssh-agent.env"
 SSH_AGENT_SOCKET="$HOME/.ssh/ssh-agent.socket"
 
-mkdir -p "$(dirname "$SSH_AGENT_ENV")"
+mkdir -p -- "$(dirname "$SSH_AGENT_ENV")"
 
 [[ -f "$SSH_AGENT_ENV" ]] && \. "$SSH_AGENT_ENV" > /dev/null
 
@@ -275,6 +275,7 @@ for key in "${SSH_KEYS[@]}"; do
     ssh-add "$key"
   fi
 done
+
 
 ###################################################################################################
 # Snap config sync
