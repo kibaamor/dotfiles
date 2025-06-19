@@ -1,17 +1,17 @@
 packages:
-  debian: "git zsh tree vim-nox"
-  centos: "git zsh tree vim-enhanced"
+  debian: "git zsh tree vim-nox bmon"
+  centos: "git zsh tree vim-enhanced bmon"
   windows:
-    - 'Microsoft.WindowsTerminal'
-    - 'Microsoft.VisualStudioCode'
-    - 'Microsoft.PowerToys'
-    - 'Microsoft.Sysinternals'
-    - 'GeekUninstaller.GeekUninstaller'
-    - 'Fork.Fork'
-    - 'Microsoft.PowerShell'
-    - 'JanDeDobbeleer.OhMyPosh'
-    - 'rsteube.Carapace'
-    - 'Tencent.WeChat'
-    - 'SublimeHQ.SublimeText.4'
-    - 'Sogou.SogouInput'
-    - 'Notion.Notion'
+    - "Microsoft.WindowsTerminal"
+    - "Microsoft.VisualStudioCode"
+    - "Microsoft.PowerToys"
+    - "Microsoft.Sysinternals"
+    - "GeekUninstaller.GeekUninstaller"
+    - "Fork.Fork"
+    - "Microsoft.PowerShell"
+    - "JanDeDobbeleer.OhMyPosh"
+    - "rsteube.Carapace"
+    - "Tencent.WeChat"
+    - "SublimeHQ.SublimeText.4"
+    - "Sogou.SogouInput"
+    - "Notion.Notion"
