@@ -17,11 +17,11 @@
     quotepath = false
 
     safecrlf = warn
-{{ if eq .chezmoi.os "windows" }}
+{{- if eq .chezmoi.os "windows" }}
     autocrlf = true
-{{ else }}
+{{- else }}
     autocrlf = input
-{{ end }}
+{{- end }}
     #eol = native
 
 [gui]
@@ -55,13 +55,8 @@
 [diff]
     colorMoved = default
 
-{{ if not .personal -}}
+[url "git@github.com:"]
+    insteadOf = https://github.com/
+
 [url "git@gitlab-ncsa.ubisoft.org:"]
-    insteadof = https://gitlab-ncsa.ubisoft.org/
-
-[http]
-    proxy = http://ctu-net-mwg.ubisoft.org:3128
-
-[https]
-    proxy = http://ctu-net-mwg.ubisoft.org:3128
-{{ end -}}
+    insteadOf = https://gitlab-ncsa.ubisoft.org/
