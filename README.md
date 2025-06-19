@@ -27,6 +27,10 @@ export HTTPS_PROXY=http://localhost:7890
 sh -c "$(curl kibazen.cn/install.sh)"
 ```
 
+> You can set git config for GitHub via command `GIT_CONFIG_GLOBAL=~/.gitconfig-github git config --global user.name xxx`.
+>
+> You can set git config for GitLab via command `GIT_CONFIG_GLOBAL=~/.gitconfig-gitlab git config --global user.name xxx`.
+
 ### Windows
 
 ```powershell
