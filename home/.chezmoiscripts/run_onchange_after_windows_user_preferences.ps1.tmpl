@@ -1,3 +1,5 @@
+###################################################################################################
+# Update PATH
 function Add-PathToUserPath {
   param ([string]$NewPath)
 
@@ -12,7 +14,44 @@ function Add-PathToUserPath {
 Add-PathToUserPath "$env:USERPROFILE\.local\bin"
 Add-PathToUserPath "$env:USERPROFILE\go\bin"
 
-# Softwares
+
+###################################################################################################
+# Update git config
+if (Get-Command git -ErrorAction SilentlyContinue) {
+  if ($env:GIT_USERNAME) {
+    $currentUsername = git config --global user.name
+    if ($currentUsername -ne $env:GIT_USERNAME) {
+      Write-Host "Updating git global user.name from '$currentUsername' to '$env:GIT_USERNAME'"
+      git config --global user.name "$env:GIT_USERNAME"
+    }
+  }
+
+  if ($env:GIT_EMAIL) {
+    $currentEmail = git config --global user.email
+    if ($currentEmail -ne $env:GIT_EMAIL) {
+      Write-Host "Updating git global user.email from '$currentEmail' to '$env:GIT_EMAIL'"
+      git config --global user.email "$env:GIT_EMAIL"
+    }
+  }
+
+  if ($env:default_proxy) {
+    $currentHttpProxy = git config --global http.proxy
+    if ($currentHttpProxy -ne "$env:default_proxy") {
+        Write-Host "Updating git global http.proxy from '$currentHttpProxy' to '$env:default_proxy'"
+        git config --global http.proxy "$env:default_proxy"
+    }
+
+    $currentHttpsProxy = git config --global https.proxy
+    if ($currentHttpsProxy -ne "$env:default_proxy") {
+        Write-Host "Updating git global https.proxy from '$currentHttpsProxy' to '$env:default_proxy'"
+        git config --global https.proxy "$env:default_proxy"
+    }
+  }
+}
+
+
+###################################################################################################
+# Install softwares via winget
 $installedPackages = winget list
 {{ range $package := .packages.windows }}
 if (-not ($installedPackages | Select-String '{{ $package }}')) {
@@ -23,6 +62,9 @@ if (-not ($installedPackages | Select-String '{{ $package }}')) {
 }
 {{ end }}
 
+
+###################################################################################################
+# Install softwares via scoop
 function Install-Scoop {
   try {
     $url = "https://github.com/ScoopInstaller/Install/archive/refs/heads/master.tar.gz"

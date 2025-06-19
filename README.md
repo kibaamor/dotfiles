@@ -16,14 +16,14 @@ export DOTFILES_INSTALL_EXTRA_BINS=1
 # (Optional) Set the value of 'DOTFILES_INSTALL_ARKADE_BINS' to non-empty to install all binaries 
 # that can be installed via arkade, see below for more details.
 export DOTFILES_INSTALL_ARKADE_BINS=1
-# (Optional) Set the value of 'TMPDIR' if the directory '/tmp' is mounted with 'noexec'.
-export TMPDIR=~/.tmp
 # Set the value of 'GIT_USERNAME' to set the default git user name.
 export GIT_USERNAME=x
 # Set the value of 'GIT_USEREMAIL' to set the default git user email.
 export GIT_USEREMAIL=x@x.x
 EOF
 
+export HTTP_PROXY=http://localhost:7890
+export HTTPS_PROXY=http://localhost:7890
 sh -c "$(curl kibazen.cn/install.sh)"
 ```
 
@@ -87,3 +87,12 @@ chezmoi init --apply kibaamor
 1. [kubectx, kubens](https://github.com/ahmetb/kubectx)
 1. [k9s](https://github.com/derailed/k9s)
 1. [helm](https://helm.sh/)
+
+## Troubleshooting
+
+### `chezmoi: fork/exec /tmp/XXXXXXXXXX.XX: permission denied`
+
+```bash
+# (Optional) Set the value of 'TMPDIR' if the directory '/tmp' is mounted with 'noexec'.
+export TMPDIR=~/.tmp
+```

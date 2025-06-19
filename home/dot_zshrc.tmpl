@@ -76,7 +76,7 @@ ulimit -c unlimited
 
 
 ###################################################################################################
-# Update git user.name and user.email
+# Update git config
 if command_exists git ; then
   if [[ -n "$GIT_USERNAME" ]]; then
     CURRENT_USERNAME=$(git config --global user.name)
@@ -91,6 +91,20 @@ if command_exists git ; then
     if [[ "$CURRENT_EMAIL" != "$GIT_EMAIL" ]]; then
       echo "Updating git global user.email from '$CURRENT_EMAIL' to '$GIT_EMAIL'"
       git config --global user.email "$GIT_EMAIL"
+    fi
+  fi
+
+  if [[ -n "$default_proxy" ]]; then
+    CURRENT_HTTP_PROXY=$(git config --global http.proxy)
+    if [[ "$CURRENT_HTTP_PROXY" != "$default_proxy" ]]; then
+      echo "Updating git global http.proxy from '$CURRENT_HTTP_PROXY' to '$default_proxy'"
+      git config --global http.proxy "$default_proxy"
+    fi
+
+    CURRENT_HTTPS_PROXY=$(git config --global https.proxy)
+    if [[ "$CURRENT_HTTPS_PROXY" != "$default_proxy" ]]; then
+      echo "Updating git global https.proxy from '$CURRENT_HTTPS_PROXY' to '$default_proxy'"
+      git config --global https.proxy "$default_proxy"
     fi
   fi
 fi
