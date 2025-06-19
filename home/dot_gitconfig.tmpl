@@ -61,6 +61,9 @@
 [url "git@gitlab-ncsa.ubisoft.org:"]
     insteadOf = https://gitlab-ncsa.ubisoft.org/
 
+[include]
+    path = ~/.gitconfig-proxy
+
 # https://git-scm.com/docs/git-config#_includes
 # https://git-scm.com/docs/git-config#Documentation/git-config.txt-GITCONFIGGLOBAL
 # GIT_CONFIG_GLOBAL=~/.gitconfig-github git config --global user.name xxx
@@ -70,5 +73,5 @@
     path = ~/.gitconfig-github
 [includeIf "hasconfig:remote.*.url:https://gitlab**"]
     path = ~/.gitconfig-gitlab
-[includeIf "hasconfig:remote.*.url:git@github**"]
+[includeIf "hasconfig:remote.*.url:git@gitlab*:*/**"]
     path = ~/.gitconfig-gitlab
