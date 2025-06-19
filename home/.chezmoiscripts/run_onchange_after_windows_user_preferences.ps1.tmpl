@@ -38,13 +38,13 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
     $currentHttpProxy = git config --includes --global http.proxy
     if ($currentHttpProxy -ne "$env:default_proxy") {
         Write-Host "Updating git global http.proxy from '$currentHttpProxy' to '$env:default_proxy'"
-        git config  --file "$env:USERPROFILE/.gitconfig-proxy" --global http.proxy "$env:default_proxy"
+        git config  --file "$env:USERPROFILE/.gitconfig-proxy" http.proxy "$env:default_proxy"
     }
 
     $currentHttpsProxy = git config --includes --global https.proxy
     if ($currentHttpsProxy -ne "$env:default_proxy") {
         Write-Host "Updating git global https.proxy from '$currentHttpsProxy' to '$env:default_proxy'"
-        git config  --file "$env:USERPROFILE/.gitconfig-proxy" --global https.proxy "$env:default_proxy"
+        git config  --file "$env:USERPROFILE/.gitconfig-proxy" https.proxy "$env:default_proxy"
     }
   }
 }
