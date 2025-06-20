@@ -41,7 +41,7 @@
 {{- $sudo := findExecutable "sudo" (list "/bin" "/sbin" "/usr/bin" "/usr/sbin") -}}
 
 format: yaml
-progress: true
+progress: auto
 
 data:
   extra_bins: {{ $extra_bins }}
