@@ -3,6 +3,11 @@ name: Build and Push Devcontainer Image
 on:
   schedule:
     - cron: "0 2 * * 1"
+  push:
+    paths:
+      - ".devcontainer/**"
+      - ".github/workflows/devcontainer.yml"
+      - "home/**"
   workflow_dispatch:
 
 jobs:
