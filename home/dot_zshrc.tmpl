@@ -84,6 +84,7 @@ if command_exists git ; then
       echo "Updating git global user.name from '$CURRENT_USERNAME' to '$GIT_USERNAME'"
       git config --global user.name "$GIT_USERNAME"
     fi
+    unset CURRENT_USERNAME
   fi
 
   if [[ -n "$GIT_EMAIL" ]]; then
@@ -92,6 +93,7 @@ if command_exists git ; then
       echo "Updating git global user.email from '$CURRENT_EMAIL' to '$GIT_EMAIL'"
       git config --global user.email "$GIT_EMAIL"
     fi
+    unset CURRENT_EMAIL
   fi
 
   if [[ -n "$default_proxy" ]]; then
@@ -100,12 +102,14 @@ if command_exists git ; then
       echo "Updating git global http.proxy from '$CURRENT_HTTP_PROXY' to '$default_proxy'"
       git config --file ~/.gitconfig-proxy http.proxy "$default_proxy"
     fi
+    unset CURRENT_HTTP_PROXY
 
     CURRENT_HTTPS_PROXY=$(git config --includes --global https.proxy)
     if [[ "$CURRENT_HTTPS_PROXY" != "$default_proxy" ]]; then
       echo "Updating git global https.proxy from '$CURRENT_HTTPS_PROXY' to '$default_proxy'"
       git config --file ~/.gitconfig-proxy https.proxy "$default_proxy"
     fi
+    unset CURRENT_HTTPS_PROXY
   fi
 fi
 
@@ -273,6 +277,7 @@ mkdir -p -- "$(dirname "$SSH_AGENT_ENV")"
 [[ -f "$SSH_AGENT_ENV" ]] && \. "$SSH_AGENT_ENV" > /dev/null
 
 if ! kill -0 "$SSH_AGENT_PID" 2>/dev/null || [[ "$SSH_AUTH_SOCK" != "$SSH_AGENT_SOCKET" ]]; then
+  rm -f -- "$SSH_AGENT_ENV" "$SSH_AGENT_SOCKET"
   eval "$(ssh-agent -a "$SSH_AGENT_SOCKET" -s)" > /dev/null
   echo "export SSH_AUTH_SOCK=$SSH_AGENT_SOCKET" > "$SSH_AGENT_ENV"
   echo "export SSH_AGENT_PID=$SSH_AGENT_PID" >> "$SSH_AGENT_ENV"
@@ -289,6 +294,9 @@ for key in "${SSH_KEYS[@]}"; do
     ssh-add "$key"
   fi
 done
+
+unset loaded_fingerprints
+unset fingerprint
 
 
 ###################################################################################################
