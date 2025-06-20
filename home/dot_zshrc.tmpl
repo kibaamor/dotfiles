@@ -62,8 +62,8 @@ export default_proxy=
 if command_exists nc ; then
   if nc -z localhost 7890 >/dev/null 2>&1 ; then
     export default_proxy=http://localhost:7890
-  elif nc -z ctu-net-mwg.ubisoft.org 3128 >/dev/null 2>&1 ; then
-    export default_proxy=http://ctu-net-mwg.ubisoft.org:3128
+  elif nc -z proxy.ubisoft.org 3128 >/dev/null 2>&1 ; then
+    export default_proxy=http://proxy.ubisoft.org:3128
   fi
 fi
 
