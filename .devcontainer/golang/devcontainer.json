@@ -1,6 +1,6 @@
 {
 	"name": "dotfiles golang",
-	"image": "ghcr.io/kibaamor/dotfiles-base:latest",
+	"image": "ghcr.io/kibaamor/dotfiles:latest",
   "features": {
     "ghcr.io/devcontainers/features/go:1": {}
   }

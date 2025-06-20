@@ -11,13 +11,35 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push-devcontainers:
+  build-and-push-base:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to ghcr.io
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push DevContainer (base)
+        uses: devcontainers/ci@v0.3
+        with:
+          imageName: ghcr.io/${{ github.repository }}
+          imageTag: latest
+          push: always
+          noCache: true
+
+  build-and-push-language-specific:
+    needs: build-and-push-base
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         config:
-          - base
           - golang
 
     steps:
