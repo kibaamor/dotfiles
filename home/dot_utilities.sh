@@ -5,6 +5,21 @@ command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
+function update_git_config() {
+  local config_file="$1"
+  local key="$2"
+  local value="$3"
+
+  if [[ -n "$value" ]]; then
+    local current_value
+    current_value=$(git config --includes --global "$key")
+    if [[ "$current_value" != "$value" ]]; then
+      echo "Updating git config ('$config_file') $key from '$current_value' to '$value'"
+      git config --file "$config_file" "$key" "$value"
+    fi
+  fi
+}
+
 enable_proxy() {
   export no_proxy=${default_no_proxy:-}
   export https_proxy=${default_proxy:-}
@@ -119,6 +134,9 @@ cpu_weight_to_shares() {
 # https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/index.html
 # https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html
 dump_docker_resources() {
+  local container_id
+  local cgroup_path
+
   container_id=$(docker inspect -f '{{ .Id }}' "$1")
   cgroup_path=$(find /sys/fs/cgroup -type d -name "*$container_id*")
   echo "cgroup_path: $cgroup_path"
@@ -130,5 +148,36 @@ dump_docker_resources() {
     cpu.stat cgroup.controllers cgroup.events memory.events pids.events \
     cpu.shares cpu.cfs_quota_us cpu.cfs_period_us memory.limit_in_bytes; do
     [[ -f "$cgroup_path/$file" ]] && echo "$file: $(tr '\n' ',' <"$cgroup_path/$file" | sed 's/,$/\n/')"
+  done
+}
+
+setup_ssh_agent() {
+  local env_file="$1"
+  local socket_file="$2"
+  shift 2
+  local ssh_keys=("$@")
+
+  mkdir -p -- "$(dirname "$env_file")"
+
+  # shellcheck source=/dev/null
+  [[ -f "$env_file" ]] && \. "$env_file" >/dev/null
+
+  if ! kill -0 "$SSH_AGENT_PID" 2>/dev/null || [[ "$SSH_AUTH_SOCK" != "$socket_file" ]]; then
+    rm -f -- "$env_file" "$socket_file"
+    eval "$(ssh-agent -a "$socket_file" -s)" >/dev/null
+    echo "export SSH_AUTH_SOCK=$socket_file" >"$env_file"
+    echo "export SSH_AGENT_PID=$SSH_AGENT_PID" >>"$env_file"
+  fi
+
+  local loaded_fingerprints
+  loaded_fingerprints=$(ssh-add -l 2>/dev/null | awk '{print $2}' | tr '\n' ' ')
+
+  for key in "${ssh_keys[@]}"; do
+    [[ -f "$key" ]] || continue
+    local fingerprint
+    fingerprint=$(ssh-keygen -lf "$key" | awk '{print $2}')
+    if [[ " $loaded_fingerprints " != *" $fingerprint "* ]]; then
+      ssh-add "$key"
+    fi
   done
 }
