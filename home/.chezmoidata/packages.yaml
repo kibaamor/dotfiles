@@ -1,5 +1,5 @@
 packages:
-  debian: "git zsh tree vim-nox bmon netcat-openbsd"
+  debian: "git zsh tree vim bmon netcat-openbsd"
   centos: "git zsh tree vim-enhanced bmon nmap-ncat"
   windows:
     - "Microsoft.WindowsTerminal"
