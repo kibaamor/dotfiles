@@ -18,6 +18,12 @@ command_exists bash && command_exists direnv && emulate zsh -c "$(direnv hook zs
 
 
 ###################################################################################################
+# Update ulimit
+ulimit -n unlimited
+ulimit -c unlimited
+
+
+###################################################################################################
 # Environment variables
 
 export PATH="$HOME/.local/sbin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/snap/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
@@ -27,12 +33,12 @@ command_exists go && export PATH="$(go env GOPATH)/bin:$PATH"
 [[ -s "$HOME/.cargo/env" ]] && \. "$HOME/.cargo/env"
 
 export GO111MODULE=on
-{{ if not .personal -}}
-export GOPROXY=https://artifactory.ubisoft.org/artifactory/go,direct
-export GOPRIVATE="*.ubisoft.org,*.ubi.com"
-{{- else -}}
-export GOPROXY=https://goproxy.cn,direct
-{{- end }}
+if command_exists nc && nc -z artifactory.ubisoft.org 443 >/dev/null 2>&1 ; then
+  export GOPROXY=https://artifactory.ubisoft.org/artifactory/go,direct
+  export GOPRIVATE="*.ubisoft.org,*.ubi.com"
+else
+  export GOPROXY=https://goproxy.cn,direct
+fi
 
 export GROFF_NO_SGR=1
 export SYSTEMD_EDITOR=vim
@@ -51,23 +57,15 @@ command_exists brew && eval "$($(brew --prefix)/bin/brew shellenv)"
 export DOTNET_CLI_TELEMETRY_OPTOUT=true
 export COMPOSE_BAKE=true
 
-{{ if not .personal -}}
 export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com
-export default_proxy=http://ctu-net-mwg.ubisoft.org:3128
-{{- else -}}
-export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal
-if command_exists nc && nc -z localhost 7890 >/dev/null 2>&1 ; then
-  export default_proxy=http://localhost:7890
-else
-  export default_proxy=
+export default_proxy=
+if command_exists nc ; then
+  if nc -z localhost 7890 >/dev/null 2>&1 ; then
+    export default_proxy=http://localhost:7890
+  elif nc -z ctu-net-mwg.ubisoft.org 3128 >/dev/null 2>&1 ; then
+    export default_proxy=http://ctu-net-mwg.ubisoft.org:3128
+  fi
 fi
-{{- end }}
-
-
-###################################################################################################
-# Update ulimit
-ulimit -n unlimited
-ulimit -c unlimited
 
 
 ###################################################################################################
