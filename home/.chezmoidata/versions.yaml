@@ -16,7 +16,7 @@ versions:
   # https://github.com/sharkdp/fd
   fd: 10.2.0
   # https://github.com/junegunn/fzf
-  fzf: 0.62.0
+  fzf: 0.63.0
   # https://github.com/direnv/direnv
   direnv: 2.36.0
   # https://github.com/BurntSushi/ripgrep
@@ -30,7 +30,7 @@ versions:
   # https://github.com/tldr-pages/tlrc
   tlrc: 1.11.1
   # https://github.com/fatedier/frp
-  frp: 0.62.1
+  frp: 0.63.0
   # https://github.com/jqlang/jq
   jq: 1.8.0
   # https://github.com/mikefarah/yq

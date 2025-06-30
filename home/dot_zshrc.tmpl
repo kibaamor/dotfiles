@@ -119,6 +119,8 @@ export ZSH="$HOME/.oh-my-zsh"
 
 export HIST_STAMPS="yyyy-mm-dd"
 
+command_exists nvm && export ZSH_NVM_AUTOLOAD=true
+
 # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins
 plugins=(
   git
@@ -129,6 +131,7 @@ plugins=(
   kubectx
   microk8s
   minikube
+  nvm
   kind
   istioctl
   helm
@@ -258,10 +261,6 @@ fi
 ###################################################################################################
 # Execute custom script
 [[ -s "$HOME/.customrc.post.sh" ]] && \. "$HOME/.customrc.post.sh"
-
-export NVM_DIR="$HOME/.nvm"
-[[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"
-[[ -s "$NVM_DIR/bash_completion" ]] && \. "$NVM_DIR/bash_completion"
 
 [[ -s /opt/conda/etc/profile.d/conda.sh ]] && \. /opt/conda/etc/profile.d/conda.sh
 [[ -s "$HOME/.iterm2_shell_integration.zsh" ]] && \. "$HOME/.iterm2_shell_integration.zsh"
