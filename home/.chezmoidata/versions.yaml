@@ -16,9 +16,9 @@ versions:
   # https://github.com/sharkdp/fd
   fd: 10.2.0
   # https://github.com/junegunn/fzf
-  fzf: 0.63.0
+  fzf: 0.64.0
   # https://github.com/direnv/direnv
-  direnv: 2.36.0
+  direnv: 2.37.0
   # https://github.com/BurntSushi/ripgrep
   ripgrep: 14.1.1
   # https://github.com/lsd-rs/lsd
@@ -32,7 +32,7 @@ versions:
   # https://github.com/fatedier/frp
   frp: 0.63.0
   # https://github.com/jqlang/jq
-  jq: 1.8.0
+  jq: 1.8.1
   # https://github.com/mikefarah/yq
   yq: 4.45.4
   # https://github.com/dundee/gdu
@@ -70,6 +70,6 @@ versions:
   # https://github.com/ahmetb/kubectx
   kubectx: 0.9.5
   # https://github.com/derailed/k9s
-  k9s: 0.50.6
+  k9s: 0.50.7
   # https://github.com/helm/helm
-  helm: 3.18.3
+  helm: 3.18.4
