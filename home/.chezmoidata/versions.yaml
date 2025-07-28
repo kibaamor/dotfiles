@@ -16,7 +16,7 @@ versions:
   # https://github.com/sharkdp/fd
   fd: 10.2.0
   # https://github.com/junegunn/fzf
-  fzf: 0.64.0
+  fzf: 0.65.0
   # https://github.com/direnv/direnv
   direnv: 2.37.1
   # https://github.com/BurntSushi/ripgrep
@@ -46,7 +46,7 @@ versions:
   # https://github.com/mr-karan/doggo
   doggo: 1.0.5
   # https://github.com/nxtrace/NTrace-core
-  NTracecore: 1.4.0
+  NTracecore: 1.4.2
   # https://github.com/bcicen/ctop
   ctop: 0.7.7
   # https://github.com/kubecolor/kubecolor
