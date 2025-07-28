@@ -3,16 +3,39 @@
 function Add-PathToUserPath {
   param ([string]$NewPath)
 
-  $envPath = [System.Environment]::GetEnvironmentVariable("PATH", "User")
+  $envPath = [Environment]::GetEnvironmentVariable("PATH", "User")
   if ($envPath -split ";" -contains $NewPath) {
     Write-Host "$NewPath is already in PATH"
   } else {
     Write-Host "Adding $NewPath to PATH"
-    [System.Environment]::SetEnvironmentVariable("PATH", "$NewPath;$envPath", "User")
+    [Environment]::SetEnvironmentVariable("PATH", "$NewPath;$envPath", "User")
   }
 }
 Add-PathToUserPath "$env:USERPROFILE\.local\bin"
 Add-PathToUserPath "$env:USERPROFILE\go\bin"
+
+function Set-UserEnvIfMissing {
+  param ([string]$EnvName)
+
+  $currentValue = [Environment]::GetEnvironmentVariable($EnvName, "Process")
+  if ([string]::IsNullOrWhiteSpace($currentValue)) {
+    Write-Host "Current environment variable '$EnvName' is not set or empty. Nothing to update."
+    return
+  }
+
+  $userValue = [Environment]::GetEnvironmentVariable($EnvName, "User")
+  if (-not [string]::IsNullOrWhiteSpace($userValue)) {
+    Write-Host "User environment variable '$EnvName'('$userValue') already set. No action taken."
+    return
+  }
+
+  if ($userValue -ne $currentValue) {
+    Write-Host "Setting user environment variable '$EnvName' to '$currentValue'"
+    [Environment]::SetEnvironmentVariable($EnvName, $currentValue, "User")
+  }
+}
+Set-UserEnvIfMissing 'HTTP_PROXY'
+Set-UserEnvIfMissing 'HTTPS_PROXY'
 
 
 ###################################################################################################
