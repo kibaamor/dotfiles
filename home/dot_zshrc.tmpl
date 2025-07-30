@@ -57,13 +57,14 @@ command_exists brew && eval "$($(brew --prefix)/bin/brew shellenv)"
 export DOTNET_CLI_TELEMETRY_OPTOUT=true
 export COMPOSE_BAKE=true
 
-export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com,192.168.49.2/16
+export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal,192.168.49.2/16
 export default_proxy=
 if command_exists nc ; then
   if nc -w 1 -z localhost 7890 >/dev/null 2>&1 ; then
     export default_proxy=http://localhost:7890
 #  elif nc -w 1 -z proxy.ubisoft.org 3128 >/dev/null 2>&1 ; then
 #    export default_proxy=http://proxy.ubisoft.org:3128
+#    export export default_no_proxy=$default_no_proxy,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com
   fi
 fi
 
