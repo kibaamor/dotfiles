@@ -33,12 +33,12 @@ command_exists go && export PATH="$(go env GOPATH)/bin:$PATH"
 [[ -s "$HOME/.cargo/env" ]] && \. "$HOME/.cargo/env"
 
 export GO111MODULE=on
-if command_exists nc && nc -z artifactory.ubisoft.org 443 >/dev/null 2>&1 ; then
-  export GOPROXY=https://artifactory.ubisoft.org/artifactory/go,direct
-  export GOPRIVATE="*.ubisoft.org,*.ubi.com"
-else
+#if command_exists nc && nc -w 1 -z artifactory.ubisoft.org 443 >/dev/null 2>&1 ; then
+#  export GOPROXY=https://artifactory.ubisoft.org/artifactory/go,direct
+#  export GOPRIVATE="*.ubisoft.org,*.ubi.com"
+#else
   export GOPROXY=https://goproxy.cn,direct
-fi
+#fi
 
 export GROFF_NO_SGR=1
 export SYSTEMD_EDITOR=vim
@@ -60,10 +60,10 @@ export COMPOSE_BAKE=true
 export default_no_proxy=localhost,127.0.0.1,::1,kubernetes.docker.internal,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com,192.168.49.2/16
 export default_proxy=
 if command_exists nc ; then
-  if nc -z localhost 7890 >/dev/null 2>&1 ; then
+  if nc -w 1 -z localhost 7890 >/dev/null 2>&1 ; then
     export default_proxy=http://localhost:7890
-  elif nc -z proxy.ubisoft.org 3128 >/dev/null 2>&1 ; then
-    export default_proxy=http://proxy.ubisoft.org:3128
+#  elif nc -w 1 -z proxy.ubisoft.org 3128 >/dev/null 2>&1 ; then
+#    export default_proxy=http://proxy.ubisoft.org:3128
   fi
 fi
 

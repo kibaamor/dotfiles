@@ -34,8 +34,10 @@ function Set-UserEnvIfMissing {
     [Environment]::SetEnvironmentVariable($EnvName, $currentValue, "User")
   }
 }
+Set-UserEnvIfMissing 'NO_PROXY'
 Set-UserEnvIfMissing 'HTTP_PROXY'
 Set-UserEnvIfMissing 'HTTPS_PROXY'
+Set-UserEnvIfMissing 'FTP_PROXY'
 
 
 ###################################################################################################
