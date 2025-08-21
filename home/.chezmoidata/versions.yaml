@@ -16,7 +16,7 @@ versions:
   # https://github.com/sharkdp/fd
   fd: 10.2.0
   # https://github.com/junegunn/fzf
-  fzf: 0.65.0
+  fzf: 0.65.1
   # https://github.com/direnv/direnv
   direnv: 2.37.1
   # https://github.com/BurntSushi/ripgrep
@@ -30,7 +30,7 @@ versions:
   # https://github.com/tldr-pages/tlrc
   tlrc: 1.11.1
   # https://github.com/fatedier/frp
-  frp: 0.63.0
+  frp: 0.64.0
   # https://github.com/jqlang/jq
   jq: 1.8.1
   # https://github.com/mikefarah/yq
@@ -42,7 +42,7 @@ versions:
   # https://github.com/kevwan/tproxy
   tproxy: 0.9.1
   # https://github.com/orf/gping
-  gping: 1.19.0
+  gping: 1.20.1
   # https://github.com/mr-karan/doggo
   doggo: 1.0.5
   # https://github.com/nxtrace/NTrace-core
@@ -52,9 +52,9 @@ versions:
   # https://github.com/kubecolor/kubecolor
   kubecolor: 0.5.1
   # https://github.com/alexellis/arkade
-  arkade: 0.11.40
+  arkade: 0.11.41
   # https://github.com/kubeshark/kubeshark
-  kubeshark: 52.8.0
+  kubeshark: 52.8.1
   # https://github.com/txn2/kubefwd
   kubefwd: 1.22.5
   # https://github.com/FiloSottile/mkcert
@@ -72,4 +72,4 @@ versions:
   # https://github.com/derailed/k9s
   k9s: 0.50.9
   # https://github.com/helm/helm
-  helm: 3.18.4
+  helm: 3.18.6
