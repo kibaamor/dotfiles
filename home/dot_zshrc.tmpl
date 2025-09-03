@@ -26,8 +26,8 @@ ulimit -c unlimited
 ###################################################################################################
 # Environment variables
 
-export PATH="$HOME/.local/sbin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/snap/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$HOME/.arkade/bin:$PATH"
+export PATH="/usr/local/sbin:/usr/local/bin:/snap/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
+export PATH="$HOME/.local/sbin:$HOME/.local/bin:${KREW_ROOT:-$HOME/.krew}/bin:$HOME/.arkade/bin:$PATH"
 
 command_exists go && export PATH="$(go env GOPATH)/bin:$PATH"
 [[ -s "$HOME/.cargo/env" ]] && \. "$HOME/.cargo/env"
