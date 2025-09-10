@@ -24,7 +24,7 @@ versions:
   # https://github.com/lsd-rs/lsd
   lsd: 1.1.5
   # https://github.com/muesli/duf
-  duf: 0.8.1
+  duf: 0.9.1
   # https://github.com/FiloSottile/age
   age: 1.2.1
   # https://github.com/tldr-pages/tlrc
@@ -34,7 +34,7 @@ versions:
   # https://github.com/jqlang/jq
   jq: 1.8.1
   # https://github.com/mikefarah/yq
-  yq: 4.47.1
+  yq: 4.47.2
   # https://github.com/dundee/gdu
   gdu: 5.31.0
   # https://github.com/zu1k/nali
@@ -52,7 +52,7 @@ versions:
   # https://github.com/kubecolor/kubecolor
   kubecolor: 0.5.1
   # https://github.com/alexellis/arkade
-  arkade: 0.11.44
+  arkade: 0.11.46
   # https://github.com/kubeshark/kubeshark
   kubeshark: 52.8.1
   # https://github.com/txn2/kubefwd
@@ -64,7 +64,7 @@ versions:
   # https://github.com/jesseduffield/lazydocker
   lazydocker: 0.24.1
   # https://github.com/kubernetes/minikube
-  minikube: 1.36.0
+  minikube: 1.37.0
   # https://github.com/kubernetes-sigs/kind
   kind: 0.30.0
   # https://github.com/ahmetb/kubectx
