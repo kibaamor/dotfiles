@@ -12,7 +12,7 @@ versions:
   # https://github.com/dandavison/delta
   delta: 0.18.2
   # https://github.com/sharkdp/bat
-  bat: 0.25.0
+  bat: 0.26.0
   # https://github.com/sharkdp/fd
   fd: 10.3.0
   # https://github.com/junegunn/fzf
@@ -20,7 +20,7 @@ versions:
   # https://github.com/direnv/direnv
   direnv: 2.37.1
   # https://github.com/BurntSushi/ripgrep
-  ripgrep: 14.1.1
+  ripgrep: 15.0.0
   # https://github.com/lsd-rs/lsd
   lsd: 1.2.0
   # https://github.com/muesli/duf
@@ -52,7 +52,7 @@ versions:
   # https://github.com/kubecolor/kubecolor
   kubecolor: 0.5.2
   # https://github.com/alexellis/arkade
-  arkade: 0.11.50
+  arkade: 0.11.51
   # https://github.com/kubeshark/kubeshark
   kubeshark: 52.9.0
   # https://github.com/txn2/kubefwd
@@ -70,6 +70,6 @@ versions:
   # https://github.com/ahmetb/kubectx
   kubectx: 0.9.5
   # https://github.com/derailed/k9s
-  k9s: 0.50.15
+  k9s: 0.50.16
   # https://github.com/helm/helm
   helm: 3.19.0
