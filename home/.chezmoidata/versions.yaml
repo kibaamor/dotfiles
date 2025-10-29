@@ -16,11 +16,11 @@ versions:
   # https://github.com/sharkdp/fd
   fd: 10.3.0
   # https://github.com/junegunn/fzf
-  fzf: 0.66.0
+  fzf: 0.66.1
   # https://github.com/direnv/direnv
   direnv: 2.37.1
   # https://github.com/BurntSushi/ripgrep
-  ripgrep: 15.0.0
+  ripgrep: 15.1.0
   # https://github.com/lsd-rs/lsd
   lsd: 1.2.0
   # https://github.com/muesli/duf
@@ -52,7 +52,7 @@ versions:
   # https://github.com/kubecolor/kubecolor
   kubecolor: 0.5.2
   # https://github.com/alexellis/arkade
-  arkade: 0.11.51
+  arkade: 0.11.52
   # https://github.com/kubeshark/kubeshark
   kubeshark: 52.9.0
   # https://github.com/txn2/kubefwd

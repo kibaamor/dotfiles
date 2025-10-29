@@ -11,7 +11,7 @@ RUN set -ex \
 RUN set -ex \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt update \
-    && sh -c "$(curl kibazen.cn/install.sh)" -- --one-shot\
+    && sh -c "$(curl kibazen.cn/dotfiles.sh)"\
     && echo exit 0 | script -qec zsh \
     && rm -f -- typescript \
     && apt-get -y autoremove --purge \
