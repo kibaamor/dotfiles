@@ -2,6 +2,8 @@
 
 #!/bin/bash
 
+set -euf
+
 if [ "$(id -u)" -eq 0 ]; then
   set -euf \
     && yum update \

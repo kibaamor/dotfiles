@@ -5,6 +5,8 @@
 
 #!/bin/bash
 
+set -eu
+
 if [ "$(id -u)" -eq 0 ]; then
   set -euf \
     && export DEBIAN_FRONTEND=noninteractive \
