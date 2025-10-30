@@ -35,9 +35,9 @@ RUN set -eux \
     && whoami \
     && id \
     && groups \
-    && ls -al /home/ubuntu/.local/bin/ \
     && ls -al /home/ubuntu \
     && sh -c "$(curl kibazen.cn/dotfiles.sh)" \
+    && ls -al /home/ubuntu/.local/bin \
     && /home/ubuntu/.local/bin/chezmoi init --apply kibaamor \
     && echo exit 0 | script -qec zsh \
     && rm -fr -- typescript /home/ubuntu/.zsh_history /home/ubuntu/.cache/chezmoi \
