@@ -31,7 +31,14 @@ RUN set -eux \
     && export DEBIAN_FRONTEND=noninteractive \
     && export DOTFILES_INSTALL_EXTRA_BINS=1 \
     && export DOTFILES_INSTALL_ARKADE_BINS=1 \
+    && pwd \
+    && whoami \
+    && id \
+    && groups \
+    && ls -al /home/ubuntu/.local/bin/ \
+    && ls -al /home/ubuntu \
     && sh -c "$(curl kibazen.cn/dotfiles.sh)" \
+    && /home/ubuntu/.local/bin/chezmoi init --apply kibaamor \
     && echo exit 0 | script -qec zsh \
     && rm -fr -- typescript /home/ubuntu/.zsh_history /home/ubuntu/.cache/chezmoi \
     && find /home/ubuntu/.local/bin -type f ! -name 'upx' ! -name 'rfv' -exec /home/ubuntu/.local/bin/upx --best --lzma -q {} + \
