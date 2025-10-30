@@ -2,16 +2,16 @@
 
 #!/bin/bash
 
-set -euf
+set -efu
 
 if [ "$(id -u)" -eq 0 ]; then
-  set -euf \
+  set -efu \
     && yum update \
     && yum --assumeyes install {{ .packages.centos }} \
     && yum update clean
 {{ if .can_sudo }}
 else
-  set -euf \
+  set -efu \
     && {{ .sudo }} yum update \
     && {{ .sudo }} yum --assumeyes install {{ .packages.centos }} \
     && {{ .sudo }} yum update clean

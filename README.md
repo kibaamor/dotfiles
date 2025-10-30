@@ -24,7 +24,7 @@ EOF
 
 export HTTP_PROXY=http://localhost:7890
 export HTTPS_PROXY=http://localhost:7890
-sh -c "$(curl kibazen.cn/install.sh)"
+sh -c "$(curl kibazen.cn/dotfiles.sh)"
 ```
 
 > You can set git config for GitHub via command `git config --file ~/.gitconfig-github user.name xxx`.

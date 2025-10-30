@@ -1,7 +1,7 @@
 {{- if and (not (eq .chezmoi.os "windows")) .interactive -}}
 #!/bin/bash
 
-set -euf
+set -efu
 
 if [ "$(basename "$SHELL")" = "zsh" ]; then
   exit 0

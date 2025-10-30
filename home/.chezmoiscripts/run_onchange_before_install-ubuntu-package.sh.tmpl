@@ -8,14 +8,14 @@
 set -eu
 
 if [ "$(id -u)" -eq 0 ]; then
-  set -euf \
+  set -efu \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt update \
     && apt install --yes --no-install-recommends {{ .packages.debian }} \
     && rm -rf /var/lib/apt/lists/*
 {{ if .can_sudo }}
 else
-  set -euf \
+  set -efu \
     && export DEBIAN_FRONTEND=noninteractive \
     && {{ .sudo }} apt update \
     && {{ .sudo }} apt install --yes --no-install-recommends {{ .packages.debian }} \
