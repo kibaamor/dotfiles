@@ -35,7 +35,7 @@
   (env "DEBIAN_FRONTEND" | ne "noninteractive") -}}
 
 {{- /* we can execute sudo command or not */ -}}
-{{- $can_sudo := or $interactive (env "CODESPACES") -}}
+{{- $can_sudo := or $interactive (env "DOTFILES_CAN_SUDO") -}}
 
 {{- /* find sudo command */ -}}
 {{- $sudo := findExecutable "sudo" (list "/bin" "/sbin" "/usr/bin" "/usr/sbin") -}}

@@ -29,6 +29,9 @@ WORKDIR /home/ubuntu
 
 RUN set -eux \
     && export DEBIAN_FRONTEND=noninteractive \
+    && export DOTFILES_INSTALL_EXTRA_BINS=1 \
+    && export DOTFILES_INSTALL_ARKADE_BINS=1 \
+    && export DOTFILES_CAN_SUDO=1 \
     && sh -c "$(curl kibazen.cn/dotfiles.sh)" \
     && echo exit 0 | script -qec zsh \
     && rm -fr -- typescript ~/.zsh_history ~/.cache/chezmoi \
