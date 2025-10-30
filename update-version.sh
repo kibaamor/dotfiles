@@ -38,6 +38,7 @@ repos=(
   "bcicen/ctop"
   "kubecolor/kubecolor"
   "alexellis/arkade"
+  "upx/upx"
 
   ##############################################################
   # Extra Binaries

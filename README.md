@@ -75,6 +75,7 @@ chezmoi init --apply kibaamor
 1. [ctop](https://github.com/bcicen/ctop)
 1. [kubecolor](https://github.com/kubecolor/kubecolor)
 1. [arkade](https://github.com/alexellis/arkade)
+1. [upx/upx](https://github.com/upx/upx)
 
 ### Extra Binaries
 

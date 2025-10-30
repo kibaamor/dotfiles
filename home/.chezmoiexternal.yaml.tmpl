@@ -213,6 +213,26 @@
   path: "kubecolor{{ .exe_ext }}"
   executable: true
 
+".local/bin/arkade{{ .exe_ext }}":
+  type: file
+{{ if eq .chezmoi.os "windows" }}
+  url: "https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade.exe"
+{{ else if eq .chezmoi.os "darwin" }}
+  url: "https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade-darwin"
+{{ else }}
+  url: "https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade"
+{{ end }}
+  executable: true
+
+{{ if ne .chezmoi.os "windows" }}
+".local/bin/upx{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/upx/upx/releases/download/v{{ .versions.upx }}/upx-{{ .versions.upx }}-{{ .chezmoi.arch }}_{{ .chezmoi.os }}.tar.xz"
+  path: "upx{{ .exe_ext }}"
+  executable: true
+  stripComponents: 1
+{{ end }}
+
 #{{ if .personal }}
 #".local/bin/frpc{{ .exe_ext }}":
 #  type: archive-file
@@ -246,17 +266,6 @@
   path: "kubefwd{{ .exe_ext }}"
   executable: true
 {{ end }}
-
-".local/bin/arkade{{ .exe_ext }}":
-  type: file
-{{ if eq .chezmoi.os "windows" }}
-  url: "https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade.exe"
-{{ else if eq .chezmoi.os "darwin" }}
-  url: "https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade-darwin"
-{{ else }}
-  url: "https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade"
-{{ end }}
-  executable: true
 
 ########################################################################################################################
 # Install all binaries that can be installed via arkade.
