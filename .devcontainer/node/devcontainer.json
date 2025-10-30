@@ -1,0 +1,7 @@
+{
+  "name": "dotfiles node",
+  "image": "ghcr.io/kibaamor/dotfiles:latest",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {}
+  }
+}
