@@ -6,7 +6,7 @@ RUN set -ex \
     && apt dist-upgrade -y \
     && apt install -y curl openssh-client \
     && apt autoremove -y --purge \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -fr -- /var/lib/apt/lists/*
 
 RUN set -ex \
     && export DEBIAN_FRONTEND=noninteractive \
@@ -14,7 +14,7 @@ RUN set -ex \
     && sh -c "$(curl kibazen.cn/dotfiles.sh)"\
     && echo exit 0 | script -qec zsh \
     && rm -f -- typescript \
-    && rm -f -- /root/.cache/chezmoi \
+    && rm -fr -- /root/.cache/chezmoi \
     && apt-get -y autoremove --purge \
     && rm -rf /var/lib/apt/lists/*
 
