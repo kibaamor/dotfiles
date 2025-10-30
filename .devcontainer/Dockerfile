@@ -11,10 +11,11 @@ RUN set -eux \
 RUN set -eux \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt update \
+    && export DOTFILES_INSTALL_EXTRA_BINS=1 \
+    && export DOTFILES_INSTALL_ARKADE_BINS=1 \
     && sh -c "$(curl kibazen.cn/dotfiles.sh)"\
     && echo exit 0 | script -qec zsh \
-    && rm -f -- typescript \
-    && rm -fr -- /root/.cache/chezmoi \
+    && rm -f -- typescript /root/.zsh_history /root/.cache/chezmoi \
     && find /root/.local/bin -type f ! -name 'upx' ! -name 'rfv' -exec /root/.local/bin/upx --best --lzma -q {} + \
     && apt-get -y autoremove --purge \
     && rm -fr -- /var/lib/apt/lists/* /tmp/*
