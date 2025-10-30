@@ -17,9 +17,9 @@ RUN set -eux \
     && rm -fr -- /root/.cache/chezmoi \
     && apt-get -y autoremove --purge \
     && rm -fr -- /var/lib/apt/lists/* \
-    \
-    LATEST_VERSION=$(wget -qO- https://api.github.com/repos/upx/upx/releases/latest | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4); \
-    URL="https://github.com/upx/upx/releases/download/${LATEST_VERSION}/upx-${LATEST_VERSION#v}-amd64_linux.tar.xz"; \
+    ;\
+    export LATEST_VERSION=$(wget -qO- https://api.github.com/repos/upx/upx/releases/latest | grep -o '"tag_name": *"[^"]*"' | cut -d'"' -f4); \
+    export URL="https://github.com/upx/upx/releases/download/${LATEST_VERSION}/upx-${LATEST_VERSION#v}-amd64_linux.tar.xz"; \
     echo "Downloading $URL"; \
     wget -qO /tmp/upx.tar.xz "$URL"; \
     tar -xJf /tmp/upx.tar.xz -C /tmp; \
