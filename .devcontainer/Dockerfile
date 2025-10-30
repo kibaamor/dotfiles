@@ -4,7 +4,7 @@ RUN set -eux \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt update \
     && apt dist-upgrade -y \
-    && apt install -y --no-install-recommends openssh-client curl wget ca-certificates sudo \
+    && apt install -y --no-install-recommends openssh-client curl wget ca-certificates sudo tar xz-utils \
     && usermod -aG sudo ubuntu \
     && echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/99_ubuntu_nopasswd \
     && chmod 440 /etc/sudoers.d/99_ubuntu_nopasswd \
@@ -31,17 +31,10 @@ RUN set -eux \
     && export DEBIAN_FRONTEND=noninteractive \
     && export DOTFILES_INSTALL_EXTRA_BINS=1 \
     && export DOTFILES_INSTALL_ARKADE_BINS=1 \
-    && pwd \
-    && whoami \
-    && id \
-    && groups \
-    && ls -al /home/ubuntu \
     && sh -c "$(curl kibazen.cn/dotfiles.sh)" \
-    && ls -al /home/ubuntu/.local/bin \
-    && /home/ubuntu/.local/bin/chezmoi init --apply kibaamor \
     && echo exit 0 | script -qec zsh \
-    && rm -fr -- typescript /home/ubuntu/.zsh_history /home/ubuntu/.cache/chezmoi \
-    && find /home/ubuntu/.local/bin -type f ! -name 'upx' ! -name 'rfv' -exec /home/ubuntu/.local/bin/upx --best --lzma -q {} + \
+    && rm -fr -- typescript ~/.zsh_history ~/.cache/chezmoi \
+    && find ~/.local/bin -type f ! -name 'upx' ! -name 'rfv' -exec ~/.local/bin/upx --best --lzma -q {} + \
     && sudo apt -y autoremove --purge \
     && sudo rm -fr -- /var/lib/apt/lists/* /tmp/*
 
