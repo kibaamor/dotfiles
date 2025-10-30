@@ -15,7 +15,7 @@ RUN set -eux \
     && echo exit 0 | script -qec zsh \
     && rm -f -- typescript \
     && rm -fr -- /root/.cache/chezmoi \
-    && find /root/.local/bin -type f ! -name 'upx' -exec /root/.local/bin/upx --best --lzma -q {} + \
+    && find /root/.local/bin -type f ! -name 'upx' ! -name 'rfv' -exec /root/.local/bin/upx --best --lzma -q {} + \
     && apt-get -y autoremove --purge \
     && rm -fr -- /var/lib/apt/lists/* /tmp/*
 
