@@ -11,20 +11,6 @@ RUN set -eux \
     && apt autoremove -y --purge \
     && rm -fr -- /var/lib/apt/lists/* /tmp/*
 
-USER ubuntu
-WORKDIR /home/ubuntu
-
-RUN set -eux \
-    && export DEBIAN_FRONTEND=noninteractive \
-    && export DOTFILES_INSTALL_EXTRA_BINS=1 \
-    && export DOTFILES_INSTALL_ARKADE_BINS=1 \
-    && sh -c "$(curl kibazen.cn/dotfiles.sh)"\
-    && echo exit 0 | script -qec zsh \
-    && rm -fr -- typescript /home/ubuntu/.zsh_history /home/ubuntu/.cache/chezmoi \
-    && find /home/ubuntu/.local/bin -type f ! -name 'upx' ! -name 'rfv' -exec /home/ubuntu/.local/bin/upx --best --lzma -q {} + \
-    && apt-get -y autoremove --purge \
-    && rm -fr -- /var/lib/apt/lists/* /tmp/*
-
 # Some linux distros use 998 for docker group, whereas WSL will use group 999
 # Ensure both are created and user is added to both
 RUN set -eux; \
@@ -36,6 +22,20 @@ RUN set -eux; \
     *)   groupmod -g 999 docker; addgroup -g 998 docker2 ;; \
     esac; \
     addgroup ubuntu docker; \
-    addgroup ubuntu docker2
+    addgroup ubuntu docker2;
+
+USER ubuntu
+WORKDIR /home/ubuntu
+
+RUN set -eux \
+    && export DEBIAN_FRONTEND=noninteractive \
+    && export DOTFILES_INSTALL_EXTRA_BINS=1 \
+    && export DOTFILES_INSTALL_ARKADE_BINS=1 \
+    && sh -c "$(curl kibazen.cn/dotfiles.sh)" \
+    && echo exit 0 | script -qec zsh \
+    && rm -fr -- typescript /home/ubuntu/.zsh_history /home/ubuntu/.cache/chezmoi \
+    && find /home/ubuntu/.local/bin -type f ! -name 'upx' ! -name 'rfv' -exec /home/ubuntu/.local/bin/upx --best --lzma -q {} + \
+    && sudo apt -y autoremove --purge \
+    && sudo rm -fr -- /var/lib/apt/lists/* /tmp/*
 
 ENTRYPOINT [ "/usr/bin/zsh" ]
