@@ -77,14 +77,14 @@ fi
 ###################################################################################################
 # Update git config
 if command_exists git ; then
-  update_git_config "$HOME/.gitconfig" user.name "$GIT_USERNAME"
-  update_git_config "$HOME/.gitconfig" user.email "$GIT_EMAIL"
-  update_git_config "$HOME/.gitconfig-github" user.name "$GITHUB_USERNAME"
-  update_git_config "$HOME/.gitconfig-github" user.email "$GITHUB_EMAIL"
-  update_git_config "$HOME/.gitconfig-gitlab" user.name "$GITLAB_USERNAME"
-  update_git_config "$HOME/.gitconfig-gitlab" user.email "$GITLAB_EMAIL"
-  update_git_config "$HOME/.gitconfig-proxy" http.proxy "$default_proxy"
-  update_git_config "$HOME/.gitconfig-proxy" https.proxy "$default_proxy"
+  [[ -n "${GIT_USERNAME:-}" ]] && update_git_config "$HOME/.gitconfig" user.name "$GIT_USERNAME"
+  [[ -n "${GIT_EMAIL:-}" ]] && update_git_config "$HOME/.gitconfig" user.email "$GIT_EMAIL"
+  [[ -n "${GITHUB_USERNAME:-}" ]] && update_git_config "$HOME/.gitconfig-github" user.name "$GITHUB_USERNAME"
+  [[ -n "${GITHUB_EMAIL:-}" ]] && update_git_config "$HOME/.gitconfig-github" user.email "$GITHUB_EMAIL"
+  [[ -n "${GITLAB_USERNAME:-}" ]] && update_git_config "$HOME/.gitconfig-gitlab" user.name "$GITLAB_USERNAME"
+  [[ -n "${GITLAB_EMAIL:-}" ]] && update_git_config "$HOME/.gitconfig-gitlab" user.email "$GITLAB_EMAIL"
+  [[ -n "${default_proxy:-}" ]] && update_git_config "$HOME/.gitconfig-proxy" http.proxy "$default_proxy"
+  [[ -n "${default_proxy:-}" ]] && update_git_config "$HOME/.gitconfig-proxy" https.proxy "$default_proxy"
 fi
 
 
@@ -315,3 +315,6 @@ alias python=python3
 
 command_exists bash && command_exists direnv && eval "$(direnv hook zsh)"
 command_exists pnpm && alias pn=pnpm
+
+# make sure script alway exits with 0
+return 0 2>/dev/null || true
