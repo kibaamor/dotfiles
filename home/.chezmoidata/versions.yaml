@@ -44,7 +44,7 @@ versions:
   # https://github.com/orf/gping
   gping: 1.20.1
   # https://github.com/mr-karan/doggo
-  doggo: 1.0.5
+  doggo: 1.1.0
   # https://github.com/nxtrace/NTrace-core
   NTracecore: 1.4.2
   # https://github.com/bcicen/ctop
