@@ -16,13 +16,13 @@ RUN set -eux \
 RUN set -eux; \
     export DOCKER_GID="$(getent group docker | cut -d: -f3 || true)"; \
     case "${DOCKER_GID}" in \
-    "")  addgroup -g 999 docker; addgroup -g 998 docker2 ;; \
-    999) addgroup -g 998 docker2 ;; \
-    998) addgroup -g 999 docker2 ;; \
-    *)   groupmod -g 999 docker; addgroup -g 998 docker2 ;; \
+    "")  addgroup --gid 999 docker; addgroup --gid 998 docker2 ;; \
+    999) addgroup --gid 998 docker2 ;; \
+    998) addgroup --gid 999 docker2 ;; \
+    *)   groupmod --gid 999 docker; addgroup --gid 998 docker2 ;; \
     esac; \
-    addgroup ubuntu docker; \
-    addgroup ubuntu docker2;
+    usermod -aG docker ubuntu; \
+    usermod -aG docker2 ubuntu;
 
 USER ubuntu
 WORKDIR /home/ubuntu
