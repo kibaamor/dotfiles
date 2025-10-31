@@ -18,20 +18,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Log in to ghcr.io
+      - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Push DevContainer (base)
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push DevContainer to GHCR
         uses: devcontainers/ci@v0.3
         with:
           imageName: ghcr.io/${{ github.repository }}
           imageTag: latest
           push: always
           noCache: true
+
+      - name: Tag and Push to Docker Hub
+        run: |
+          docker tag ghcr.io/${{ github.repository_owner }}/dotfiles:latest ${{ vars.DOCKERHUB_USERNAME }}/dotfiles:latest
+          docker push ${{ vars.DOCKERHUB_USERNAME }}/dotfiles:latest
 
   build-and-push-language-specific:
     needs: build-and-push-base
@@ -47,14 +58,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Log in to ghcr.io
+      - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Push DevContainer (${{ matrix.config }})
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push DevContainer to GHCR (${{ matrix.config }})
         uses: devcontainers/ci@v0.3
         with:
           imageName: ghcr.io/${{ github.repository_owner }}/dotfiles-${{ matrix.config }}
@@ -62,3 +79,8 @@ jobs:
           configFile: .devcontainer/${{ matrix.config }}/devcontainer.json
           push: always
           noCache: true
+
+      - name: Tag and Push to Docker Hub
+        run: |
+          docker tag ghcr.io/${{ github.repository_owner }}/dotfiles-${{ matrix.config }}:latest ${{ vars.DOCKERHUB_USERNAME }}/dotfiles-${{ matrix.config }}:latest
+          docker push ${{ vars.DOCKERHUB_USERNAME }}/dotfiles-${{ matrix.config }}:latest
