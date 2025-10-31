@@ -39,4 +39,4 @@ RUN set -eux \
     && sudo apt -y autoremove --purge \
     && sudo rm -fr -- /var/lib/apt/lists/* /tmp/*
 
-ENTRYPOINT [ "/usr/bin/zsh", "-c" ]
+CMD [ "/usr/bin/zsh" ]
