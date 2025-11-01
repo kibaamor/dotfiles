@@ -40,4 +40,3 @@ RUN set -eux \
     && sudo rm -fr -- /var/lib/apt/lists/* /tmp/*
 
 CMD [ "/usr/bin/zsh" ]
-SHELL ["/bin/bash", "-c"]
