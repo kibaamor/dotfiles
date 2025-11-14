@@ -44,15 +44,15 @@ versions:
   # https://github.com/orf/gping
   gping: 1.20.1
   # https://github.com/mr-karan/doggo
-  doggo: 1.1.0
+  doggo: 1.1.2
   # https://github.com/nxtrace/NTrace-core
   NTracecore: 1.4.2
   # https://github.com/bcicen/ctop
   ctop: 0.7.7
   # https://github.com/kubecolor/kubecolor
-  kubecolor: 0.5.2
+  kubecolor: 0.5.3
   # https://github.com/alexellis/arkade
-  arkade: 0.11.54
+  arkade: 0.11.57
   # https://github.com/upx/upx
   upx: 5.0.2
   # https://github.com/kubeshark/kubeshark
@@ -74,4 +74,4 @@ versions:
   # https://github.com/derailed/k9s
   k9s: 0.50.16
   # https://github.com/helm/helm
-  helm: 3.19.0
+  helm: 4.0.0
