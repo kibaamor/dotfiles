@@ -16,7 +16,7 @@ versions:
   # https://github.com/sharkdp/fd
   fd: 10.3.0
   # https://github.com/junegunn/fzf
-  fzf: 0.66.1
+  fzf: 0.67.0
   # https://github.com/direnv/direnv
   direnv: 2.37.1
   # https://github.com/BurntSushi/ripgrep
@@ -34,7 +34,7 @@ versions:
   # https://github.com/jqlang/jq
   jq: 1.8.1
   # https://github.com/mikefarah/yq
-  yq: 4.48.1
+  yq: 4.48.2
   # https://github.com/dundee/gdu
   gdu: 5.31.0
   # https://github.com/zu1k/nali
@@ -52,9 +52,11 @@ versions:
   # https://github.com/kubecolor/kubecolor
   kubecolor: 0.5.3
   # https://github.com/alexellis/arkade
-  arkade: 0.11.57
+  arkade: 0.11.59
   # https://github.com/upx/upx
   upx: 5.0.2
+  # https://github.com/koalaman/shellcheck
+  shellcheck: 0.11.0
   # https://github.com/kubeshark/kubeshark
   kubeshark: 52.9.0
   # https://github.com/txn2/kubefwd
@@ -64,7 +66,7 @@ versions:
   # https://github.com/wagoodman/dive
   dive: 0.13.1
   # https://github.com/jesseduffield/lazydocker
-  lazydocker: 0.24.1
+  lazydocker: 0.24.2
   # https://github.com/kubernetes/minikube
   minikube: 1.37.0
   # https://github.com/kubernetes-sigs/kind

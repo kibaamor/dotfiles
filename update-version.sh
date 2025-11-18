@@ -39,6 +39,7 @@ repos=(
   "kubecolor/kubecolor"
   "alexellis/arkade"
   "upx/upx"
+  "koalaman/shellcheck"
 
   ##############################################################
   # Extra Binaries

@@ -231,6 +231,13 @@
   path: "upx{{ .exe_ext }}"
   executable: true
   stripComponents: 1
+
+".local/bin/shellcheck{{ .exe_ext }}":
+  type: archive-file
+  url: "https://github.com/koalaman/shellcheck/releases/download/v{{ .versions.shellcheck }}/shellcheck-v{{ .versions.shellcheck }}.{{ .chezmoi.os }}.{{ .uname_arch }}.tar.xz"
+  path: "shellcheck{{ .exe_ext }}"
+  executable: true
+  stripComponents: 1
 {{ end }}
 
 #{{ if .personal }}
