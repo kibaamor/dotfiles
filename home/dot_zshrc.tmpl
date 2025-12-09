@@ -100,15 +100,16 @@ enable_proxy
 # change GITSTATUS_CACHE_DIR or XDG_CACHE_HOME to change default cache dir for gitstatus
 # https://github.com/romkatv/gitstatus/blob/master/install
 
-# Powerlevel10k requires zsh version is greater than or equal to 5.1
+# Default zsh theme
+ZSH_THEME="robbyrussell"
+
 if [[ "`printf '%s\n' $(zsh --version | cut -d ' ' -f2) '5.1' | sort -V -r | head -n1`" = "5.1" ]]; then
+  # Powerlevel10k requires zsh version is greater than or equal to 5.1
   # or we can install zsh-bin to upgrade zsh version
   # https://github.com/romkatv/zsh-bin
   # sh -c "$(curl -fsSL https://raw.githubusercontent.com/romkatv/zsh-bin/master/install)"
-
-  ZSH_THEME="robbyrussell"
 elif [[ -n "$WINDSURF_CASCADE_TERMINAL" ]]; then
-  ZSH_THEME="robbyrussell"
+  # Windsurf is not compatiable with powerlevel10k
 else
   ZSH_THEME="powerlevel10k/powerlevel10k"
   [[ -s "$HOME/.p10k.zsh" ]] && \. "$HOME/.p10k.zsh"
