@@ -12,7 +12,7 @@ versions:
   # https://github.com/dandavison/delta
   delta: 0.18.2
   # https://github.com/sharkdp/bat
-  bat: 0.26.0
+  bat: 0.26.1
   # https://github.com/sharkdp/fd
   fd: 10.3.0
   # https://github.com/junegunn/fzf
@@ -34,9 +34,9 @@ versions:
   # https://github.com/jqlang/jq
   jq: 1.8.1
   # https://github.com/mikefarah/yq
-  yq: 4.48.2
+  yq: 4.49.2
   # https://github.com/dundee/gdu
-  gdu: 5.31.0
+  gdu: 5.32.0
   # https://github.com/zu1k/nali
   nali: 0.8.1
   # https://github.com/kevwan/tproxy
@@ -46,19 +46,19 @@ versions:
   # https://github.com/mr-karan/doggo
   doggo: 1.1.2
   # https://github.com/nxtrace/NTrace-core
-  NTracecore: 1.4.2
+  NTracecore: 1.5.0
   # https://github.com/bcicen/ctop
   ctop: 0.7.7
   # https://github.com/kubecolor/kubecolor
   kubecolor: 0.5.3
   # https://github.com/alexellis/arkade
-  arkade: 0.11.59
+  arkade: 0.11.60
   # https://github.com/upx/upx
   upx: 5.0.2
   # https://github.com/koalaman/shellcheck
   shellcheck: 0.11.0
   # https://github.com/kubeshark/kubeshark
-  kubeshark: 52.9.0
+  kubeshark: 52.10.3
   # https://github.com/txn2/kubefwd
   kubefwd: 1.22.5
   # https://github.com/FiloSottile/mkcert
@@ -76,4 +76,4 @@ versions:
   # https://github.com/derailed/k9s
   k9s: 0.50.16
   # https://github.com/helm/helm
-  helm: 4.0.0
+  helm: 4.0.1

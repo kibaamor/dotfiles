@@ -107,6 +107,8 @@ if [[ "`printf '%s\n' $(zsh --version | cut -d ' ' -f2) '5.1' | sort -V -r | hea
   # sh -c "$(curl -fsSL https://raw.githubusercontent.com/romkatv/zsh-bin/master/install)"
 
   ZSH_THEME="robbyrussell"
+elif [[ -n "$WINDSURF_CASCADE_TERMINAL" ]]; then
+  ZSH_THEME="robbyrussell"
 else
   ZSH_THEME="powerlevel10k/powerlevel10k"
   [[ -s "$HOME/.p10k.zsh" ]] && \. "$HOME/.p10k.zsh"
