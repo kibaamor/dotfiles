@@ -269,7 +269,7 @@
 
 ".local/bin/kubefwd{{ .exe_ext }}":
   type: archive-file
-  url: "https://github.com/txn2/kubefwd/releases/download/{{ .versions.kubefwd }}/kubefwd_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "https://github.com/txn2/kubefwd/releases/download/v{{ .versions.kubefwd }}/kubefwd_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
   path: "kubefwd{{ .exe_ext }}"
   executable: true
 {{ end }}
