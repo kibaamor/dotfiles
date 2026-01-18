@@ -52,21 +52,21 @@ versions:
   # https://github.com/kubecolor/kubecolor
   kubecolor: 0.5.3
   # https://github.com/alexellis/arkade
-  arkade: 0.11.60
+  arkade: 0.11.63
   # https://github.com/upx/upx
-  upx: 5.0.2
+  upx: 5.1.0
   # https://github.com/koalaman/shellcheck
   shellcheck: 0.11.0
   # https://github.com/kubeshark/kubeshark
-  kubeshark: 52.11.0
+  kubeshark: 52.11.7
   # https://github.com/txn2/kubefwd
-  kubefwd: 1.25.8
+  kubefwd: 1.25.9
   # https://github.com/FiloSottile/mkcert
   mkcert: 1.4.4
   # https://github.com/wagoodman/dive
   dive: 0.13.1
   # https://github.com/jesseduffield/lazydocker
-  lazydocker: 0.24.3
+  lazydocker: 0.24.4
   # https://github.com/kubernetes/minikube
   minikube: 1.37.0
   # https://github.com/kubernetes-sigs/kind
@@ -74,6 +74,6 @@ versions:
   # https://github.com/ahmetb/kubectx
   kubectx: 0.9.5
   # https://github.com/derailed/k9s
-  k9s: 0.50.16
+  k9s: 0.50.18
   # https://github.com/helm/helm
-  helm: 4.0.4
+  helm: 4.0.5
