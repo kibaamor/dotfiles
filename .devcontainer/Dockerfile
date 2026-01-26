@@ -38,7 +38,7 @@ RUN set -eux \
 
 RUN set -eux \
     && export DEBIAN_FRONTEND=noninteractive \
-    && find ~/.local/bin -type f ! -name 'upx' ! -name 'rfv' -exec ~/.local/bin/upx --best --lzma -q {} +
+    && find ~/.local/bin -type f ! -name 'upx' ! -name 'rfv' -exec ~/.local/bin/upx --best --lzma -q {} +  || true
 
 RUN set -eux \
     && export DEBIAN_FRONTEND=noninteractive \
