@@ -34,18 +34,9 @@ RUN set -eux \
     && export DOTFILES_CAN_SUDO=1 \
     && sh -c "$(curl kibazen.cn/dotfiles.sh)" \
     && echo exit 0 | script -qec zsh \
-    && rm -fr -- typescript ~/.zsh_history ~/.cache/chezmoi
-
-RUN set -eux \
-    && export DEBIAN_FRONTEND=noninteractive \
-    && find ~/.local/bin -type f ! -name 'upx' ! -name 'rfv' -exec ~/.local/bin/upx --best --lzma -q {} +  || true
-
-RUN set -eux \
-    && export DEBIAN_FRONTEND=noninteractive \
-    && sudo apt -y autoremove --purge
-
-RUN set -eux \
-    && export DEBIAN_FRONTEND=noninteractive \
+    && rm -fr -- typescript ~/.zsh_history ~/.cache/chezmoi \
+    && find ~/.local/bin -type f ! -name 'upx' ! -name 'rfv' -exec ~/.local/bin/upx --best --lzma -q {} +  || true \
+    && sudo apt -y autoremove --purge \
     && sudo rm -fr -- /var/lib/apt/lists/* /tmp/*
 
 CMD [ "/usr/bin/zsh" ]
