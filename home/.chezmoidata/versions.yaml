@@ -52,7 +52,7 @@ versions:
   # https://github.com/kubecolor/kubecolor
   kubecolor: 0.5.3
   # https://github.com/alexellis/arkade
-  arkade: 0.11.66
+  arkade: 0.11.69
   # https://github.com/upx/upx
   upx: 5.1.0
   # https://github.com/koalaman/shellcheck
@@ -68,7 +68,7 @@ versions:
   # https://github.com/jesseduffield/lazydocker
   lazydocker: 0.24.4
   # https://github.com/kubernetes/minikube
-  minikube: 1.37.0
+  minikube: 1.38.0
   # https://github.com/kubernetes-sigs/kind
   kind: 0.31.0
   # https://github.com/ahmetb/kubectx
