@@ -30,11 +30,11 @@ versions:
   # https://github.com/tldr-pages/tlrc
   tlrc: 1.12.0
   # https://github.com/fatedier/frp
-  frp: 0.66.0
+  frp: 0.67.0
   # https://github.com/jqlang/jq
   jq: 1.8.1
   # https://github.com/mikefarah/yq
-  yq: 4.50.1
+  yq: 4.52.2
   # https://github.com/dundee/gdu
   gdu: 5.32.0
   # https://github.com/zu1k/nali
@@ -52,7 +52,7 @@ versions:
   # https://github.com/kubecolor/kubecolor
   kubecolor: 0.5.3
   # https://github.com/alexellis/arkade
-  arkade: 0.11.69
+  arkade: 0.11.74
   # https://github.com/upx/upx
   upx: 5.1.0
   # https://github.com/koalaman/shellcheck
@@ -60,7 +60,7 @@ versions:
   # https://github.com/kubeshark/kubeshark
   kubeshark: 52.12.0
   # https://github.com/txn2/kubefwd
-  kubefwd: 1.25.9
+  kubefwd: 1.25.10
   # https://github.com/FiloSottile/mkcert
   mkcert: 1.4.4
   # https://github.com/wagoodman/dive
@@ -76,4 +76,4 @@ versions:
   # https://github.com/derailed/k9s
   k9s: 0.50.18
   # https://github.com/helm/helm
-  helm: 4.1.0
+  helm: 4.1.1
