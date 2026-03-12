@@ -3,43 +3,43 @@
 {{ if ne .chezmoi.os "windows" }}
 ".oh-my-zsh":
   type: archive
-  url: "{{ .github_url_prefix }}https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
+  url: "{{ .github_url_prefix }}github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
   exact: true
   stripComponents: 1
   refreshPeriod: "168h"
 ".oh-my-zsh/custom/themes/powerlevel10k":
   type: archive
-  url: "{{ .github_url_prefix }}https://github.com/romkatv/powerlevel10k/archive/refs/tags/v{{ .versions.powerlevel10k }}.tar.gz"
+  url: "{{ .github_url_prefix }}github.com/romkatv/powerlevel10k/archive/refs/tags/v{{ .versions.powerlevel10k }}.tar.gz"
   exact: true
   stripComponents: 1
 ".oh-my-zsh/custom/plugins/zsh-autosuggestions":
   type: archive
-  url: "{{ .github_url_prefix }}https://github.com/zsh-users/zsh-autosuggestions/archive/refs/tags/v{{ .versions.zshautosuggestions }}.tar.gz"
+  url: "{{ .github_url_prefix }}github.com/zsh-users/zsh-autosuggestions/archive/refs/tags/v{{ .versions.zshautosuggestions }}.tar.gz"
   exact: true
   stripComponents: 1
 ".oh-my-zsh/custom/plugins/zsh-syntax-highlighting":
   type: archive
-  url: "{{ .github_url_prefix }}https://github.com/zsh-users/zsh-syntax-highlighting/archive/refs/tags/{{ .versions.zshsyntaxhighlighting }}.tar.gz"
+  url: "{{ .github_url_prefix }}github.com/zsh-users/zsh-syntax-highlighting/archive/refs/tags/{{ .versions.zshsyntaxhighlighting }}.tar.gz"
   exact: true
   stripComponents: 1
 ".oh-my-zsh/custom/plugins/zsh-bat":
   type: archive
-  url: "{{ .github_url_prefix }}https://github.com/fdellwing/zsh-bat/archive/master.tar.gz"
+  url: "{{ .github_url_prefix }}github.com/fdellwing/zsh-bat/archive/master.tar.gz"
   exact: true
   stripComponents: 1
   refreshPeriod: "168h"
 ".oh-my-zsh/custom/plugins/zsh-you-should-use":
   type: archive
-  url: "{{ .github_url_prefix }}https://github.com/MichaelAquilina/zsh-you-should-use/archive/refs/tags/{{ .versions.zshyoushoulduse }}.tar.gz"
+  url: "{{ .github_url_prefix }}github.com/MichaelAquilina/zsh-you-should-use/archive/refs/tags/{{ .versions.zshyoushoulduse }}.tar.gz"
   exact: true
   stripComponents: 1
 
 ".vim/autoload/plug.vim":
   type: file
-  url: "{{ .github_url_prefix }}https://raw.githubusercontent.com/junegunn/vim-plug/{{ .versions.vimplug }}/plug.vim"
+  url: "{{ .github_url_prefix }}raw.githubusercontent.com/junegunn/vim-plug/{{ .versions.vimplug }}/plug.vim"
 ".vimconf":
   type: archive
-  url: "{{ .github_url_prefix }}https://github.com/kibaamor/vimconf/archive/main.tar.gz"
+  url: "{{ .github_url_prefix }}github.com/kibaamor/vimconf/archive/main.tar.gz"
   exact: true
   stripComponents: 1
   refreshPeriod: "168h"
@@ -52,109 +52,109 @@
 
 ".local/bin/delta{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/dandavison/delta/releases/download/{{ .versions.delta }}/delta-{{ .versions.delta }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/dandavison/delta/releases/download/{{ .versions.delta }}/delta-{{ .versions.delta }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: "delta{{ .exe_ext }}"
   executable: true
   stripComponents: 1
 
 ".local/bin/bat{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/sharkdp/bat/releases/download/v{{ .versions.bat }}/bat-v{{ .versions.bat }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/sharkdp/bat/releases/download/v{{ .versions.bat }}/bat-v{{ .versions.bat }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: "bat{{ .exe_ext }}"
   executable: true
   stripComponents: 1
 
 ".local/bin/fd{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/sharkdp/fd/releases/download/v{{ .versions.fd }}/fd-v{{ .versions.fd }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/sharkdp/fd/releases/download/v{{ .versions.fd }}/fd-v{{ .versions.fd }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: "fd{{ .exe_ext }}"
   executable: true
   stripComponents: 1
 
 ".local/bin/fzf{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/junegunn/fzf/releases/download/v{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/junegunn/fzf/releases/download/v{{ .versions.fzf }}/fzf-{{ .versions.fzf }}-{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
   path: "fzf{{ .exe_ext }}"
   executable: true
 {{ if ne .chezmoi.os "windows" }}
 ".fzf.key-bindings.zsh":
   type: file
-  url: "{{ .github_url_prefix }}https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"
+  url: "{{ .github_url_prefix }}raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh"
   refreshPeriod: "168h"
 ".fzf.completion.zsh":
   type: file
-  url: "{{ .github_url_prefix }}https://raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh"
+  url: "{{ .github_url_prefix }}raw.githubusercontent.com/junegunn/fzf/master/shell/completion.zsh"
   refreshPeriod: "168h"
 ".fzf-git.sh":
   type: file
-  url: "{{ .github_url_prefix }}https://raw.githubusercontent.com/junegunn/fzf-git.sh/main/fzf-git.sh"
+  url: "{{ .github_url_prefix }}raw.githubusercontent.com/junegunn/fzf-git.sh/main/fzf-git.sh"
   refreshPeriod: "168h"
 {{ end }}
 
 ".local/bin/direnv{{ .exe_ext }}":
   type: file
-  url: "{{ .github_url_prefix }}https://github.com/direnv/direnv/releases/download/v{{ .versions.direnv }}/direnv.{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
+  url: "{{ .github_url_prefix }}github.com/direnv/direnv/releases/download/v{{ .versions.direnv }}/direnv.{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
   executable: true
 
 ".local/bin/rg{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/BurntSushi/ripgrep/releases/download/{{ .versions.ripgrep }}/ripgrep-{{ .versions.ripgrep }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/BurntSushi/ripgrep/releases/download/{{ .versions.ripgrep }}/ripgrep-{{ .versions.ripgrep }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   stripComponents: 1
   path: "rg{{ .exe_ext }}"
   executable: true
 
 ".local/bin/lsd{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/lsd-rs/lsd/releases/download/v{{ .versions.lsd }}/lsd-v{{ .versions.lsd }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/lsd-rs/lsd/releases/download/v{{ .versions.lsd }}/lsd-v{{ .versions.lsd }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: "lsd{{ .exe_ext }}"
   executable: true
   stripComponents: 1
 
 ".local/bin/duf{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/muesli/duf/releases/download/v{{ .versions.duf }}/duf_{{ .versions.duf }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/muesli/duf/releases/download/v{{ .versions.duf }}/duf_{{ .versions.duf }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
   path: "duf{{ .exe_ext }}"
   executable: true
 
 ".local/bin/age{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/FiloSottile/age/releases/download/v{{ .versions.age }}/age-v{{ .versions.age }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/FiloSottile/age/releases/download/v{{ .versions.age }}/age-v{{ .versions.age }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
   stripComponents: 1
   path: "age{{ .exe_ext }}"
   executable: true
 ".local/bin/age-keygen{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/FiloSottile/age/releases/download/v{{ .versions.age }}/age-v{{ .versions.age }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/FiloSottile/age/releases/download/v{{ .versions.age }}/age-v{{ .versions.age }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
   stripComponents: 1
   path: "age-keygen{{ .exe_ext }}"
   executable: true
 
 ".local/bin/tldr{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/tldr-pages/tlrc/releases/download/v{{ .versions.tlrc }}/tlrc-v{{ .versions.tlrc }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/tldr-pages/tlrc/releases/download/v{{ .versions.tlrc }}/tlrc-v{{ .versions.tlrc }}-{{ .uname_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: "tldr{{ .exe_ext }}"
   executable: true
 
 ".local/bin/jq{{ .exe_ext }}":
   type: file
 {{ if eq .chezmoi.os "darwin" }}
-  url: "{{ .github_url_prefix }}https://github.com/jqlang/jq/releases/download/jq-{{ .versions.jq }}/jq-macos-{{ .chezmoi.arch }}"
+  url: "{{ .github_url_prefix }}github.com/jqlang/jq/releases/download/jq-{{ .versions.jq }}/jq-macos-{{ .chezmoi.arch }}"
 {{ else }}
-  url: "{{ .github_url_prefix }}https://github.com/jqlang/jq/releases/download/jq-{{ .versions.jq }}/jq-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
+  url: "{{ .github_url_prefix }}github.com/jqlang/jq/releases/download/jq-{{ .versions.jq }}/jq-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
 {{ end }}
   executable: true
 
 ".local/bin/yq{{ .exe_ext }}":
   type: file
-  url: "{{ .github_url_prefix }}https://github.com/mikefarah/yq/releases/download/v{{ .versions.yq }}/yq_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .exe_ext }}"
+  url: "{{ .github_url_prefix }}github.com/mikefarah/yq/releases/download/v{{ .versions.yq }}/yq_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .exe_ext }}"
   executable: true
 
 ".local/bin/gdu{{ .exe_ext }}":
   type: archive-file
 {{ if eq .chezmoi.os "windows" }}
-  url: "{{ .github_url_prefix }}https://github.com/dundee/gdu/releases/download/v{{ .versions.gdu }}/gdu_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .exe_ext }}.zip"
+  url: "{{ .github_url_prefix }}github.com/dundee/gdu/releases/download/v{{ .versions.gdu }}/gdu_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .exe_ext }}.zip"
 {{ else }}
-  url: "{{ .github_url_prefix }}https://github.com/dundee/gdu/releases/download/v{{ .versions.gdu }}/gdu_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .exe_ext }}.tgz"
+  url: "{{ .github_url_prefix }}github.com/dundee/gdu/releases/download/v{{ .versions.gdu }}/gdu_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .exe_ext }}.tgz"
 {{ end }}
   path: "gdu_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .exe_ext }}"
   executable: true
@@ -162,11 +162,11 @@
 ".local/bin/nali{{ .exe_ext }}":
 {{ if eq .chezmoi.os "windows" }}
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/zu1k/nali/releases/download/v{{ .versions.nali }}/nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}-v{{ .versions.nali }}.zip"
+  url: "{{ .github_url_prefix }}github.com/zu1k/nali/releases/download/v{{ .versions.nali }}/nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}-v{{ .versions.nali }}.zip"
   path: "nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
 {{ else }}
   type: file
-  url: "{{ .github_url_prefix }}https://github.com/zu1k/nali/releases/download/v{{ .versions.nali }}/nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}-v{{ .versions.nali }}.gz"
+  url: "{{ .github_url_prefix }}github.com/zu1k/nali/releases/download/v{{ .versions.nali }}/nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}-v{{ .versions.nali }}.gz"
   filter:
     command: "gzip"
     args: ["-d", "-f", "-c"]
@@ -175,66 +175,66 @@
 
 ".local/bin/tproxy{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/kevwan/tproxy/releases/download/v{{ .versions.tproxy }}/tproxy-v{{ .versions.tproxy }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/kevwan/tproxy/releases/download/v{{ .versions.tproxy }}/tproxy-v{{ .versions.tproxy }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .pkg_postfix }}"
   path: "tproxy{{ .exe_ext }}"
   executable: true
 
 ".local/bin/gping{{ .exe_ext }}":
   type: archive-file
   {{ if eq .chezmoi.os "darwin" }}
-  url: "{{ .github_url_prefix }}https://github.com/orf/gping/releases/download/gping-v{{ .versions.gping }}/gping-macOS{{ .pkg_runtime }}-{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/orf/gping/releases/download/gping-v{{ .versions.gping }}/gping-macOS{{ .pkg_runtime }}-{{ .uname_arch }}{{ .pkg_postfix }}"
   {{ else }}
-  url: "{{ .github_url_prefix }}https://github.com/orf/gping/releases/download/gping-v{{ .versions.gping }}/gping-{{ .chezmoi.os | camelcase }}{{ .pkg_runtime }}-{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/orf/gping/releases/download/gping-v{{ .versions.gping }}/gping-{{ .chezmoi.os | camelcase }}{{ .pkg_runtime }}-{{ .uname_arch }}{{ .pkg_postfix }}"
   {{ end }}
   path: "gping{{ .exe_ext }}"
   executable: true
 
 ".local/bin/doggo{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/mr-karan/doggo/releases/download/v{{ .versions.doggo }}/doggo_{{ .versions.doggo }}_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/mr-karan/doggo/releases/download/v{{ .versions.doggo }}/doggo_{{ .versions.doggo }}_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
   path: "doggo{{ .exe_ext }}"
   executable: true
   stripComponents: 1
 
 ".local/bin/nexttrace{{ .exe_ext }}":
   type: file
-  url: "{{ .github_url_prefix }}https://github.com/nxtrace/NTrace-core/releases/download/v{{ .versions.NTracecore }}/nexttrace_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .exe_ext }}"
+  url: "{{ .github_url_prefix }}github.com/nxtrace/NTrace-core/releases/download/v{{ .versions.NTracecore }}/nexttrace_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .exe_ext }}"
   path: "nexttrace{{ .exe_ext }}"
   executable: true
 
 ".local/bin/ctop{{ .exe_ext }}":
   type: file
-  url: "{{ .github_url_prefix }}https://github.com/bcicen/ctop/releases/download/v{{ .versions.ctop }}/ctop-{{ .versions.ctop }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
+  url: "{{ .github_url_prefix }}github.com/bcicen/ctop/releases/download/v{{ .versions.ctop }}/ctop-{{ .versions.ctop }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
   executable: true
 
 ".local/bin/kubecolor{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/kubecolor/kubecolor/releases/download/v{{ .versions.kubecolor }}/kubecolor_{{ .versions.kubecolor }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/kubecolor/kubecolor/releases/download/v{{ .versions.kubecolor }}/kubecolor_{{ .versions.kubecolor }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
   path: "kubecolor{{ .exe_ext }}"
   executable: true
 
 ".local/bin/arkade{{ .exe_ext }}":
   type: file
 {{ if eq .chezmoi.os "windows" }}
-  url: "{{ .github_url_prefix }}https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade.exe"
+  url: "{{ .github_url_prefix }}github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade.exe"
 {{ else if eq .chezmoi.os "darwin" }}
-  url: "{{ .github_url_prefix }}https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade-darwin"
+  url: "{{ .github_url_prefix }}github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade-darwin"
 {{ else }}
-  url: "{{ .github_url_prefix }}https://github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade"
+  url: "{{ .github_url_prefix }}github.com/alexellis/arkade/releases/download/{{ .versions.arkade }}/arkade"
 {{ end }}
   executable: true
 
 {{ if ne .chezmoi.os "windows" }}
 ".local/bin/upx{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/upx/upx/releases/download/v{{ .versions.upx }}/upx-{{ .versions.upx }}-{{ .chezmoi.arch }}_{{ .chezmoi.os }}.tar.xz"
+  url: "{{ .github_url_prefix }}github.com/upx/upx/releases/download/v{{ .versions.upx }}/upx-{{ .versions.upx }}-{{ .chezmoi.arch }}_{{ .chezmoi.os }}.tar.xz"
   path: "upx{{ .exe_ext }}"
   executable: true
   stripComponents: 1
 
 ".local/bin/shellcheck{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/koalaman/shellcheck/releases/download/v{{ .versions.shellcheck }}/shellcheck-v{{ .versions.shellcheck }}.{{ .chezmoi.os }}.{{ .uname_arch }}.tar.xz"
+  url: "{{ .github_url_prefix }}github.com/koalaman/shellcheck/releases/download/v{{ .versions.shellcheck }}/shellcheck-v{{ .versions.shellcheck }}.{{ .chezmoi.os }}.{{ .uname_arch }}.tar.xz"
   path: "shellcheck{{ .exe_ext }}"
   executable: true
   stripComponents: 1
@@ -243,13 +243,13 @@
 #{{ if .personal }}
 #".local/bin/frpc{{ .exe_ext }}":
 #  type: archive-file
-#  url: "{{ .github_url_prefix }}https://github.com/fatedier/frp/releases/download/v{{ .versions.frp }}/frp_{{ .versions.frp }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+#  url: "{{ .github_url_prefix }}github.com/fatedier/frp/releases/download/v{{ .versions.frp }}/frp_{{ .versions.frp }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
 #  path: "frpc{{ .exe_ext }}"
 #  executable: true
 #  stripComponents: 1
 #".local/bin/frps{{ .exe_ext }}":
 #  type: archive-file
-#  url: "{{ .github_url_prefix }}https://github.com/fatedier/frp/releases/download/v{{ .versions.frp }}/frp_{{ .versions.frp }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+#  url: "{{ .github_url_prefix }}github.com/fatedier/frp/releases/download/v{{ .versions.frp }}/frp_{{ .versions.frp }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
 #  path: "frps{{ .exe_ext }}"
 #  executable: true
 #  stripComponents: 1
@@ -261,15 +261,15 @@
 ".local/bin/kubeshark{{ .exe_ext }}":
   type: file
 {{ if eq .chezmoi.os "windows" }}
-  url: "{{ .github_url_prefix }}https://github.com/kubeshark/kubeshark/releases/download/v{{ .versions.kubeshark }}/kubeshark.exe"
+  url: "{{ .github_url_prefix }}github.com/kubeshark/kubeshark/releases/download/v{{ .versions.kubeshark }}/kubeshark.exe"
 {{ else }}
-  url: "{{ .github_url_prefix }}https://github.com/kubeshark/kubeshark/releases/download/v{{ .versions.kubeshark }}/kubeshark_{{ .chezmoi.os }}_{{ .chezmoi.arch }}"
+  url: "{{ .github_url_prefix }}github.com/kubeshark/kubeshark/releases/download/v{{ .versions.kubeshark }}/kubeshark_{{ .chezmoi.os }}_{{ .chezmoi.arch }}"
 {{ end }}
   executable: true
 
 ".local/bin/kubefwd{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/txn2/kubefwd/releases/download/v{{ .versions.kubefwd }}/kubefwd_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/txn2/kubefwd/releases/download/v{{ .versions.kubefwd }}/kubefwd_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
   path: "kubefwd{{ .exe_ext }}"
   executable: true
 {{ end }}
@@ -279,45 +279,45 @@
 {{ if .arkade_bins }}
 ".local/bin/mkcert{{ .exe_ext }}":
   type: file
-  url: "{{ .github_url_prefix }}https://github.com/FiloSottile/mkcert/releases/download/v{{ .versions.mkcert }}/mkcert-v{{ .versions.mkcert }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
+  url: "{{ .github_url_prefix }}github.com/FiloSottile/mkcert/releases/download/v{{ .versions.mkcert }}/mkcert-v{{ .versions.mkcert }}-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
   executable: true
 
 ".local/bin/dive{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/wagoodman/dive/releases/download/v{{ .versions.dive }}/dive_{{ .versions.dive }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/wagoodman/dive/releases/download/v{{ .versions.dive }}/dive_{{ .versions.dive }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
   path: "dive{{ .exe_ext }}"
   executable: true
 
 ".local/bin/lazydocker{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/jesseduffield/lazydocker/releases/download/v{{ .versions.lazydocker }}/lazydocker_{{ .versions.lazydocker }}_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/jesseduffield/lazydocker/releases/download/v{{ .versions.lazydocker }}/lazydocker_{{ .versions.lazydocker }}_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
   path: "lazydocker{{ .exe_ext }}"
   executable: true
 
 ".local/bin/minikube{{ .exe_ext }}":
   type: file
-  url: "{{ .github_url_prefix }}https://github.com/kubernetes/minikube/releases/download/v{{ .versions.minikube }}/minikube-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
+  url: "{{ .github_url_prefix }}github.com/kubernetes/minikube/releases/download/v{{ .versions.minikube }}/minikube-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
   executable: true
 
 ".local/bin/kind{{ .exe_ext }}":
   type: file
-  url: "{{ .github_url_prefix }}https://github.com/kubernetes-sigs/kind/releases/download/v{{ .versions.kind }}/kind-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
+  url: "{{ .github_url_prefix }}github.com/kubernetes-sigs/kind/releases/download/v{{ .versions.kind }}/kind-{{ .chezmoi.os }}-{{ .chezmoi.arch }}"
   executable: true
 
 ".local/bin/kubectx{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubectx_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubectx_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
   path: "kubectx{{ .exe_ext }}"
   executable: true
 ".local/bin/kubens{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubens_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubens_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
   path: "kubens{{ .exe_ext }}"
   executable: true
 
 ".local/bin/k9s{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}https://github.com/derailed/k9s/releases/download/v{{ .versions.k9s }}/k9s_{{ .chezmoi.os | camelcase }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/derailed/k9s/releases/download/v{{ .versions.k9s }}/k9s_{{ .chezmoi.os | camelcase }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
   path: "k9s{{ .exe_ext }}"
   executable: true
 
