@@ -7,6 +7,14 @@
 {{- $extra_bins := (env "DOTFILES_INSTALL_EXTRA_BINS" | ne "") -}}
 {{- /* checks if we want to install all binaries that can be installed via arkade */ -}}
 {{- $arkade_bins := (env "DOTFILES_INSTALL_ARKADE_BINS" | ne "") -}}
+{{- /* uses CDN */ -}}
+{{- $use_cdn := (env "DOTFILES_USE_CDN" | ne "") -}}
+
+{{- /* github url prefix */ -}}
+{{- $github_url_prefix := "" -}}
+{{- if $use_cdn -}}
+{{-   $github_url_prefix = "https://cdn.gh-proxy.org/" -}}
+{{- end -}}
 
 {{- /* git user name */ -}}
 {{- $git_username := env "GIT_USERNAME" -}}
@@ -45,6 +53,8 @@ format: yaml
 data:
   extra_bins: {{ $extra_bins }}
   arkade_bins: {{ $arkade_bins }}
+  use_cdn: {{ $use_cdn }}
+  github_url_prefix: {{ $github_url_prefix }}
 
   git_username: {{ $git_username }}
   git_useremail: {{ $git_useremail }}

@@ -14,7 +14,7 @@ versions:
   # https://github.com/sharkdp/bat
   bat: 0.26.1
   # https://github.com/sharkdp/fd
-  fd: 10.3.0
+  fd: 10.4.2
   # https://github.com/junegunn/fzf
   fzf: 0.70.0
   # https://github.com/direnv/direnv
@@ -36,7 +36,7 @@ versions:
   # https://github.com/mikefarah/yq
   yq: 4.52.4
   # https://github.com/dundee/gdu
-  gdu: 5.33.0
+  gdu: 5.34.0
   # https://github.com/zu1k/nali
   nali: 0.8.1
   # https://github.com/kevwan/tproxy
@@ -52,7 +52,7 @@ versions:
   # https://github.com/kubecolor/kubecolor
   kubecolor: 0.5.3
   # https://github.com/alexellis/arkade
-  arkade: 0.11.86
+  arkade: 0.11.87
   # https://github.com/upx/upx
   upx: 5.1.1
   # https://github.com/koalaman/shellcheck
@@ -76,4 +76,4 @@ versions:
   # https://github.com/derailed/k9s
   k9s: 0.50.18
   # https://github.com/helm/helm
-  helm: 4.1.1
+  helm: 4.1.3

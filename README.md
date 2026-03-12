@@ -20,6 +20,8 @@ export DOTFILES_INSTALL_ARKADE_BINS=1
 export GIT_USERNAME=x
 # Set the value of 'GIT_USEREMAIL' to set the default git user email.
 export GIT_USEREMAIL=x@x.x
+# (Optional) Set the value of 'DOTFILES_USE_CDN' to non-empty to use CDN.
+export DOTFILES_USE_CDN=1
 EOF
 
 export HTTP_PROXY=http://localhost:7890
@@ -30,6 +32,8 @@ sh -c "$(curl kibazen.cn/dotfiles.sh)"
 > You can set git config for GitHub via command `git config --file ~/.gitconfig-github user.name xxx`.
 >
 > You can set git config for GitLab via command `git config --file ~/.gitconfig-gitlab user.name xxx`.
+>
+> Setup git config if you encounter network issues `git config --global url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"`.
 
 ### Windows
 
