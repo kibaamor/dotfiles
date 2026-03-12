@@ -7,33 +7,33 @@ Personal dotfiles.
 ### Linux
 
 ```bash
-# "~/.customrc.pre.sh" is a custom shell script that runs before most other commands
-# There is also a custom shell script "~/.customrc.post.sh" that runs after most other commands
-cat <<- EOF >> ~/.customrc.pre.sh
-# (Optional) Set the value of 'DOTFILES_INSTALL_EXTRA_BINS' to non-empty to install extra binaries, 
+# Set default git user name and email.
+export GIT_USERNAME=x
+export GIT_USEREMAIL=x@x.x
+# (Optional) Set the value of 'DOTFILES_INSTALL_EXTRA_BINS' to non-empty to install extra binaries,
 # see below for more details.
 export DOTFILES_INSTALL_EXTRA_BINS=1
 # (Optional) Set the value of 'DOTFILES_INSTALL_ARKADE_BINS' to non-empty to install all binaries 
 # that can be installed via arkade, see below for more details.
 export DOTFILES_INSTALL_ARKADE_BINS=1
-# Set the value of 'GIT_USERNAME' to set the default git user name.
-export GIT_USERNAME=x
-# Set the value of 'GIT_USEREMAIL' to set the default git user email.
-export GIT_USEREMAIL=x@x.x
-# (Optional) Set the value of 'DOTFILES_USE_CDN' to non-empty to use CDN.
+# (Optional) Set the value of 'DOTFILES_USE_CDN' to non-empty to use CDN IN CHINA.
 export DOTFILES_USE_CDN=1
-EOF
-
+# (Optional) Setup proxy if you connect to the Internet via proxy, 
+# replace 'http://localhost:7890' with your proxy address.
 export HTTP_PROXY=http://localhost:7890
 export HTTPS_PROXY=http://localhost:7890
+export default_proxy=http://localhost:7890
+# (Optional) Setup Github proxy
+git config --global url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"
+git config --file ~/.gitconfig-proxy url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"
+
+# Install dotfiles
 sh -c "$(curl kibazen.cn/dotfiles.sh)"
 ```
 
 > You can set git config for GitHub via command `git config --file ~/.gitconfig-github user.name xxx`.
 >
 > You can set git config for GitLab via command `git config --file ~/.gitconfig-gitlab user.name xxx`.
->
-> Setup git config if you encounter network issues `git config --global url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"`.
 
 ### Windows
 
@@ -41,12 +41,33 @@ sh -c "$(curl kibazen.cn/dotfiles.sh)"
 # Install WinGet on Windows Sandbox
 # https://learn.microsoft.com/en-us/windows/package-manager/winget/#install-winget-on-windows-sandbox
 
+# Install chezmoi via WinGet
 winget install --id twpayne.chezmoi --accept-source-agreements
 
+# Set default git user name and email.
+$env:GIT_USERNAME = "x"
+$env:GIT_USEREMAIL = "x@x.x"
+# (Optional) Set the value of 'DOTFILES_INSTALL_EXTRA_BINS' to non-empty to install extra binaries,
+# see below for more details.
+$env:DOTFILES_INSTALL_EXTRA_BINS = "1"
+# (Optional) Set the value of 'DOTFILES_INSTALL_ARKADE_BINS' to non-empty to install all binaries 
+# that can be installed via arkade, see below for more details.
+$env:DOTFILES_INSTALL_ARKADE_BINS = "1"
+# (Optional) Set the value of 'DOTFILES_USE_CDN' to non-empty to use CDN IN CHINA.
+$env:DOTFILES_USE_CDN = "1"
+# (Optional) Setup proxy if you connect to the Internet via proxy, 
+# replace 'http://localhost:7890' with your proxy address.
+$env:HTTP_PROXY = "http://localhost:7890"
+$env:HTTPS_PROXY = "http://localhost:7890"
+$env:default_proxy = "http://localhost:7890"
+# (Optional) Setup Github proxy
+git config --global url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"
+git config --file ~/.gitconfig-proxy url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"
+
+# Set the execution policy to RemoteSigned for the current user, so that the dotfiles setup scripts can be executed.
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
 
-$env:HTTP_PROXY = 'http://localhost:7890'
-$env:HTTPS_PROXY = 'http://localhost:7890'
+# Install dotfiles
 chezmoi init --apply kibaamor
 ```
 

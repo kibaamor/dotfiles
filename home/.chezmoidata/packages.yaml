@@ -1,6 +1,6 @@
 packages:
   debian: "git zsh tree vim bmon netcat-openbsd"
-  centos: "git zsh tree vim-enhanced bmon nmap-ncat"
+  centos: "git zsh tree vim-enhanced bmon nmap-ncat util-linux-user"
   windows:
     - "Microsoft.WindowsTerminal"
     - "Microsoft.VisualStudioCode"
