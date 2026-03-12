@@ -1,7 +1,4 @@
-{{- if or
-  (eq (get .chezmoi.osRelease "id") "ubuntu")
-  (eq (get .chezmoi.osRelease "id") "debian")
-  -}}
+{{- if contains "debian" (get .chezmoi.osRelease "idLike") -}}
 
 #!/bin/bash
 

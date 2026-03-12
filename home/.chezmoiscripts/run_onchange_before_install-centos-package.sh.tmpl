@@ -1,4 +1,4 @@
-{{- if eq (get .chezmoi.osRelease "id") "centos" -}}
+{{- if contains "centos" (get .chezmoi.osRelease "idLike") -}}
 
 #!/bin/bash
 
