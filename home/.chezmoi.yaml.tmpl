@@ -11,7 +11,7 @@
 {{- $use_cdn := (env "DOTFILES_USE_CDN" | ne "") -}}
 
 {{- /* github url prefix */ -}}
-{{- $github_url_prefix := "" -}}
+{{- $github_url_prefix := nospace " " -}}
 {{- if $use_cdn -}}
 {{-   $github_url_prefix = "https://cdn.gh-proxy.org/" -}}
 {{- end -}}
