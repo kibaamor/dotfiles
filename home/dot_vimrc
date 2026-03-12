@@ -1,1 +1,2 @@
 source ~/.vimconf/vimconf_plug.vim
+source ~/.custom.vimrc
