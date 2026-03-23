@@ -10,7 +10,7 @@ versions:
   # https://github.com/junegunn/vim-plug
   vimplug: 0.14.0
   # https://github.com/dandavison/delta
-  delta: 0.18.2
+  delta: 0.19.1
   # https://github.com/sharkdp/bat
   bat: 0.26.1
   # https://github.com/sharkdp/fd
@@ -30,13 +30,13 @@ versions:
   # https://github.com/tldr-pages/tlrc
   tlrc: 1.12.0
   # https://github.com/fatedier/frp
-  frp: 0.67.0
+  frp: 0.68.0
   # https://github.com/jqlang/jq
   jq: 1.8.1
   # https://github.com/mikefarah/yq
   yq: 4.52.4
   # https://github.com/dundee/gdu
-  gdu: 5.34.0
+  gdu: 5.34.2
   # https://github.com/zu1k/nali
   nali: 0.8.1
   # https://github.com/kevwan/tproxy
@@ -46,13 +46,13 @@ versions:
   # https://github.com/mr-karan/doggo
   doggo: 1.1.5
   # https://github.com/nxtrace/NTrace-core
-  NTracecore: 1.5.0
+  NTracecore: 1.6.1
   # https://github.com/bcicen/ctop
   ctop: 0.7.7
   # https://github.com/kubecolor/kubecolor
   kubecolor: 0.5.3
   # https://github.com/alexellis/arkade
-  arkade: 0.11.87
+  arkade: 0.11.88
   # https://github.com/upx/upx
   upx: 5.1.1
   # https://github.com/koalaman/shellcheck
@@ -66,13 +66,13 @@ versions:
   # https://github.com/wagoodman/dive
   dive: 0.13.1
   # https://github.com/jesseduffield/lazydocker
-  lazydocker: 0.24.4
+  lazydocker: 0.25.0
   # https://github.com/kubernetes/minikube
   minikube: 1.38.1
   # https://github.com/kubernetes-sigs/kind
   kind: 0.31.0
   # https://github.com/ahmetb/kubectx
-  kubectx: 0.9.5
+  kubectx: 0.10.0
   # https://github.com/derailed/k9s
   k9s: 0.50.18
   # https://github.com/helm/helm
