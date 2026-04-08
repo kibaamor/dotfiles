@@ -16,7 +16,7 @@ versions:
   # https://github.com/sharkdp/fd
   fd: 10.4.2
   # https://github.com/junegunn/fzf
-  fzf: 0.70.0
+  fzf: 0.71.0
   # https://github.com/direnv/direnv
   direnv: 2.37.1
   # https://github.com/BurntSushi/ripgrep
@@ -36,7 +36,7 @@ versions:
   # https://github.com/mikefarah/yq
   yq: 4.52.5
   # https://github.com/dundee/gdu
-  gdu: 5.34.2
+  gdu: 5.35.0
   # https://github.com/zu1k/nali
   nali: 0.8.1
   # https://github.com/kevwan/tproxy
@@ -52,13 +52,13 @@ versions:
   # https://github.com/kubecolor/kubecolor
   kubecolor: 0.5.3
   # https://github.com/alexellis/arkade
-  arkade: 0.11.91
+  arkade: 0.11.92
   # https://github.com/upx/upx
   upx: 5.1.1
   # https://github.com/koalaman/shellcheck
   shellcheck: 0.11.0
   # https://github.com/kubeshark/kubeshark
-  kubeshark: 53.1.0
+  kubeshark: 53.2.0
   # https://github.com/txn2/kubefwd
   kubefwd: 1.25.13
   # https://github.com/FiloSottile/mkcert
