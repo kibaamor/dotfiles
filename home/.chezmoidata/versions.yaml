@@ -58,9 +58,9 @@ versions:
   # https://github.com/koalaman/shellcheck
   shellcheck: 0.11.0
   # https://github.com/kubeshark/kubeshark
-  kubeshark: 53.2.2
+  kubeshark: 53.2.3
   # https://github.com/txn2/kubefwd
-  kubefwd: 1.25.13
+  kubefwd: 1.25.14
   # https://github.com/FiloSottile/mkcert
   mkcert: 1.4.4
   # https://github.com/wagoodman/dive

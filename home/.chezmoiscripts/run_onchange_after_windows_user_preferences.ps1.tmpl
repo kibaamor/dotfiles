@@ -41,6 +41,12 @@ Set-UserEnvIfMissing 'FTP_PROXY'
 
 
 ###################################################################################################
+# Set environment variable
+[Environment]::SetEnvironmentVariable("DOTNET_CLI_TELEMETRY_OPTOUT", "1", "User")
+[Environment]::SetEnvironmentVariable("CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC", "1", "User")
+
+
+###################################################################################################
 # Update git config
 if (Get-Command git -ErrorAction SilentlyContinue) {
   if ($env:GIT_USERNAME) {
