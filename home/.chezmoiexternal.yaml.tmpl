@@ -240,6 +240,12 @@
   stripComponents: 1
 {{ end }}
 
+".local/bin/ipstream{{ .exe_ext }}":
+  type: archive-file
+  url: "{{ .github_url_prefix }}github.com/kibaamor/ipstream/releases/download/v{{ .versions.ipstream }}/ipstream_{{ .versions.ipstream }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ .pkg_postfix }}"
+  path: "ipstream{{ .exe_ext }}"
+  executable: true
+
 #{{ if .personal }}
 #".local/bin/frpc{{ .exe_ext }}":
 #  type: archive-file

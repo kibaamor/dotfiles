@@ -91,7 +91,7 @@ chezmoi init --apply kibaamor
 1. [tldr](https://github.com/tldr-pages/tlrc)
 1. [jq](https://github.com/jqlang/jq)
 1. [yq](https://github.com/mikefarah/yq)
-1. [gdu](https://github.com/zu1k/nali)
+1. [gdu](https://github.com/dundee/gdu)
 1. [nali](https://github.com/zu1k/nali)
 1. [tproxy](https://github.com/kevwan/tproxy)
 1. [gping](https://github.com/orf/gping)
@@ -101,6 +101,7 @@ chezmoi init --apply kibaamor
 1. [kubecolor](https://github.com/kubecolor/kubecolor)
 1. [arkade](https://github.com/alexellis/arkade)
 1. [upx/upx](https://github.com/upx/upx)
+1. [ipstream](https://github.com/kibaamor/ipstream)
 
 ### Extra Binaries
 

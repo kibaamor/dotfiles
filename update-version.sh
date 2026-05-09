@@ -40,6 +40,7 @@ repos=(
   "alexellis/arkade"
   "upx/upx"
   "koalaman/shellcheck"
+  "kibaamor/ipstream"
 
   ##############################################################
   # Extra Binaries
