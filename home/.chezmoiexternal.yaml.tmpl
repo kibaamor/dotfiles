@@ -46,8 +46,9 @@
 
 ".gdbinit-gef.py":
   type: file
-  url: "https://gef.blah.cat/py"
-  refreshPeriod: "168h"
+  url: "{{ .github_url_prefix }}raw.githubusercontent.com/hugsy/gef/18404074f469c70480aae071fbb77b75a2ed8507/gef.py"
+  checksum:
+    sha256: "04cdfe961f1e9151933d32cf6b548d9e6a76a1aef8b27c020c575b8d4264ed20"
 {{ end }}
 
 ".local/bin/delta{{ .exe_ext }}":
