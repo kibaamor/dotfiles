@@ -3,38 +3,6 @@
 {{- /* https://pkg.go.dev/text/template */ -}}
 {{- /* https://masterminds.github.io/sprig/ */ -}}
 
-{{- /* checks if we want to install extra binaries */ -}}
-{{- $extra_bins := (env "DOTFILES_INSTALL_EXTRA_BINS" | ne "") -}}
-{{- /* checks if we want to install all binaries that can be installed via arkade */ -}}
-{{- $arkade_bins := (env "DOTFILES_INSTALL_ARKADE_BINS" | ne "") -}}
-{{- /* uses CDN */ -}}
-{{- $use_cdn := (env "DOTFILES_USE_CDN" | ne "") -}}
-
-{{- /* github url prefix */ -}}
-{{- $github_url_prefix := "https://" -}}
-{{- if $use_cdn -}}
-{{-   $github_url_prefix = "https://cdn.gh-proxy.org/https://" -}}
-{{- end -}}
-
-{{- /* git user name */ -}}
-{{- $git_username := env "GIT_USERNAME" -}}
-{{- if eq $git_username "" -}}
-{{-   $git_username = "Kiba Amor" -}}
-{{- end -}}
-
-{{- /* git user email */ -}}
-{{- $git_useremail := env "GIT_USEREMAIL" -}}
-{{- if eq $git_useremail "" -}}
-{{-   $git_useremail = "5093911+kibaamor@users.noreply.github.com" -}}
-{{- end -}}
-
-{{- /* is personal workstation */ -}}
-{{- $personal := (or
-    (contains "ubisoft" .chezmoi.fqdnHostname)
-    (contains "-WKS-" .chezmoi.fqdnHostname)
-    (env "DOTFILES_NONPERSONAL" | ne "")
-  ) | not -}}
-
 {{- /* checks if running interactively */ -}}
 {{- $interactive := and
   stdinIsATTY
@@ -43,47 +11,36 @@
   (env "DEBIAN_FRONTEND" | ne "noninteractive") -}}
 
 {{- /* we can execute sudo command or not */ -}}
-{{- $can_sudo := or $interactive (env "DOTFILES_CAN_SUDO") -}}
+{{- $can_sudo := or $interactive (env "DOTFILES_CAN_SUDO" | ne "") -}}
 
-{{- /* find sudo command */ -}}
-{{- $sudo := findExecutable "sudo" (list "/bin" "/sbin" "/usr/bin" "/usr/sbin") -}}
+{{- /* normalize architecture names used by external binary releases without calling uname on Windows */ -}}
+{{- $uname_arch := "x86_64" -}}
+{{- if ne .chezmoi.os "windows" -}}
+{{-   $uname_arch = output "uname" "-m" | trim -}}
+{{- end -}}
 
 format: yaml
 
 data:
-  extra_bins: {{ $extra_bins }}
-  arkade_bins: {{ $arkade_bins }}
-  use_cdn: {{ $use_cdn }}
-  github_url_prefix: {{ $github_url_prefix }}
+  extra_bins: {{ env "DOTFILES_INSTALL_EXTRA_BINS" | ne "" }}
+  arkade_bins: {{ env "DOTFILES_INSTALL_ARKADE_BINS" | ne "" }}
+  use_cdn: {{ env "DOTFILES_USE_CDN" | ne "" }}
+  github_url_prefix: {{ if env "DOTFILES_USE_CDN" }}https://cdn.gh-proxy.org/https://{{ else }}https://{{ end }}
 
-  git_username: {{ $git_username }}
-  git_useremail: {{ $git_useremail }}
+  git_username: {{ env "GIT_USERNAME" | default "Kiba Amor" }}
+  git_useremail: {{ env "GIT_USEREMAIL" | default "5093911+kibaamor@users.noreply.github.com" }}
 
-  personal: {{ $personal }}
+  personal: {{ not (or (contains "ubisoft" .chezmoi.fqdnHostname) (contains "-WKS-" .chezmoi.fqdnHostname) (env "DOTFILES_NONPERSONAL" | ne "")) }}
 
   interactive: {{ $interactive }}
 {{ if ne .chezmoi.os "windows" }}
   can_sudo: {{ $can_sudo }}
-  sudo: {{ $sudo }}
+  sudo: {{ findExecutable "sudo" (list "/bin" "/sbin" "/usr/bin" "/usr/sbin") }}
 {{ end }}
 
-{{ if eq .chezmoi.os "windows" }}
-  uname_arch: "x86_64"
-  pkg_postfix: ".zip"
-  exe_ext: ".exe"
-{{ else }}
-  uname_arch: "{{ output "uname" "-m" | trim }}"
-  pkg_postfix: ".tar.gz"
-  exe_ext: ""
-{{ end }}
-
-{{ if eq .chezmoi.os "windows" }}
-  platform: "pc"
-  pkg_runtime: "-msvc"
-{{ else if eq .chezmoi.os "darwin" }}
-  platform: "apple"
-  pkg_runtime: ""
-{{ else }}
-  platform: "unknown"
-  pkg_runtime: "-musl"
-{{ end }}
+  uname_arch: "{{ $uname_arch }}"
+  pkg_postfix: "{{ if eq .chezmoi.os "windows" }}.zip{{ else }}.tar.gz{{ end }}"
+  exe_ext: "{{ if eq .chezmoi.os "windows" }}.exe{{ end }}"
+  rust_target_arch: "{{ if and (eq .chezmoi.os "darwin") (eq .chezmoi.arch "arm64") }}aarch64{{ else }}{{ $uname_arch }}{{ end }}"
+  platform: "{{ if eq .chezmoi.os "windows" }}pc{{ else if eq .chezmoi.os "darwin" }}apple{{ else }}unknown{{ end }}"
+  pkg_runtime: "{{ if eq .chezmoi.os "windows" }}-msvc{{ else if eq .chezmoi.os "linux" }}-musl{{ end }}"
