@@ -14,19 +14,31 @@ Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
     }
 }
 
-$installedModules = Get-Module -ListAvailable | Select-Object -ExpandProperty Name -Unique
+function Ensure-Module {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Name
+  )
 
-if (-not $installedModules.Contains("Microsoft.PowerShell.PSResourceGet")) {
-  Write-Host "Install module Microsoft.PowerShell.PSResourceGet..."
-  Install-Module -Name "Microsoft.PowerShell.PSResourceGet" -Force -AllowClobber -Scope CurrentUser
+  try {
+    Import-Module $Name -ErrorAction Stop
+    return
+  } catch {
+    if ($_.FullyQualifiedErrorId -notlike "Modules_ModuleNotFound*") {
+      throw
+    }
+
+    Write-Host "Install module $Name..."
+    Install-Module -Name $Name -Force -AllowClobber -Scope CurrentUser
+  }
+
+  Import-Module $Name -ErrorAction Stop
 }
 
-if (-not $installedModules.Contains("PSReadLine")) {
-  Write-Host "Install module PSReadLine..."
-  Install-Module -Name "PSReadLine" -Force -AllowClobber -Scope CurrentUser
-}
-if ($installedModules.Contains("PSReadLine")) {
-  Import-Module PSReadLine
+Ensure-Module "Microsoft.PowerShell.PSResourceGet"
+
+Ensure-Module "PSReadLine"
+if (Get-Module -Name "PSReadLine") {
   Set-PSReadLineOption -BellStyle None
   Set-PSReadLineOption -PredictionSource History
   Set-PSReadLineOption -PredictionViewStyle ListView
@@ -34,11 +46,8 @@ if ($installedModules.Contains("PSReadLine")) {
   Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
 }
 
-if (-not $installedModules.Contains("PSFzf")) {
-  Write-Host "Install module PSFzf..."
-  Install-Module -Name "PSFzf" -Force -AllowClobber -Scope CurrentUser
-}
-if ($installedModules.Contains("PSFzf")) {
+Ensure-Module "PSFzf"
+if (Get-Module -Name "PSFzf") {
   $env:FZF_DEFAULT_COMMAND='--strip-cwd-prefix --follow --hidden --exclude .git --exclude node_modules'
   $env:FZF_CTRL_T_COMMAND="fd --type f $env:FZF_DEFAULT_COMMAND"
   $env:FZF_ALT_C_COMMAND="fd --type d $env:FZF_DEFAULT_COMMAND"
@@ -59,35 +68,12 @@ if ($installedModules.Contains("PSFzf")) {
     --header 'Press ALT-/ to toggle line wrap, CTRL-\ to toggle preview'"
   # cd into the selected directory
   $env:FZF_ALT_C_OPTS="--height 100% --preview 'lsd --tree {}'"
-  Import-Module PSFzf
   Set-PSFzfOption -PSReadLineChordProvider 'ctrl+t' -PSReadLineChordReverseHistory 'ctrl+r' -EnableFd -EnableFzf -FzfCommand 'fzf --height 40% --reverse --inline-info --info=inline --ansi --preview "bat --style=numbers --color=always {}"'
 }
 
-if (-not $installedModules.Contains("Terminal-Icons")) {
-  Write-Host "Install module Terminal-Icons..."
-  Install-Module -Name "Terminal-Icons" -Force -AllowClobber -Scope CurrentUser
-}
-if ($installedModules.Contains("Terminal-Icons")) {
-  Import-Module Terminal-Icons
-}
-
-if (-not $installedModules.Contains("z")) {
-  Write-Host "Install module z..."
-  Install-Module -Name "z" -Force -AllowClobber -Scope CurrentUser
-}
-if ($installedModules.Contains("z")) {
-  Import-Module z
-}
-
-if (-not $installedModules.Contains("cd-extras")) {
-  Write-Host "Install module cd-extras..."
-  Install-Module -Name "cd-extras" -Force -AllowClobber -Scope CurrentUser
-}
-if ($installedModules.Contains("cd-extras")) {
-  Import-Module cd-extras
-}
-
-Remove-Variable -Name installedModules -ErrorAction SilentlyContinue
+Ensure-Module "Terminal-Icons"
+Ensure-Module "z"
+Ensure-Module "cd-extras"
 
 try {
   $env:CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
