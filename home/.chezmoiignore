@@ -1,4 +1,13 @@
-{{ if ne .chezmoi.os "windows" }}
+{{ if eq .chezmoi.os "windows" }}
+.chezmoiscripts/*.sh.tmpl
+dot_gdbinit
+dot_local/**
+dot_p10k.zsh
+dot_utilities.sh
+dot_vimrc
+dot_zshrc.tmpl
+dot_config/private_htop/**
+{{ else }}
 .chezmoiscripts/*.ps1
 AppData/**
 !AppData/Roaming/helix/config.toml

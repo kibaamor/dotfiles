@@ -97,26 +97,29 @@ log_iptables_port() {
   fi
 
   for port in "$@"; do
+    if [[ ! "$port" =~ ^[0-9]+$ ]] || ((port < 1 || port > 65535)); then
+      echo "invalid TCP port: $port" >&2
+      return 1
+    fi
+
     echo "log port $port"
-    cat <<-EOF | sudo bash
-    iptables -A PREROUTING -t raw -p tcp --dport $port -j LOG --log-prefix "[PREROUTING:raw:$port] "
-    iptables -A PREROUTING -t mangle -p tcp --dport $port -j LOG --log-prefix "[PREROUTING:mangle:$port] "
-    iptables -A PREROUTING -t nat -p tcp --dport $port -j LOG --log-prefix "[PREROUTING:nat:$port] "
-    iptables -A INPUT -t mangle -p tcp --dport $port -j LOG --log-prefix "[INPUT:mangle:$port] "
-    iptables -A INPUT -t filter -p tcp --dport $port -j LOG --log-prefix "[INPUT:filter:$port] "
-    iptables -A INPUT -t security -p tcp --dport $port -j LOG --log-prefix "[INPUT:security:$port] "
-    iptables -A INPUT -t nat -p tcp --dport $port -j LOG --log-prefix "[INPUT:nat:$port] "
-    iptables -A FORWARD -t mangle -p tcp --dport $port -j LOG --log-prefix "[FORWARD:mangle:$port] "
-    iptables -A FORWARD -t filter -p tcp --dport $port -j LOG --log-prefix "[FORWARD:filter:$port] "
-    iptables -A FORWARD -t security -p tcp --dport $port -j LOG --log-prefix "[FORWARD:security:$port] "
-    iptables -A OUTPUT -t raw -p tcp --dport $port -j LOG --log-prefix "[OUTPUT:raw:$port] "
-    iptables -A OUTPUT -t mangle -p tcp --dport $port -j LOG --log-prefix "[OUTPUT:mangle:$port] "
-    iptables -A OUTPUT -t nat -p tcp --dport $port -j LOG --log-prefix "[OUTPUT:nat:$port] "
-    iptables -A OUTPUT -t filter -p tcp --dport $port -j LOG --log-prefix "[OUTPUT:filter:$port] "
-    iptables -A OUTPUT -t security -p tcp --dport $port -j LOG --log-prefix "[OUTPUT:security:$port] "
-    iptables -A POSTROUTING -t mangle -p tcp --dport $port -j LOG --log-prefix "[POSTROUTING:mangle:$port] "
-    iptables -A POSTROUTING -t nat -p tcp --dport $port -j LOG --log-prefix "[POSTROUTING:nat:$port] "
-EOF
+    sudo iptables -A PREROUTING -t raw -p tcp --dport "$port" -j LOG --log-prefix "[PREROUTING:raw:$port] "
+    sudo iptables -A PREROUTING -t mangle -p tcp --dport "$port" -j LOG --log-prefix "[PREROUTING:mangle:$port] "
+    sudo iptables -A PREROUTING -t nat -p tcp --dport "$port" -j LOG --log-prefix "[PREROUTING:nat:$port] "
+    sudo iptables -A INPUT -t mangle -p tcp --dport "$port" -j LOG --log-prefix "[INPUT:mangle:$port] "
+    sudo iptables -A INPUT -t filter -p tcp --dport "$port" -j LOG --log-prefix "[INPUT:filter:$port] "
+    sudo iptables -A INPUT -t security -p tcp --dport "$port" -j LOG --log-prefix "[INPUT:security:$port] "
+    sudo iptables -A INPUT -t nat -p tcp --dport "$port" -j LOG --log-prefix "[INPUT:nat:$port] "
+    sudo iptables -A FORWARD -t mangle -p tcp --dport "$port" -j LOG --log-prefix "[FORWARD:mangle:$port] "
+    sudo iptables -A FORWARD -t filter -p tcp --dport "$port" -j LOG --log-prefix "[FORWARD:filter:$port] "
+    sudo iptables -A FORWARD -t security -p tcp --dport "$port" -j LOG --log-prefix "[FORWARD:security:$port] "
+    sudo iptables -A OUTPUT -t raw -p tcp --dport "$port" -j LOG --log-prefix "[OUTPUT:raw:$port] "
+    sudo iptables -A OUTPUT -t mangle -p tcp --dport "$port" -j LOG --log-prefix "[OUTPUT:mangle:$port] "
+    sudo iptables -A OUTPUT -t nat -p tcp --dport "$port" -j LOG --log-prefix "[OUTPUT:nat:$port] "
+    sudo iptables -A OUTPUT -t filter -p tcp --dport "$port" -j LOG --log-prefix "[OUTPUT:filter:$port] "
+    sudo iptables -A OUTPUT -t security -p tcp --dport "$port" -j LOG --log-prefix "[OUTPUT:security:$port] "
+    sudo iptables -A POSTROUTING -t mangle -p tcp --dport "$port" -j LOG --log-prefix "[POSTROUTING:mangle:$port] "
+    sudo iptables -A POSTROUTING -t nat -p tcp --dport "$port" -j LOG --log-prefix "[POSTROUTING:nat:$port] "
   done
 
   echo "If you can not find the log in 'dmesg' command, try execute command 'echo 1 > /proc/sys/net/netfilter/nf_log_all_netns'"

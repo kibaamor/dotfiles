@@ -224,14 +224,16 @@
 {{ end }}
   executable: true
 
-{{ if ne .chezmoi.os "windows" }}
+{{ if eq .chezmoi.os "linux" }}
 ".local/bin/upx{{ .exe_ext }}":
   type: archive-file
   url: "{{ .github_url_prefix }}github.com/upx/upx/releases/download/v{{ .versions.upx }}/upx-{{ .versions.upx }}-{{ .chezmoi.arch }}_{{ .chezmoi.os }}.tar.xz"
   path: "upx{{ .exe_ext }}"
   executable: true
   stripComponents: 1
+{{ end }}
 
+{{ if ne .chezmoi.os "windows" }}
 ".local/bin/shellcheck{{ .exe_ext }}":
   type: archive-file
   url: "{{ .github_url_prefix }}github.com/koalaman/shellcheck/releases/download/v{{ .versions.shellcheck }}/shellcheck-v{{ .versions.shellcheck }}.{{ .chezmoi.os }}.{{ .uname_arch }}.tar.xz"

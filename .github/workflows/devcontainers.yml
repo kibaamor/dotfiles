@@ -4,11 +4,17 @@ on:
   schedule:
     - cron: "0 2 * * 1"
   push:
+    branches:
+      - main
     paths:
       - ".devcontainer/**"
       - ".github/workflows/devcontainers.yml"
       - "home/**"
   workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
   build-and-push-base:
