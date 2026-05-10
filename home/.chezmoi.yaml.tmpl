@@ -13,10 +13,12 @@
 {{- /* we can execute sudo command or not */ -}}
 {{- $can_sudo := or $interactive (env "DOTFILES_CAN_SUDO" | ne "") -}}
 
-{{- /* normalize architecture names used by external binary releases without calling uname on Windows */ -}}
-{{- $uname_arch := "x86_64" -}}
-{{- if ne .chezmoi.os "windows" -}}
-{{-   $uname_arch = output "uname" "-m" | trim -}}
+{{- /* normalize architecture names used by external binary releases */ -}}
+{{- $uname_arch := .chezmoi.arch -}}
+{{- if eq .chezmoi.arch "amd64" -}}
+{{-   $uname_arch = "x86_64" -}}
+{{- else if and (eq .chezmoi.os "linux") (eq .chezmoi.arch "arm64") -}}
+{{-   $uname_arch = "aarch64" -}}
 {{- end -}}
 
 format: yaml

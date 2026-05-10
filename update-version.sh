@@ -5,7 +5,9 @@ set -euo pipefail
 ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 VERSIONS_FILE="$ROOT_DIR/home/.chezmoidata/versions.yaml"
 CHECKSUMS_FILE="$ROOT_DIR/home/.chezmoidata/checksums.yaml"
+CONFIG_TEMPLATE="$ROOT_DIR/home/.chezmoi.yaml.tmpl"
 EXTERNALS_TEMPLATE="$ROOT_DIR/home/.chezmoiexternal.yaml.tmpl"
+JOBS="${UPDATE_VERSION_JOBS:-8}"
 
 export GH_PAGER=cat
 
@@ -128,57 +130,9 @@ latest_commit_for() {
     "https://api.github.com/repos/$repo/commits/$ref"
 }
 
-uname_arch_for() {
-  case "$1" in
-    linux/amd64 | darwin/amd64 | windows/amd64) echo x86_64 ;;
-    linux/arm64) echo aarch64 ;;
-    darwin/arm64) echo arm64 ;;
-    *)
-      echo "error: unsupported target: $1" >&2
-      exit 1
-      ;;
-  esac
-}
-
-render_data() {
+render_target_data() {
   local os="$1"
   local arch="$2"
-  local uname_arch="$3"
-  local versions_json="$4"
-  local commits_json="$5"
-  local exe_ext=""
-  local github_url_prefix="https://"
-  local go_arch="$uname_arch"
-  local pkg_postfix=".tar.gz"
-  local pkg_runtime=""
-  local platform="unknown"
-  local rust_arch="$uname_arch"
-
-  case "$os" in
-    windows)
-      exe_ext=".exe"
-      pkg_postfix=".zip"
-      pkg_runtime="-msvc"
-      platform="pc"
-      ;;
-    darwin)
-      platform="apple"
-      if [[ "$arch" == arm64 ]]; then
-        rust_arch="aarch64"
-      fi
-      ;;
-    linux)
-      pkg_runtime="-musl"
-      ;;
-    *)
-      echo "error: unsupported OS: $os" >&2
-      exit 1
-      ;;
-  esac
-
-  if [[ "$uname_arch" == aarch64 ]]; then
-    go_arch="arm64"
-  fi
 
   cat <<EOF
 {
@@ -186,22 +140,7 @@ render_data() {
     "os": "$os",
     "arch": "$arch",
     "fqdnHostname": "update-version"
-  },
-  "versions": $versions_json,
-  "commits": $commits_json,
-  "checksums": {},
-  "extra_bins": true,
-  "arkade_bins": true,
-  "use_cdn": false,
-  "github_url_prefix": "$github_url_prefix",
-  "personal": false,
-  "uname_arch": "$uname_arch",
-  "go_arch": "$go_arch",
-  "pkg_postfix": "$pkg_postfix",
-  "exe_ext": "$exe_ext",
-  "rust_arch": "$rust_arch",
-  "platform": "$platform",
-  "pkg_runtime": "$pkg_runtime"
+  }
 }
 EOF
 }
@@ -218,13 +157,27 @@ canonical_key_for_url() {
   echo "$url"
 }
 
-should_checksum_url() {
-  local _key="$1"
+checksum_url() {
+  local url="$1"
+  local results_dir="$2"
+  local key
+  local result_file
+  local sha256
 
-  return 0
+  key="$(canonical_key_for_url "$url")"
+  result_file="$results_dir/$(printf '%s' "$key" | sha256sum | awk '{print $1}')"
+
+  echo "checksumming: $url"
+  sha256="$(curl --fail --silent --show-error --location --retry 3 "$url" | sha256sum | awk '{print $1}')"
+  printf '  "%s": "%s"\n' "$key" "$sha256" >"$result_file"
+}
+
+wait_for_one_checksum() {
+  wait -n
 }
 
 write_versions() {
+  local output_file="$1"
   local repo
   local ref
   local key
@@ -232,7 +185,7 @@ write_versions() {
   local commit
   local spec
 
-  echo "versions:" >"$VERSIONS_FILE"
+  echo "versions:" >"$output_file"
 
   for repo in "${repos[@]}"; do
     echo "processing repo: $repo"
@@ -248,11 +201,11 @@ write_versions() {
     {
       echo "  # https://github.com/$repo"
       echo "  $key: $version"
-    } >>"$VERSIONS_FILE"
+    } >>"$output_file"
   done
 
-  echo >>"$VERSIONS_FILE"
-  echo "commits:" >>"$VERSIONS_FILE"
+  echo >>"$output_file"
+  echo "commits:" >>"$output_file"
 
   for spec in "${commit_repos[@]}"; do
     read -r repo ref key <<<"$spec"
@@ -268,61 +221,110 @@ write_versions() {
     {
       echo "  # https://github.com/$repo"
       echo "  $key: $commit"
-    } >>"$VERSIONS_FILE"
+    } >>"$output_file"
   done
 }
 
 write_checksums() {
+  local versions_file="$1"
+  local output_file="$2"
+  local active_checksums=0
   local arch
-  local data_file
-  local key
+  local failed=0
   local os
   local rendered_file
-  local sha256
+  local results_dir
   local target
-  local uname_arch
+  local target_config_file
+  local target_data_file
   local url
   local urls_file
-  local commits_json
-  local versions_json
 
-  data_file="$(mktemp --suffix=.json)"
   rendered_file="$(mktemp)"
+  results_dir="$(mktemp -d)"
+  target_config_file="$(mktemp --suffix=.yaml)"
+  target_data_file="$(mktemp --suffix=.json)"
   urls_file="$(mktemp)"
-  trap 'rm -f "$data_file" "$rendered_file" "$urls_file"' RETURN
+  trap 'rm -f "${rendered_file:-}" "${target_config_file:-}" "${target_data_file:-}" "${urls_file:-}"; rm -rf "${results_dir:-}"' RETURN
 
-  versions_json="$(chezmoi --source "$ROOT_DIR" execute-template '{{ .versions | toJson }}')"
-  commits_json="$(chezmoi --source "$ROOT_DIR" execute-template '{{ .commits | toJson }}')"
   : >"$urls_file"
 
   for target in "${targets[@]}"; do
     os="${target%/*}"
     arch="${target#*/}"
-    uname_arch="$(uname_arch_for "$target")"
 
-    render_data "$os" "$arch" "$uname_arch" "$versions_json" "$commits_json" >"$data_file"
-    chezmoi --source "$ROOT_DIR" execute-template --override-data-file "$data_file" --file "$EXTERNALS_TEMPLATE" >"$rendered_file"
+    render_target_data "$os" "$arch" >"$target_data_file"
+    chezmoi --source "$ROOT_DIR" execute-template \
+      --override-data-file "$target_data_file" \
+      --file "$CONFIG_TEMPLATE" >"$target_config_file"
+    chezmoi --source "$ROOT_DIR" --config "$target_config_file" execute-template \
+      --override-data-file "$versions_file" \
+      --override-data-file "$target_data_file" \
+      --file "$EXTERNALS_TEMPLATE" >"$rendered_file"
     extract_urls "$rendered_file" >>"$urls_file"
   done
 
-  echo "checksums:" >"$CHECKSUMS_FILE"
-
   while IFS= read -r url; do
-    key="$(canonical_key_for_url "$url")"
-    if ! should_checksum_url "$key"; then
-      continue
-    fi
+    checksum_url "$url" "$results_dir" &
 
-    echo "checksumming: $url"
-    sha256="$(curl --fail --silent --show-error --location --retry 3 "$url" | sha256sum | awk '{print $1}')"
-    echo "  \"$key\": \"$sha256\"" >>"$CHECKSUMS_FILE"
+    active_checksums=$((active_checksums + 1))
+    if [[ "$active_checksums" -ge "$JOBS" ]]; then
+      if ! wait_for_one_checksum; then
+        failed=1
+      fi
+      active_checksums=$((active_checksums - 1))
+    fi
   done < <(sort -u "$urls_file")
+
+  while [[ "$active_checksums" -gt 0 ]]; do
+    if ! wait_for_one_checksum; then
+      failed=1
+    fi
+    active_checksums=$((active_checksums - 1))
+  done
+
+  if [[ "$failed" -ne 0 ]]; then
+    echo "error: failed to checksum one or more URLs" >&2
+    exit 1
+  fi
+
+  echo "checksums:" >"$output_file"
+  find "$results_dir" -type f -exec cat {} + | sort >>"$output_file"
+
+  rm -f "$rendered_file" "$target_config_file" "$target_data_file" "$urls_file"
+  rm -rf "$results_dir"
+  trap - RETURN
 }
 
-require_command chezmoi
-require_command curl
-require_command gh
-require_command sha256sum
+main() {
+  local temp_dir
+  local temp_checksums_file
+  local temp_versions_file
 
-write_versions
-write_checksums
+  if [[ ! "$JOBS" =~ ^[1-9][0-9]*$ ]]; then
+    echo "error: UPDATE_VERSION_JOBS must be a positive integer: $JOBS" >&2
+    exit 1
+  fi
+
+  require_command chezmoi
+  require_command curl
+  require_command gh
+  require_command sha256sum
+
+  temp_dir="$(mktemp -d "$ROOT_DIR/home/.chezmoidata/update-version.XXXXXX")"
+  trap 'rm -rf "${temp_dir:-}"' EXIT
+
+  temp_versions_file="$temp_dir/versions.yaml"
+  temp_checksums_file="$temp_dir/checksums.yaml"
+
+  write_versions "$temp_versions_file"
+  write_checksums "$temp_versions_file" "$temp_checksums_file"
+
+  mv "$temp_versions_file" "$VERSIONS_FILE"
+  mv "$temp_checksums_file" "$CHECKSUMS_FILE"
+
+  rm -rf "$temp_dir"
+  trap - EXIT
+}
+
+main
