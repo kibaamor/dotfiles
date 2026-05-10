@@ -58,7 +58,7 @@ versions:
   # https://github.com/koalaman/shellcheck
   shellcheck: 0.11.0
   # https://github.com/kibaamor/ipstream
-  ipstream: 0.1.0
+  ipstream: 0.1.1
   # https://github.com/kubeshark/kubeshark
   kubeshark: 53.2.5
   # https://github.com/txn2/kubefwd
