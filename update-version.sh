@@ -98,25 +98,33 @@ version_key_for() {
   echo "$1" | cut -d '/' -f 2 | tr -d '-'
 }
 
+normalize_version() {
+  sed -nE 's/^[^0-9]*([0-9]+([.][0-9]+)*)$/\1/p'
+}
+
 latest_version_for() {
   local repo="$1"
   local version
 
-  version="$(
+  if ! version="$(
     gh release view \
       --repo "$repo" \
       --json tagName \
-      --jq '.tagName' 2>/dev/null | tr -d '[a-z][A-Z] -'
-  )"
+      --jq '.tagName' 2>/dev/null | normalize_version
+  )"; then
+    version=""
+  fi
 
   if [[ -z "$version" ]]; then
-    version="$(
+    if ! version="$(
       gh api \
         --method GET \
         --header 'Accept: application/vnd.github+json' \
         --jq 'if type == "array" then .[0].name // empty else empty end' \
-        "https://api.github.com/repos/$repo/tags" | tr -d '[a-z][A-Z] -'
-    )"
+        "https://api.github.com/repos/$repo/tags" | normalize_version
+    )"; then
+      version=""
+    fi
   fi
 
   if [[ ! "$version" =~ ^[0-9]+([.][0-9]+)*$ ]]; then
