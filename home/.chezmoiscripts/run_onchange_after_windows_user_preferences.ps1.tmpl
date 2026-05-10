@@ -57,11 +57,11 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
     }
   }
 
-  if ($env:GIT_EMAIL) {
+  if ($env:GIT_USEREMAIL) {
     $currentEmail = git config --global user.email
-    if ($currentEmail -ne $env:GIT_EMAIL) {
-      Write-Host "Updating git global user.email from '$currentEmail' to '$env:GIT_EMAIL'"
-      git config --global user.email "$env:GIT_EMAIL"
+    if ($currentEmail -ne $env:GIT_USEREMAIL) {
+      Write-Host "Updating git global user.email from '$currentEmail' to '$env:GIT_USEREMAIL'"
+      git config --global user.email "$env:GIT_USEREMAIL"
     }
   }
 
