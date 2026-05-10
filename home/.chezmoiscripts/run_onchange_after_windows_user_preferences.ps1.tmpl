@@ -97,35 +97,45 @@ if (-not ($installedPackages | Select-String '{{ $package }}')) {
 ###################################################################################################
 # Install softwares via scoop
 function Install-Scoop {
-  try {
-    $url = "https://github.com/ScoopInstaller/Install/archive/refs/heads/master.tar.gz"
+  $commit = "b0ee913725139b816f9178163af0aecdba07a7ed"
+  $expectedSha256 = "48f6ea398b3a3fa26fae0093d37bd85b13e7eaa5d1d4a3e208408768408e35ae"
+  $githubUrlPrefixes = @(
+    "{{ .github_url_prefix }}"
+{{- if ne .github_url_prefix "https://cdn.gh-proxy.org/https/" }}
+    "https://cdn.gh-proxy.org/https/"
+{{- end }}
+{{- if ne .github_url_prefix "https://" }}
+    "https://"
+{{- end }}
+  )
 
-    $gz = New-Object IO.Compression.GzipStream (
-        [IO.MemoryStream]::new((Invoke-WebRequest $url -UseBasicParsing).Content),
-        [IO.Compression.CompressionMode]::Decompress
-    )
+  foreach ($githubUrlPrefix in $githubUrlPrefixes) {
+    try {
+      $installerUrl = "${githubUrlPrefix}raw.githubusercontent.com/ScoopInstaller/Install/$commit/install.ps1"
+      Write-Host "Installing scoop from $installerUrl..."
 
-    $tar = New-Object IO.MemoryStream
-    $buf = New-Object byte[] 4096
-    while (($n = $gz.Read($buf, 0, $buf.Length)) -gt 0) { $tar.Write($buf, 0, $n) }
-    $gz.Close(); $tar.Position = 0
+      $installerBytes = (New-Object Net.WebClient).DownloadData($installerUrl)
+      $actualSha256 = [BitConverter]::ToString([Security.Cryptography.SHA256]::Create().ComputeHash($installerBytes)).Replace("-", "").ToLowerInvariant()
+      if ($actualSha256 -ne $expectedSha256) {
+        throw "Scoop installer checksum mismatch. Expected $expectedSha256 but got $actualSha256."
+      }
 
-    while ($tar.Position -lt $tar.Length) {
-        $h = New-Object byte[] 512; $tar.Read($h, 0, 512) > $null
-        $name = ([Text.Encoding]::ASCII.GetString($h, 0, 100)).Trim("`0")
-        if (-not $name) { break }
-        $size = [Convert]::ToInt64(([Text.Encoding]::ASCII.GetString($h,124,12)).Trim("`0"), 8)
-        if ($name -like '*install.ps1') {
-            $b = New-Object byte[] $size; $tar.Read($b,0,$size) > $null
-            iex ([Text.Encoding]::UTF8.GetString($b)); break
-        } else {
-            $tar.Seek(([math]::Ceiling($size/512)*512), 'Current') > $null
-        }
+      $installerText = [Text.Encoding]::UTF8.GetString($installerBytes)
+      $installerText = $installerText.Replace("https://github.com/", "${githubUrlPrefix}github.com/")
+      $installer = [ScriptBlock]::Create($installerText)
+      $Global:LASTEXITCODE = 0
+      & $installer
+      if ($Global:LASTEXITCODE -ne 0) {
+        throw "Scoop installer exited with code $Global:LASTEXITCODE."
+      }
+      return
+    }
+    catch {
+      Write-Host "An error occurred when installing scoop from '$githubUrlPrefix': $_"
     }
   }
-  catch {
-    Write-Host "An error occurred when installing scoop: $_"
-  }
+
+  throw "Unable to install scoop from GitHub or CDN."
 }
 
 if (-not (Test-Path "$env:USERPROFILE\scoop")) {
