@@ -112,7 +112,7 @@ chezmoi init --apply kibaamor
 
 ### Binaries Can Be Installed Via Arkade
 
-> You can set the value of the environment variable 'DOTFILES_INSTALL_ARKADE_BINS' to empty, so that chezmoi installs these bins instead of arkade.
+> Set the environment variable 'DOTFILES_INSTALL_ARKADE_BINS' to a non-empty value to install these bins with chezmoi.
 
 1. [mkcert](https://github.com/FiloSottile/mkcert)
 1. [dive](https://github.com/wagoodman/dive)
