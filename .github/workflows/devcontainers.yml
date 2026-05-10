@@ -7,7 +7,10 @@ on:
     branches:
       - main
     paths:
+      - ".chezmoiroot"
+      - ".chezmoiversion"
       - ".devcontainer/**"
+      - ".dockerignore"
       - ".github/workflows/devcontainers.yml"
       - "home/**"
   workflow_dispatch:
@@ -15,6 +18,12 @@ on:
 permissions:
   contents: read
   packages: write
+
+env:
+  # This devcontainer is built from ubuntu:24.04, so publish Linux container
+  # platforms. Docker has no macOS container platform, and Windows containers
+  # require a Windows base image.
+  DEVCONTAINER_PLATFORMS: linux/amd64,linux/arm64
 
 jobs:
   build-and-push-base:
@@ -24,6 +33,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
@@ -31,24 +46,31 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Build and Push DevContainer to GHCR
         uses: devcontainers/ci@v0.3
         with:
           imageName: ghcr.io/${{ github.repository }}
           imageTag: latest
+          platform: ${{ env.DEVCONTAINER_PLATFORMS }}
           push: always
           noCache: true
 
-      - name: Tag and Push to Docker Hub
+      - name: Install skopeo
         run: |
-          docker tag ghcr.io/${{ github.repository_owner }}/dotfiles:latest ${{ vars.DOCKERHUB_USERNAME }}/dotfiles:latest
-          docker push ${{ vars.DOCKERHUB_USERNAME }}/dotfiles:latest
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends skopeo
+
+      - name: Copy image to Docker Hub
+        env:
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          skopeo copy --all \
+            --src-creds "${{ github.actor }}:${GITHUB_TOKEN}" \
+            --dest-creds "${DOCKERHUB_USERNAME}:${DOCKERHUB_TOKEN}" \
+            docker://ghcr.io/${{ github.repository_owner }}/dotfiles:latest \
+            docker://docker.io/${DOCKERHUB_USERNAME}/dotfiles:latest
 
   build-and-push-language-specific:
     needs: build-and-push-base
@@ -64,6 +86,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
@@ -71,22 +99,29 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Build and Push DevContainer to GHCR (${{ matrix.config }})
         uses: devcontainers/ci@v0.3
         with:
           imageName: ghcr.io/${{ github.repository_owner }}/dotfiles-${{ matrix.config }}
           imageTag: latest
           configFile: .devcontainer/${{ matrix.config }}/devcontainer.json
+          platform: ${{ env.DEVCONTAINER_PLATFORMS }}
           push: always
           noCache: true
 
-      - name: Tag and Push to Docker Hub
+      - name: Install skopeo
         run: |
-          docker tag ghcr.io/${{ github.repository_owner }}/dotfiles-${{ matrix.config }}:latest ${{ vars.DOCKERHUB_USERNAME }}/dotfiles-${{ matrix.config }}:latest
-          docker push ${{ vars.DOCKERHUB_USERNAME }}/dotfiles-${{ matrix.config }}:latest
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends skopeo
+
+      - name: Copy image to Docker Hub
+        env:
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          skopeo copy --all \
+            --src-creds "${{ github.actor }}:${GITHUB_TOKEN}" \
+            --dest-creds "${DOCKERHUB_USERNAME}:${DOCKERHUB_TOKEN}" \
+            docker://ghcr.io/${{ github.repository_owner }}/dotfiles-${{ matrix.config }}:latest \
+            docker://docker.io/${DOCKERHUB_USERNAME}/dotfiles-${{ matrix.config }}:latest
