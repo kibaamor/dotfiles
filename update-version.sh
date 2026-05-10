@@ -8,6 +8,7 @@ CHECKSUMS_FILE="$ROOT_DIR/home/.chezmoidata/checksums.yaml"
 CONFIG_TEMPLATE="$ROOT_DIR/home/.chezmoi.yaml.tmpl"
 EXTERNALS_TEMPLATE="$ROOT_DIR/home/.chezmoiexternal.yaml.tmpl"
 JOBS="${UPDATE_VERSION_JOBS:-8}"
+UPDATE_VERSION_TEMP_DIR=""
 
 export GH_PAGER=cat
 
@@ -84,6 +85,12 @@ require_command() {
   if ! command -v "$1" >/dev/null 2>&1; then
     echo "error: required command not found: $1" >&2
     exit 1
+  fi
+}
+
+cleanup_temp_dir() {
+  if [[ -n "$UPDATE_VERSION_TEMP_DIR" ]]; then
+    rm -rf "$UPDATE_VERSION_TEMP_DIR"
   fi
 }
 
@@ -228,6 +235,7 @@ write_versions() {
 write_checksums() {
   local versions_file="$1"
   local output_file="$2"
+  local work_dir="$3"
   local active_checksums=0
   local arch
   local failed=0
@@ -240,12 +248,11 @@ write_checksums() {
   local url
   local urls_file
 
-  rendered_file="$(mktemp)"
-  results_dir="$(mktemp -d)"
-  target_config_file="$(mktemp --suffix=.yaml)"
-  target_data_file="$(mktemp --suffix=.json)"
-  urls_file="$(mktemp)"
-  trap 'rm -f "${rendered_file:-}" "${target_config_file:-}" "${target_data_file:-}" "${urls_file:-}"; rm -rf "${results_dir:-}"' RETURN
+  rendered_file="$(mktemp "$work_dir/rendered.XXXXXX")"
+  results_dir="$(mktemp -d "$work_dir/checksums.XXXXXX")"
+  target_config_file="$(mktemp "$work_dir/config.XXXXXX.yaml")"
+  target_data_file="$(mktemp "$work_dir/target.XXXXXX.json")"
+  urls_file="$(mktemp "$work_dir/urls.XXXXXX")"
 
   : >"$urls_file"
 
@@ -254,7 +261,11 @@ write_checksums() {
     arch="${target#*/}"
 
     render_target_data "$os" "$arch" >"$target_data_file"
-    chezmoi --source "$ROOT_DIR" execute-template \
+    env \
+      -u DOTFILES_USE_CDN \
+      DOTFILES_INSTALL_EXTRA_BINS=1 \
+      DOTFILES_INSTALL_ARKADE_BINS=1 \
+      chezmoi --source "$ROOT_DIR" execute-template \
       --override-data-file "$target_data_file" \
       --file "$CONFIG_TEMPLATE" >"$target_config_file"
     chezmoi --source "$ROOT_DIR" --config "$target_config_file" execute-template \
@@ -285,19 +296,14 @@ write_checksums() {
 
   if [[ "$failed" -ne 0 ]]; then
     echo "error: failed to checksum one or more URLs" >&2
-    exit 1
+    return 1
   fi
 
   echo "checksums:" >"$output_file"
   find "$results_dir" -type f -exec cat {} + | sort >>"$output_file"
-
-  rm -f "$rendered_file" "$target_config_file" "$target_data_file" "$urls_file"
-  rm -rf "$results_dir"
-  trap - RETURN
 }
 
 main() {
-  local temp_dir
   local temp_checksums_file
   local temp_versions_file
 
@@ -311,19 +317,20 @@ main() {
   require_command gh
   require_command sha256sum
 
-  temp_dir="$(mktemp -d "$ROOT_DIR/home/.chezmoidata/update-version.XXXXXX")"
-  trap 'rm -rf "${temp_dir:-}"' EXIT
+  UPDATE_VERSION_TEMP_DIR="$(mktemp -d "$ROOT_DIR/.update-version.XXXXXX")"
+  trap cleanup_temp_dir EXIT
 
-  temp_versions_file="$temp_dir/versions.yaml"
-  temp_checksums_file="$temp_dir/checksums.yaml"
+  temp_versions_file="$UPDATE_VERSION_TEMP_DIR/versions.yaml"
+  temp_checksums_file="$UPDATE_VERSION_TEMP_DIR/checksums.yaml"
 
   write_versions "$temp_versions_file"
-  write_checksums "$temp_versions_file" "$temp_checksums_file"
+  write_checksums "$temp_versions_file" "$temp_checksums_file" "$UPDATE_VERSION_TEMP_DIR"
 
   mv "$temp_versions_file" "$VERSIONS_FILE"
   mv "$temp_checksums_file" "$CHECKSUMS_FILE"
 
-  rm -rf "$temp_dir"
+  cleanup_temp_dir
+  UPDATE_VERSION_TEMP_DIR=""
   trap - EXIT
 }
 
