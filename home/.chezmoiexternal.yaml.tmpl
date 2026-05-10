@@ -54,7 +54,11 @@
 {{ if not (and (eq .chezmoi.os "darwin") (ne .chezmoi.arch "arm64")) }}
 ".local/bin/delta{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}github.com/dandavison/delta/releases/download/{{ .versions.delta }}/delta-{{ .versions.delta }}-{{ .rust_target_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.arch "arm64") }}
+  url: "{{ .github_url_prefix }}github.com/dandavison/delta/releases/download/{{ .versions.delta }}/delta-{{ .versions.delta }}-{{ .rust_arch }}-{{ .platform }}-{{ .chezmoi.os }}-gnu{{ .pkg_postfix }}"
+{{ else }}
+  url: "{{ .github_url_prefix }}github.com/dandavison/delta/releases/download/{{ .versions.delta }}/delta-{{ .versions.delta }}-{{ .rust_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+{{ end }}
   path: "delta{{ .exe_ext }}"
   executable: true
   stripComponents: 1
@@ -62,7 +66,7 @@
 
 ".local/bin/bat{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}github.com/sharkdp/bat/releases/download/v{{ .versions.bat }}/bat-v{{ .versions.bat }}-{{ .rust_target_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/sharkdp/bat/releases/download/v{{ .versions.bat }}/bat-v{{ .versions.bat }}-{{ .rust_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: "bat{{ .exe_ext }}"
   executable: true
   stripComponents: 1
@@ -70,7 +74,7 @@
 {{ if not (and (eq .chezmoi.os "darwin") (ne .chezmoi.arch "arm64")) }}
 ".local/bin/fd{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}github.com/sharkdp/fd/releases/download/v{{ .versions.fd }}/fd-v{{ .versions.fd }}-{{ .rust_target_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/sharkdp/fd/releases/download/v{{ .versions.fd }}/fd-v{{ .versions.fd }}-{{ .rust_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: "fd{{ .exe_ext }}"
   executable: true
   stripComponents: 1
@@ -103,21 +107,25 @@
 
 ".local/bin/rg{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}github.com/BurntSushi/ripgrep/releases/download/{{ .versions.ripgrep }}/ripgrep-{{ .versions.ripgrep }}-{{ .rust_target_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.arch "arm64") }}
+  url: "{{ .github_url_prefix }}github.com/BurntSushi/ripgrep/releases/download/{{ .versions.ripgrep }}/ripgrep-{{ .versions.ripgrep }}-{{ .rust_arch }}-{{ .platform }}-{{ .chezmoi.os }}-gnu{{ .pkg_postfix }}"
+{{ else }}
+  url: "{{ .github_url_prefix }}github.com/BurntSushi/ripgrep/releases/download/{{ .versions.ripgrep }}/ripgrep-{{ .versions.ripgrep }}-{{ .rust_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+{{ end }}
   stripComponents: 1
   path: "rg{{ .exe_ext }}"
   executable: true
 
 ".local/bin/lsd{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}github.com/lsd-rs/lsd/releases/download/v{{ .versions.lsd }}/lsd-v{{ .versions.lsd }}-{{ .rust_target_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/lsd-rs/lsd/releases/download/v{{ .versions.lsd }}/lsd-v{{ .versions.lsd }}-{{ .rust_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: "lsd{{ .exe_ext }}"
   executable: true
   stripComponents: 1
 
 ".local/bin/duf{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}github.com/muesli/duf/releases/download/v{{ .versions.duf }}/duf_{{ .versions.duf }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/muesli/duf/releases/download/v{{ .versions.duf }}/duf_{{ .versions.duf }}_{{ .chezmoi.os }}_{{ .go_arch }}{{ .pkg_postfix }}"
   path: "duf{{ .exe_ext }}"
   executable: true
 
@@ -134,11 +142,13 @@
   path: "age-keygen{{ .exe_ext }}"
   executable: true
 
+{{ if not (and (eq .chezmoi.os "linux") (eq .chezmoi.arch "arm64")) }}
 ".local/bin/tldr{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}github.com/tldr-pages/tlrc/releases/download/v{{ .versions.tlrc }}/tlrc-v{{ .versions.tlrc }}-{{ .rust_target_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/tldr-pages/tlrc/releases/download/v{{ .versions.tlrc }}/tlrc-v{{ .versions.tlrc }}-{{ .rust_arch }}-{{ .platform }}-{{ .chezmoi.os }}{{ .pkg_runtime }}{{ .pkg_postfix }}"
   path: "tldr{{ .exe_ext }}"
   executable: true
+{{ end }}
 
 ".local/bin/jq{{ .exe_ext }}":
   type: file
@@ -171,7 +181,11 @@
   path: "nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}{{ .exe_ext }}"
 {{ else }}
   type: file
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.arch "arm64") }}
+  url: "{{ .github_url_prefix }}github.com/zu1k/nali/releases/download/v{{ .versions.nali }}/nali-{{ .chezmoi.os }}-armv8-v{{ .versions.nali }}.gz"
+{{ else }}
   url: "{{ .github_url_prefix }}github.com/zu1k/nali/releases/download/v{{ .versions.nali }}/nali-{{ .chezmoi.os }}-{{ .chezmoi.arch }}-v{{ .versions.nali }}.gz"
+{{ end }}
   filter:
     command: "gzip"
     args: ["-d", "-f", "-c"]
@@ -187,16 +201,16 @@
 ".local/bin/gping{{ .exe_ext }}":
   type: archive-file
   {{ if eq .chezmoi.os "darwin" }}
-  url: "{{ .github_url_prefix }}github.com/orf/gping/releases/download/gping-v{{ .versions.gping }}/gping-macOS{{ .pkg_runtime }}-{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/orf/gping/releases/download/gping-v{{ .versions.gping }}/gping-macOS{{ .pkg_runtime }}-{{ .go_arch }}{{ .pkg_postfix }}"
   {{ else }}
-  url: "{{ .github_url_prefix }}github.com/orf/gping/releases/download/gping-v{{ .versions.gping }}/gping-{{ .chezmoi.os | camelcase }}{{ .pkg_runtime }}-{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/orf/gping/releases/download/gping-v{{ .versions.gping }}/gping-{{ .chezmoi.os | camelcase }}{{ .pkg_runtime }}-{{ .go_arch }}{{ .pkg_postfix }}"
   {{ end }}
   path: "gping{{ .exe_ext }}"
   executable: true
 
 ".local/bin/doggo{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}github.com/mr-karan/doggo/releases/download/v{{ .versions.doggo }}/doggo_{{ .versions.doggo }}_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/mr-karan/doggo/releases/download/v{{ .versions.doggo }}/doggo_{{ .versions.doggo }}_{{ .chezmoi.os | camelcase }}_{{ .go_arch }}{{ .pkg_postfix }}"
   path: "doggo{{ .exe_ext }}"
   executable: true
   stripComponents: 1
@@ -288,7 +302,7 @@
 
 ".local/bin/kubefwd{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}github.com/txn2/kubefwd/releases/download/v{{ .versions.kubefwd }}/kubefwd_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/txn2/kubefwd/releases/download/v{{ .versions.kubefwd }}/kubefwd_{{ .chezmoi.os | camelcase }}_{{ .go_arch }}{{ .pkg_postfix }}"
   path: "kubefwd{{ .exe_ext }}"
   executable: true
 {{ end }}
@@ -309,7 +323,7 @@
 
 ".local/bin/lazydocker{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}github.com/jesseduffield/lazydocker/releases/download/v{{ .versions.lazydocker }}/lazydocker_{{ .versions.lazydocker }}_{{ .chezmoi.os | camelcase }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/jesseduffield/lazydocker/releases/download/v{{ .versions.lazydocker }}/lazydocker_{{ .versions.lazydocker }}_{{ .chezmoi.os | camelcase }}_{{ .go_arch }}{{ .pkg_postfix }}"
   path: "lazydocker{{ .exe_ext }}"
   executable: true
 
@@ -325,12 +339,12 @@
 
 ".local/bin/kubectx{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubectx_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubectx_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .go_arch }}{{ .pkg_postfix }}"
   path: "kubectx{{ .exe_ext }}"
   executable: true
 ".local/bin/kubens{{ .exe_ext }}":
   type: archive-file
-  url: "{{ .github_url_prefix }}github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubens_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .uname_arch }}{{ .pkg_postfix }}"
+  url: "{{ .github_url_prefix }}github.com/ahmetb/kubectx/releases/download/v{{ .versions.kubectx }}/kubens_v{{ .versions.kubectx }}_{{ .chezmoi.os }}_{{ .go_arch }}{{ .pkg_postfix }}"
   path: "kubens{{ .exe_ext }}"
   executable: true
 
