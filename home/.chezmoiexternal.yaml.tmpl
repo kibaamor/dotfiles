@@ -310,8 +310,12 @@
 {{ $arkade_url := "" }}
 {{ if eq .chezmoi.os "windows" }}
 {{ $arkade_url = printf "github.com/alexellis/arkade/releases/download/%s/arkade.exe" .versions.arkade }}
+{{ else if and (eq .chezmoi.os "darwin") (eq .chezmoi.arch "arm64") }}
+{{ $arkade_url = printf "github.com/alexellis/arkade/releases/download/%s/arkade-darwin-arm64" .versions.arkade }}
 {{ else if eq .chezmoi.os "darwin" }}
 {{ $arkade_url = printf "github.com/alexellis/arkade/releases/download/%s/arkade-darwin" .versions.arkade }}
+{{ else if eq .chezmoi.arch "arm64" }}
+{{ $arkade_url = printf "github.com/alexellis/arkade/releases/download/%s/arkade-arm64" .versions.arkade }}
 {{ else }}
 {{ $arkade_url = printf "github.com/alexellis/arkade/releases/download/%s/arkade" .versions.arkade }}
 {{ end }}
@@ -319,10 +323,15 @@
 {{ template "checksum" (dict "root" $ "key" $arkade_url) }}
   executable: true
 
-{{ if eq .chezmoi.os "linux" }}
+{{ if and (ne .chezmoi.os "darwin") (or (ne .chezmoi.os "windows") .personal) }}
 ".local/bin/upx{{ .exe_ext }}":
   type: archive-file
-{{ $upx_url := printf "github.com/upx/upx/releases/download/v%s/upx-%s-%s_%s.tar.xz" .versions.upx .versions.upx .chezmoi.arch .chezmoi.os }}
+{{ $upx_url := "" }}
+{{ if eq .chezmoi.os "windows" }}
+{{ $upx_url = printf "github.com/upx/upx/releases/download/v%s/upx-%s-win64.zip" .versions.upx .versions.upx }}
+{{ else }}
+{{ $upx_url = printf "github.com/upx/upx/releases/download/v%s/upx-%s-%s_%s.tar.xz" .versions.upx .versions.upx .chezmoi.arch .chezmoi.os }}
+{{ end }}
   url: "{{ .github_url_prefix }}{{ $upx_url }}"
 {{ template "checksum" (dict "root" $ "key" $upx_url) }}
   path: "upx{{ .exe_ext }}"
@@ -330,11 +339,12 @@
   stripComponents: 1
 {{ end }}
 
-{{ if ne .chezmoi.os "windows" }}
 ".local/bin/shellcheck{{ .exe_ext }}":
   type: archive-file
 {{ $shellcheck_url := "" }}
-{{ if and (eq .chezmoi.os "darwin") (eq .chezmoi.arch "arm64") }}
+{{ if eq .chezmoi.os "windows" }}
+{{ $shellcheck_url = printf "github.com/koalaman/shellcheck/releases/download/v%s/shellcheck-v%s.zip" .versions.shellcheck .versions.shellcheck }}
+{{ else if and (eq .chezmoi.os "darwin") (eq .chezmoi.arch "arm64") }}
 {{ $shellcheck_url = printf "github.com/koalaman/shellcheck/releases/download/v%s/shellcheck-v%s.%s.aarch64.tar.xz" .versions.shellcheck .versions.shellcheck .chezmoi.os }}
 {{ else }}
 {{ $shellcheck_url = printf "github.com/koalaman/shellcheck/releases/download/v%s/shellcheck-v%s.%s.%s.tar.xz" .versions.shellcheck .versions.shellcheck .chezmoi.os .uname_arch }}
@@ -343,6 +353,7 @@
 {{ template "checksum" (dict "root" $ "key" $shellcheck_url) }}
   path: "shellcheck{{ .exe_ext }}"
   executable: true
+{{ if ne .chezmoi.os "windows" }}
   stripComponents: 1
 {{ end }}
 
