@@ -35,7 +35,7 @@ RUN set -eux \
     && export DOTFILES_CAN_SUDO=1 \
     && mkdir -p ~/.local/bin \
     && sh -c "$(curl -fsLS get.chezmoi.io)" -- -b ~/.local/bin \
-    && ~/.local/bin/chezmoi --source /tmp/dotfiles apply \
+    && ~/.local/bin/chezmoi --source /tmp/dotfiles init --apply \
     && echo exit 0 | script -qec zsh \
     && rm -fr -- /tmp/dotfiles typescript ~/.zsh_history ~/.cache/chezmoi \
     && find ~/.local/bin -type f ! -name 'upx' ! -name 'rfv' -exec ~/.local/bin/upx --best --lzma -q {} +  || true \
