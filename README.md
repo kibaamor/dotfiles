@@ -7,23 +7,20 @@ Personal dotfiles.
 ### Linux
 
 ```bash
-# Set default git user name and email.
+# Set the default Git user name and email.
 export GIT_USERNAME=x
 export GIT_USEREMAIL=x@x.x
-# (Optional) Set the value of 'DOTFILES_INSTALL_EXTRA_BINS' to non-empty to install extra binaries,
-# see below for more details.
+# (Optional) Install extra binaries.
 export DOTFILES_INSTALL_EXTRA_BINS=1
-# (Optional) Set the value of 'DOTFILES_INSTALL_ARKADE_BINS' to non-empty to install all binaries 
-# that can be installed via arkade, see below for more details.
+# (Optional) Install binaries through arkade.
 export DOTFILES_INSTALL_ARKADE_BINS=1
-# (Optional) Set the value of 'DOTFILES_USE_CDN' to non-empty to use CDN IN CHINA.
+# (Optional) Use the GitHub CDN proxy in China.
 export DOTFILES_USE_CDN=1
-# (Optional) Setup proxy if you connect to the Internet via proxy, 
-# replace 'http://localhost:7890' with your proxy address.
+# (Optional) Set a proxy; replace this URL with your proxy address.
 export HTTP_PROXY=http://localhost:7890
 export HTTPS_PROXY=http://localhost:7890
 export default_proxy=http://localhost:7890
-# (Optional) Setup Github proxy
+# (Optional) Set the GitHub proxy.
 git config --global url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"
 git config --file ~/.gitconfig-proxy url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"
 
@@ -44,23 +41,20 @@ sh -c "$(curl kibazen.cn/dotfiles.sh)"
 # Install chezmoi via WinGet
 winget install --id twpayne.chezmoi --accept-source-agreements
 
-# Set default git user name and email.
+# Set the default Git user name and email.
 $env:GIT_USERNAME = "x"
 $env:GIT_USEREMAIL = "x@x.x"
-# (Optional) Set the value of 'DOTFILES_INSTALL_EXTRA_BINS' to non-empty to install extra binaries,
-# see below for more details.
+# (Optional) Install extra binaries.
 $env:DOTFILES_INSTALL_EXTRA_BINS = "1"
-# (Optional) Set the value of 'DOTFILES_INSTALL_ARKADE_BINS' to non-empty to install all binaries 
-# that can be installed via arkade, see below for more details.
+# (Optional) Install binaries through arkade.
 $env:DOTFILES_INSTALL_ARKADE_BINS = "1"
-# (Optional) Set the value of 'DOTFILES_USE_CDN' to non-empty to use CDN IN CHINA.
+# (Optional) Use the GitHub CDN proxy in China.
 $env:DOTFILES_USE_CDN = "1"
-# (Optional) Setup proxy if you connect to the Internet via proxy, 
-# replace 'http://localhost:7890' with your proxy address.
+# (Optional) Set a proxy; replace this URL with your proxy address.
 $env:HTTP_PROXY = "http://localhost:7890"
 $env:HTTPS_PROXY = "http://localhost:7890"
 $env:default_proxy = "http://localhost:7890"
-# (Optional) Setup Github proxy
+# (Optional) Set the GitHub proxy.
 git config --global url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"
 git config --file ~/.gitconfig-proxy url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"
 
@@ -100,19 +94,20 @@ chezmoi init --apply kibaamor
 1. [ctop](https://github.com/bcicen/ctop)
 1. [kubecolor](https://github.com/kubecolor/kubecolor)
 1. [arkade](https://github.com/alexellis/arkade)
-1. [upx/upx](https://github.com/upx/upx)
+1. [upx](https://github.com/upx/upx)
+1. [ShellCheck](https://github.com/koalaman/shellcheck) (Linux/macOS)
 1. [ipstream](https://github.com/kibaamor/ipstream)
 
 ### Extra Binaries
 
-> Only install those binaries if the value of the environment variable 'DOTFILES_INSTALL_EXTRA_BINS' is non-empty.
+> These binaries are installed only when `DOTFILES_INSTALL_EXTRA_BINS` is non-empty.
 
 1. [kubeshark](https://github.com/kubeshark/kubeshark)
 1. [kubefwd](https://github.com/txn2/kubefwd)
 
-### Binaries Can Be Installed Via Arkade
+### Binaries Installed via Arkade
 
-> Set the environment variable 'DOTFILES_INSTALL_ARKADE_BINS' to a non-empty value to install these bins with chezmoi.
+> These binaries are installed through arkade only when `DOTFILES_INSTALL_ARKADE_BINS` is non-empty.
 
 1. [mkcert](https://github.com/FiloSottile/mkcert)
 1. [dive](https://github.com/wagoodman/dive)
@@ -128,6 +123,6 @@ chezmoi init --apply kibaamor
 ### `chezmoi: fork/exec /tmp/XXXXXXXXXX.XX: permission denied`
 
 ```bash
-# (Optional) Set the value of 'TMPDIR' if the directory '/tmp' is mounted with 'noexec'.
+# (Optional) Set `TMPDIR` if `/tmp` is mounted with `noexec`.
 export TMPDIR=~/.tmp
 ```

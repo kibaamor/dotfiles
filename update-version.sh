@@ -21,7 +21,7 @@ repos=(
   "junegunn/vim-plug"
 
   ##############################################################
-  # Default Installed Binaries
+  # Default versioned repositories
   "dandavison/delta"
   "sharkdp/bat"
   "sharkdp/fd"
@@ -49,12 +49,12 @@ repos=(
   "kibaamor/ipstream"
 
   ##############################################################
-  # Extra Binaries
+  # Extra binary repositories
   "kubeshark/kubeshark"
   "txn2/kubefwd"
 
   ##############################################################
-  # Arkade Binaries
+  # Arkade-managed binary repositories
   "FiloSottile/mkcert"
   "wagoodman/dive"
   "jesseduffield/lazydocker"

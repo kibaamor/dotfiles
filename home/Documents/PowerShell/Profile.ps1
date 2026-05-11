@@ -57,7 +57,7 @@ if (Get-Module -Name "PSFzf") {
     --preview 'bat -n --color=always --theme Dracula -r :1000 {}'`
     --bind 'ctrl-\:change-preview-window(down|hidden|)'`
     --color header:italic`
-    --header 'Press ALT-/ to toggle line wrap, CTRL-\ to toggle preview(Only first 1000 lines are showed)'"
+    --header 'Press ALT-/ to toggle line wrap, CTRL-\ to toggle preview (first 1000 lines only)'"
   # CTRL-R Paste the selected command from history onto the command-line
   $env:FZF_CTRL_R_OPTS="`
     --height 100%`

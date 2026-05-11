@@ -3,17 +3,17 @@
 {{- /* https://pkg.go.dev/text/template */ -}}
 {{- /* https://masterminds.github.io/sprig/ */ -}}
 
-{{- /* checks if running interactively */ -}}
+{{- /* Detect interactive runs. */ -}}
 {{- $interactive := and
   stdinIsATTY
   (env "ACT" | not)
   (env "CODESPACES" | not)
   (env "DEBIAN_FRONTEND" | ne "noninteractive") -}}
 
-{{- /* we can execute sudo command or not */ -}}
+{{- /* Allow sudo when interactive or explicitly enabled. */ -}}
 {{- $can_sudo := or $interactive (env "DOTFILES_CAN_SUDO" | ne "") -}}
 
-{{- /* normalize architecture names used by external binary releases */ -}}
+{{- /* Normalize architecture names used by external binary releases. */ -}}
 {{- $uname_arch := .chezmoi.arch -}}
 {{- if eq .chezmoi.arch "amd64" -}}
 {{-   $uname_arch = "x86_64" -}}

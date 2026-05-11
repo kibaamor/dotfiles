@@ -122,7 +122,7 @@ log_iptables_port() {
     sudo iptables -A POSTROUTING -t nat -p tcp --dport "$port" -j LOG --log-prefix "[POSTROUTING:nat:$port] "
   done
 
-  echo "If you can not find the log in 'dmesg' command, try execute command 'echo 1 > /proc/sys/net/netfilter/nf_log_all_netns'"
+  echo "If the log is missing from dmesg, run 'echo 1 > /proc/sys/net/netfilter/nf_log_all_netns'"
 }
 
 # https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/2254-cgroup-v2#phase-1-convert-from-cgroups-v1-settings-to-v2

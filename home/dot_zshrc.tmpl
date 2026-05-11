@@ -67,7 +67,7 @@ if [[ -z "${default_proxy}" ]] && command_exists nc ; then
     export default_proxy=http://localhost:7890
 #  elif nc -w 1 -z proxy.ubisoft.org 3128 >/dev/null 2>&1 ; then
 #    export default_proxy=http://proxy.ubisoft.org:3128
-#    export export default_no_proxy=$default_no_proxy,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com
+#    export default_no_proxy=$default_no_proxy,.ubisoft.org,.ubisoft.com,.ubisoft.onbe,.local.fleet.ubi.com
   fi
 fi
 
@@ -100,19 +100,19 @@ enable_proxy
 # Powerlevel10k
 # https://github.com/romkatv/powerlevel10k
 
-# change GITSTATUS_CACHE_DIR or XDG_CACHE_HOME to change default cache dir for gitstatus
+# Set GITSTATUS_CACHE_DIR or XDG_CACHE_HOME to change the gitstatus cache directory.
 # https://github.com/romkatv/gitstatus/blob/master/install
 
 # Default zsh theme
 ZSH_THEME="robbyrussell"
 
 if [[ "`printf '%s\n' $(zsh --version | cut -d ' ' -f2) '5.1' | sort -V -r | head -n1`" = "5.1" ]]; then
-  # Powerlevel10k requires zsh version is greater than or equal to 5.1
-  # or we can install zsh-bin to upgrade zsh version
+  # Powerlevel10k requires zsh 5.1 or newer.
+  # Install zsh-bin to upgrade zsh if needed.
   # https://github.com/romkatv/zsh-bin
   # sh -c "$(curl -fsSL https://raw.githubusercontent.com/romkatv/zsh-bin/master/install)"
 elif [[ -n "$WINDSURF_CASCADE_TERMINAL" ]]; then
-  # Windsurf is not compatiable with powerlevel10k
+  # Windsurf is not compatible with Powerlevel10k.
 else
   ZSH_THEME="powerlevel10k/powerlevel10k"
   [[ -s "$HOME/.p10k.zsh" ]] && \. "$HOME/.p10k.zsh"
@@ -185,7 +185,7 @@ export FZF_CTRL_T_OPTS="\
   --preview 'if [ -d {} ]; then (tree -C {} | head -1000) else (bat -n --color=always --theme Dracula -r :1000 {}) fi'\
   --bind 'ctrl-\\:change-preview-window(down|hidden|)'\
   --color header:italic\
-  --header 'Press ALT-/ to toggle line wrap, CTRL-\ to toggle preview(Only first 1000 lines are showed)'"
+  --header 'Press ALT-/ to toggle line wrap, CTRL-\ to toggle preview (first 1000 lines only)'"
 
 # CTRL-R Paste the selected command from history onto the command-line
 export FZF_CTRL_R_OPTS="\
@@ -238,16 +238,16 @@ _fzf_git_fzf() {
 }
 
 # https://github.com/junegunn/fzf-git.sh?tab=readme-ov-file#list-of-bindings
-# use CTRL-G {key} instead of CTRL-G CTRL-{KEY}
+# Use CTRL-G {key} instead of CTRL-G CTRL-{KEY}.
 # CTRL-G CTRL-F for Files
 # CTRL-G CTRL-B for Branches
 # CTRL-G CTRL-T for Tags
 # CTRL-G CTRL-R for Remotes
-# CTRL-G CTRL-H for commit Hashes
+# CTRL-G CTRL-H for commit hashes
 # CTRL-G CTRL-S for Stashes
 # CTRL-G CTRL-L for reflogs
 # CTRL-G CTRL-W for Worktrees
-# CTRL-G CTRL-E for Each ref ( git for-each-ref )
+# CTRL-G CTRL-E for each ref (git for-each-ref)
 
 
 ###################################################################################################
@@ -259,7 +259,7 @@ setup_ssh_agent "$HOME/.ssh/ssh-agent.env" "$HOME/.ssh/ssh-agent.socket" "$HOME/
 ###################################################################################################
 # Snap config sync
 
-# sync htop config
+# Sync htop config.
 if [[ -d "$HOME/snap/htop/current" ]] ; then
   mkdir -p -- "$HOME/snap/htop/current/.config/htop"
   cp -f -- "$HOME/.config/htop/htoprc" "$HOME/snap/htop/current/.config/htop/htoprc"
@@ -295,7 +295,7 @@ if command_exists kubectl ; then
   alias krnetdbg="kubectl run net-debug --image=nicolaka/netshoot --image-pull-policy=IfNotPresent -it --rm"
   alias kdelnetdbg="kubectl delete pod/net-debug"
 
-  # run command `kubectl api-resources` to get all resources and its shortnames.
+  # Run `kubectl api-resources` to list resources and short names.
   alias kapires="kubectl api-resources"
 fi
 
@@ -306,7 +306,7 @@ command_exists arkade && source <(arkade completion zsh)
 command_exists kubeshark && source <(KUBESHARK_DISABLE_VERSION_CHECK="true" kubeshark completion zsh)
 command_exists chezmoi && source <(chezmoi completion zsh)
 
-# if you can not pull docker image, try to disable http proxy before create minikube cluster
+# If image pulls fail, disable the HTTP proxy before creating the minikube cluster.
 command_exists minikube && alias mk=minikube
 command_exists istioctl && alias i=istioctl
 command_exists lazydocker && alias lzd=lazydocker
@@ -322,5 +322,5 @@ alias python=python3
 command_exists bash && command_exists direnv && eval "$(direnv hook zsh)"
 command_exists pnpm && alias pn=pnpm
 
-# make sure script alway exits with 0
+# Ensure this script always exits with 0.
 return 0 2>/dev/null || true
