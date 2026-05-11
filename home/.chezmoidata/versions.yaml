@@ -52,7 +52,7 @@ versions:
   # https://github.com/kubecolor/kubecolor
   kubecolor: 0.6.0
   # https://github.com/alexellis/arkade
-  arkade: 0.11.93
+  arkade: 0.11.95
   # https://github.com/upx/upx
   upx: 5.1.1
   # https://github.com/koalaman/shellcheck
@@ -82,7 +82,7 @@ versions:
 
 commits:
   # https://github.com/ohmyzsh/ohmyzsh
-  ohmyzsh: 3604dc23e0d95b5ce9a3932838a7b103ef5ff0c1
+  ohmyzsh: a07126330b9f56f12f1e00ddd29786d35d6e64d9
   # https://github.com/fdellwing/zsh-bat
   zshbat: 467337613c1c220c0d01d69b19d2892935f43e9f
   # https://github.com/kibaamor/vimconf
