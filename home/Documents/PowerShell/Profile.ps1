@@ -14,6 +14,48 @@ Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
     }
 }
 
+$script:SkipModuleInstall = $false
+
+function Invoke-ModuleInstall {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Name,
+    [Parameter(Mandatory = $true)]
+    [string]$CommandName,
+    [string[]]$SwitchNames = @(),
+    [int]$TimeoutSeconds = 30
+  )
+
+  $job = Start-Job -ScriptBlock {
+    param($ModuleName, $InstallCommandName, $InstallSwitchNames)
+
+    $ProgressPreference = "SilentlyContinue"
+    $params = @{
+      Name = $ModuleName
+      Scope = "CurrentUser"
+      ErrorAction = "Stop"
+    }
+
+    foreach ($switchName in $InstallSwitchNames) {
+      $params[$switchName] = $true
+    }
+
+    & $InstallCommandName @params
+  } -ArgumentList $Name, $CommandName, $SwitchNames
+
+  try {
+    if (-not (Wait-Job -Job $job -Timeout $TimeoutSeconds)) {
+      Stop-Job -Job $job -ErrorAction SilentlyContinue
+      $script:SkipModuleInstall = $true
+      throw "Timed out after $TimeoutSeconds seconds installing module $Name with $CommandName."
+    }
+
+    Receive-Job -Job $job -ErrorAction Stop | Out-Null
+  } finally {
+    Remove-Job -Job $job -Force -ErrorAction SilentlyContinue
+  }
+}
+
 function Ensure-Module {
   param(
     [Parameter(Mandatory = $true)]
@@ -29,7 +71,47 @@ function Ensure-Module {
     }
 
     Write-Host "Install module $Name..."
-    Install-Module -Name $Name -Force -AllowClobber -Scope CurrentUser
+    if ($script:SkipModuleInstall) {
+      Write-Warning "Skipping automatic install for $Name because a previous module install timed out."
+      return
+    }
+
+    $installed = $false
+    if (Get-Command Install-Module -ErrorAction SilentlyContinue) {
+      try {
+        Invoke-ModuleInstall -Name $Name -CommandName "Install-Module" -SwitchNames @("Force", "AllowClobber")
+        $installed = $true
+      } catch {
+        Write-Warning "Install-Module failed for $Name`: $($_.Exception.Message)"
+        if ($script:SkipModuleInstall) {
+          return
+        }
+      }
+    } else {
+      Write-Warning "Install-Module is not available."
+    }
+
+    if (-not $installed) {
+      $installPSResource = Get-Command Install-PSResource -ErrorAction SilentlyContinue
+      if (-not $installPSResource) {
+        Write-Warning "Install-PSResource is not available; cannot install $Name with the fallback installer."
+        return
+      }
+
+      $switchNames = @()
+      if ($installPSResource.Parameters.ContainsKey("TrustRepository")) {
+        $switchNames += "TrustRepository"
+      }
+
+      try {
+        Write-Warning "Trying Install-PSResource for $Name..."
+        Invoke-ModuleInstall -Name $Name -CommandName "Install-PSResource" -SwitchNames $switchNames
+        $installed = $true
+      } catch {
+        Write-Warning "Install-PSResource failed for $Name`: $($_.Exception.Message)"
+        return
+      }
+    }
   }
 
   Import-Module $Name -ErrorAction Stop
