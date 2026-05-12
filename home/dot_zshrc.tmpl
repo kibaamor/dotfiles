@@ -8,13 +8,14 @@
 # powerlevel10k instant prompt
 # https://github.com/romkatv/powerlevel10k?tab=readme-ov-file#how-do-i-initialize-direnv-when-using-instant-prompt
 
-command_exists bash && command_exists direnv && emulate zsh -c "$(direnv export zsh)"
+if command_exists bash && command_exists direnv ; then
+  __zshrc_direnv_available=1
+  eval "$(direnv export zsh)"
+fi
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   \. "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
-command_exists bash && command_exists direnv && emulate zsh -c "$(direnv hook zsh)"
 
 
 ###################################################################################################
@@ -106,7 +107,8 @@ enable_proxy
 # Default zsh theme
 ZSH_THEME="robbyrussell"
 
-if [[ "`printf '%s\n' $(zsh --version | cut -d ' ' -f2) '5.1' | sort -V -r | head -n1`" = "5.1" ]]; then
+autoload -Uz is-at-least
+if ! is-at-least 5.1 "$ZSH_VERSION" ; then
   # Powerlevel10k requires zsh 5.1 or newer.
   # Install zsh-bin to upgrade zsh if needed.
   # https://github.com/romkatv/zsh-bin
@@ -128,6 +130,7 @@ export HIST_STAMPS="yyyy-mm-dd"
 
 zstyle ':omz:plugins:nvm' autoload yes
 zstyle ':omz:plugins:nvm' silent-autoload yes
+zstyle ':omz:plugins:nvm' lazy yes
 
 # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins
 plugins=(
@@ -262,7 +265,9 @@ setup_ssh_agent "$HOME/.ssh/ssh-agent.env" "$HOME/.ssh/ssh-agent.socket" "$HOME/
 # Sync htop config.
 if [[ -d "$HOME/snap/htop/current" ]] ; then
   mkdir -p -- "$HOME/snap/htop/current/.config/htop"
-  cp -f -- "$HOME/.config/htop/htoprc" "$HOME/snap/htop/current/.config/htop/htoprc"
+  if ! cmp -s "$HOME/.config/htop/htoprc" "$HOME/snap/htop/current/.config/htop/htoprc" ; then
+    cp -f -- "$HOME/.config/htop/htoprc" "$HOME/snap/htop/current/.config/htop/htoprc"
+  fi
 fi
 
 
@@ -277,8 +282,30 @@ fi
 ###################################################################################################
 # Alias and completion
 
+source_cached_completion() {
+  local name="$1"
+  local command_path="$2"
+  shift 2
+
+  local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completions"
+  local cache_file="$cache_dir/$name.zsh"
+  local tmp_file="$cache_file.tmp.$$"
+
+  mkdir -p -- "$cache_dir"
+  if [[ ! -s "$cache_file" || ( -n "$command_path" && "$command_path" -nt "$cache_file" ) ]]; then
+    if "$@" >| "$tmp_file"; then
+      mv -f -- "$tmp_file" "$cache_file"
+    else
+      rm -f -- "$tmp_file"
+      return 1
+    fi
+  fi
+
+  [[ -s "$cache_file" ]] && source "$cache_file"
+}
+
 if command_exists kubectl ; then
-  source <(kubectl completion zsh)
+  source_cached_completion kubectl "${commands[kubectl]}" kubectl completion zsh
 
   if command_exists kubecolor ; then
     alias kubectl=kubecolor
@@ -299,12 +326,12 @@ if command_exists kubectl ; then
   alias kapires="kubectl api-resources"
 fi
 
-command_exists clusterctl && source <(CLUSTERCTL_DISABLE_VERSIONCHECK="true" clusterctl completion zsh)
-command_exists cmctl && source <(cmctl completion zsh)
-command_exists frpc && source <(frpc completion zsh)
-command_exists arkade && source <(arkade completion zsh)
-command_exists kubeshark && source <(KUBESHARK_DISABLE_VERSION_CHECK="true" kubeshark completion zsh)
-command_exists chezmoi && source <(chezmoi completion zsh)
+command_exists clusterctl && source_cached_completion clusterctl "${commands[clusterctl]}" env CLUSTERCTL_DISABLE_VERSIONCHECK="true" clusterctl completion zsh
+command_exists cmctl && source_cached_completion cmctl "${commands[cmctl]}" cmctl completion zsh
+command_exists frpc && source_cached_completion frpc "${commands[frpc]}" frpc completion zsh
+command_exists arkade && source_cached_completion arkade "${commands[arkade]}" arkade completion zsh
+command_exists kubeshark && source_cached_completion kubeshark "${commands[kubeshark]}" env KUBESHARK_DISABLE_VERSION_CHECK="true" kubeshark completion zsh
+command_exists chezmoi && source_cached_completion chezmoi "${commands[chezmoi]}" chezmoi completion zsh
 
 # If image pulls fail, disable the HTTP proxy before creating the minikube cluster.
 command_exists minikube && alias mk=minikube
@@ -319,7 +346,10 @@ command_exists systemd-cgtop && alias cgtop="systemd-cgtop"
 alias ip="ip --color"
 alias python=python3
 
-command_exists bash && command_exists direnv && eval "$(direnv hook zsh)"
+if [[ -n "${__zshrc_direnv_available:-}" ]]; then
+  eval "$(direnv hook zsh)"
+  unset __zshrc_direnv_available
+fi
 command_exists pnpm && alias pn=pnpm
 
 # Ensure this script always exits with 0.

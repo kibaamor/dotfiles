@@ -1,11 +1,10 @@
 #!/bin/bash
 
 command_exists() {
-  # type -p "$1" | grep -v "not found" >/dev/null 2>&1
-  command -v "$1" >/dev/null 2>&1
+  command -v -- "$1" >/dev/null 2>&1
 }
 
-function update_git_config() {
+update_git_config() {
   local config_file="$1"
   local key="$2"
   local value="$3"
