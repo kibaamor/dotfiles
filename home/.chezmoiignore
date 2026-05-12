@@ -1,12 +1,12 @@
 {{ if eq .chezmoi.os "windows" }}
-.chezmoiscripts/*.sh.tmpl
-dot_gdbinit
-dot_local/**
-dot_p10k.zsh
-dot_utilities.sh
-dot_vimrc
-dot_zshrc.tmpl
-dot_config/private_htop/**
+.chezmoiscripts/*.sh
+.gdbinit
+.local/bin/rfv
+.p10k.zsh
+.utilities.sh
+.vimrc
+.zshrc
+.config/htop/**
 {{ else }}
 .chezmoiscripts/*.ps1
 AppData/**
