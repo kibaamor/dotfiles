@@ -1,12 +1,12 @@
 windows:
   features:
     # Hyper-V
-    - 'Microsoft-Hyper-V-All'
+    - "Microsoft-Hyper-V-All"
     # Virtual Machine Platform.
-    - 'VirtualMachinePlatform'
+    - "VirtualMachinePlatform"
     # WSL
-    - 'Microsoft-Windows-Subsystem-Linux'
-    # Sandbox
-    - 'Containers-DisposableClientVM'
+    - "Microsoft-Windows-Subsystem-Linux"
+    # # Sandbox
+    # - 'Containers-DisposableClientVM'
     # Telnet
-    - 'TelnetClient'
+    - "TelnetClient"
