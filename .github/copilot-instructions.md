@@ -2,7 +2,7 @@
 
 ## Build, test, and lint commands
 
-- Render a chezmoi template without applying it:
+- Generate output for review from a chezmoi template without applying changes:
   `chezmoi --source /home/k/repos/dotfiles execute-template < home/.chezmoi.yaml.tmpl`
 - Preview what chezmoi would change on the current machine:
   `chezmoi --source /home/k/repos/dotfiles diff`
@@ -18,7 +18,7 @@
 - Build a language-specific devcontainer:
   `devcontainer build --workspace-folder . --config .devcontainer/node/devcontainer.json`
 
-There is no standalone application test suite in this dotfiles repo. For a single-file validation, render or diff the specific chezmoi template being changed rather than applying the full source tree.
+There is no standalone application test suite in this dotfiles repo. For a single-file validation, generate output for review or diff the specific chezmoi template being changed rather than applying the full source tree. If a script, build, or template command fails, report the failing command, summarize the relevant error output, and suggest the smallest corrective action.
 
 ## High-level architecture
 
@@ -31,11 +31,11 @@ There is no standalone application test suite in this dotfiles repo. For a singl
 
 ## Key conventions
 
-- Preserve chezmoi template delimiters and whitespace trimming (`{{- ... -}}`) when editing `.tmpl` files; many files intentionally avoid emitting blank lines around OS-gated blocks.
-- Follow `.editorconfig`: two-space indentation for YAML/JSON/templates/shell, four spaces by default, LF line endings except PowerShell scripts which use CRLF and UTF-8 BOM rules.
-- Keep OS-specific behavior gated with `.chezmoi.os`, `.chezmoi.osRelease`, `.interactive`, and `.can_sudo` rather than adding unconditional package installs or shell changes.
-- Do not duplicate version literals in templates. Add or update entries in `home/.chezmoidata/versions.yaml` and reference them as `.versions.<key>`.
-- When adding external binaries, update all related surfaces together: README installed-binary lists, `update-version.sh` repo list, `home/.chezmoidata/versions.yaml`, and `home/.chezmoiexternal.yaml.tmpl`.
-- Proxy and CDN support are first-class. Use `.github_url_prefix` for GitHub-hosted downloads and preserve `default_proxy`/`default_no_proxy` handling in shell and Windows profile scripts.
-- Git identity is split between the generated global config and include files for GitHub/GitLab/proxy. Keep `create_empty_dot_gitconfig-*`, `dot_gitconfig.tmpl`, and shell/PowerShell runtime updates consistent.
-- `dot_zshrc.tmpl` is intentionally defensive: most integrations are loaded only when commands exist, custom hooks are sourced from `~/.customrc.pre.sh` and `~/.customrc.post.sh`, and the file ends with a successful return for sourced-shell compatibility.
+1. Template editing: preserve chezmoi template delimiters and whitespace trimming (`{{- ... -}}`) when editing `.tmpl` files; many files intentionally avoid emitting blank lines around OS-gated blocks.
+2. Formatting: follow `.editorconfig`: two-space indentation for YAML/JSON/templates/shell, four spaces by default, LF line endings except PowerShell scripts which use CRLF and UTF-8 BOM rules.
+3. OS behavior: keep OS-specific behavior gated with `.chezmoi.os`, `.chezmoi.osRelease`, `.interactive`, and `.can_sudo` rather than adding unconditional package installs or shell changes.
+4. Versions: do not duplicate version literals in templates. Add or update entries in `home/.chezmoidata/versions.yaml` and reference them as `.versions.<key>`.
+5. External binaries: update all related surfaces together: README installed-binary lists, `update-version.sh` repo list, `home/.chezmoidata/versions.yaml`, and `home/.chezmoiexternal.yaml.tmpl`.
+6. Proxy and CDN support: use `.github_url_prefix` for GitHub-hosted downloads and preserve `default_proxy`/`default_no_proxy` handling in shell and Windows profile scripts.
+7. Git identity: generated global config and include files are split between GitHub/GitLab/proxy. Keep `create_empty_dot_gitconfig-*`, `dot_gitconfig.tmpl`, and shell/PowerShell runtime updates consistent.
+8. Zsh startup: `dot_zshrc.tmpl` is intentionally defensive. Most integrations are loaded only when commands exist, custom hooks are sourced from `~/.customrc.pre.sh` and `~/.customrc.post.sh`, and the file ends with a successful return for sourced-shell compatibility.
