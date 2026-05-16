@@ -357,14 +357,6 @@
   stripComponents: 1
 {{ end }}
 
-".local/bin/ipstream{{ .exe_ext }}":
-  type: archive-file
-{{ $ipstream_url := printf "github.com/kibaamor/ipstream/releases/download/v%s/ipstream_%s_%s_%s%s" .versions.ipstream .versions.ipstream .chezmoi.os .chezmoi.arch .pkg_postfix }}
-  url: "{{ .github_url_prefix }}{{ $ipstream_url }}"
-{{ template "checksum" (dict "root" $ "key" $ipstream_url) }}
-  path: "ipstream{{ .exe_ext }}"
-  executable: true
-
 #{{ if .personal }}
 #".local/bin/frpc{{ .exe_ext }}":
 #  type: archive-file

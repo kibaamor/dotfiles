@@ -96,7 +96,6 @@ chezmoi init --apply kibaamor
 1. [arkade](https://github.com/alexellis/arkade)
 1. [upx](https://github.com/upx/upx)
 1. [ShellCheck](https://github.com/koalaman/shellcheck) (Linux/macOS)
-1. [ipstream](https://github.com/kibaamor/ipstream)
 
 ### Extra Binaries
 

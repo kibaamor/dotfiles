@@ -52,13 +52,11 @@ versions:
   # https://github.com/kubecolor/kubecolor
   kubecolor: 0.6.0
   # https://github.com/alexellis/arkade
-  arkade: 0.11.96
+  arkade: 0.11.97
   # https://github.com/upx/upx
   upx: 5.1.1
   # https://github.com/koalaman/shellcheck
   shellcheck: 0.11.0
-  # https://github.com/kibaamor/ipstream
-  ipstream: 0.1.1
   # https://github.com/kubeshark/kubeshark
   kubeshark: 53.2.5
   # https://github.com/txn2/kubefwd
@@ -88,6 +86,6 @@ commits:
   # https://github.com/kibaamor/vimconf
   vimconf: 85b8fdb40c577e8184e2a003e05184d80a9e7887
   # https://github.com/hugsy/gef
-  gef: 90cced847b57a627aa4b38568f001e88259ba44b
+  gef: edbc7b8f077a1e6142ffc3b27e2d8b96329cb82f
   # https://github.com/junegunn/fzf-git.sh
   fzfgitsh: 0f0488331a060cf45aaecb6705a2cf394fb20293

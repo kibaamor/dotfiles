@@ -55,7 +55,7 @@ repos=(
   "alexellis/arkade"
   "upx/upx"
   "koalaman/shellcheck"
-  "kibaamor/ipstream"
+  #"kibaamor/ipstream"
 
   ##############################################################
   # Extra binary repositories
