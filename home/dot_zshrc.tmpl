@@ -58,6 +58,10 @@ command_exists brew && eval "$($(brew --prefix)/bin/brew shellenv)"
 export COMPOSE_BAKE=true
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 
+# https://github.blog/changelog/2026-04-22-github-cli-opt-out-usage-telemetry/
+export GH_TELEMETRY=false
+export DO_NOT_TRACK=true
+
 # https://code.claude.com/docs/en/env-vars
 export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
 
