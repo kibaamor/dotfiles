@@ -115,6 +115,14 @@ if ! is-at-least 5.1 "$ZSH_VERSION" ; then
   # sh -c "$(curl -fsSL https://raw.githubusercontent.com/romkatv/zsh-bin/master/install)"
 elif [[ -n "$WINDSURF_CASCADE_TERMINAL" ]]; then
   # Windsurf is not compatible with Powerlevel10k.
+elif [[ -n "$VSCODE_CHAT_TERMINAL" ]]; then
+  # Vscode chat terminal is not compatible with Powerlevel10k.
+
+  # add the following to the settings.json:
+  # "chat.tools.terminal.terminalProfile.linux": {
+  #  "path": "/usr/bin/zsh",
+  #  "env": { "VSCODE_CHAT_TERMINAL": "true" },
+  # }
 else
   ZSH_THEME="powerlevel10k/powerlevel10k"
   [[ -s "$HOME/.p10k.zsh" ]] && \. "$HOME/.p10k.zsh"
