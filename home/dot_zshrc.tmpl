@@ -278,9 +278,6 @@ fi
 [[ -s /opt/conda/etc/profile.d/conda.sh ]] && \. /opt/conda/etc/profile.d/conda.sh
 [[ -s "$HOME/.iterm2_shell_integration.zsh" ]] && \. "$HOME/.iterm2_shell_integration.zsh"
 
-# https://code.visualstudio.com/docs/terminal/shell-integration#_automatic-script-injection
-[[ "$TERM_PROGRAM" == "vscode" ]] && \. "$(code --locate-shell-integration-path zsh)"
-
 
 ###################################################################################################
 # Alias and completion

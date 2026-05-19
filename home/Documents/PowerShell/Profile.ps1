@@ -166,6 +166,3 @@ try {
 } catch {
   Write-Warning "carapace initialization failed: $($_.Exception.Message)"
 }
-
-# https://code.visualstudio.com/docs/terminal/shell-integration#_automatic-script-injection
-if ($env:TERM_PROGRAM -eq "vscode") { . "$(code --locate-shell-integration-path pwsh)" }
