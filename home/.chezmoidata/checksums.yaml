@@ -130,7 +130,7 @@ checksums:
   "github.com/nxtrace/NTrace-core/releases/download/v1.6.5/nexttrace_linux_amd64": "32e4b43ba72709d8cb16585194315cf316d376cbd14013c58cece90d3764e090"
   "github.com/nxtrace/NTrace-core/releases/download/v1.6.5/nexttrace_linux_arm64": "07f9c8f74c856bd90b006881527b14240062cb332d84f0be3095fc6f509ce0b1"
   "github.com/nxtrace/NTrace-core/releases/download/v1.6.5/nexttrace_windows_amd64.exe": "1c0b25a361c38dbf4c13273b3b75cb70940e2c1feebd170d188834429b480380"
-  "github.com/ohmyzsh/ohmyzsh/archive/a07126330b9f56f12f1e00ddd29786d35d6e64d9.tar.gz": "c2582fe5cae0dc3379f2cc2df340005ea5798a8fafc8d11af48b01dfb8230013"
+  "github.com/ohmyzsh/ohmyzsh/archive/cb64103161b69d59e1efefeb761ac85564c44698.tar.gz": "3f9397345226b70f91a63bec95bd645f2887c0f489af88e60b077868f6e9188b"
   "github.com/orf/gping/releases/download/gping-v1.20.1/gping-Linux-musl-arm64.tar.gz": "930988ae8d7089e31f58c5bd6484af2117f25493bbc0bee95b47f6ed7f2e7289"
   "github.com/orf/gping/releases/download/gping-v1.20.1/gping-Linux-musl-x86_64.tar.gz": "d39ce326e7b66765a9a60c85188e14f21b2809470fa3148e6eaac6c9b36600b3"
   "github.com/orf/gping/releases/download/gping-v1.20.1/gping-Windows-msvc-x86_64.zip": "f08559444bcd7af8d629cbad6a972dea4033a116ff9aaf0b1b2bef2a3cabb0af"
