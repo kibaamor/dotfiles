@@ -34,6 +34,9 @@ data:
 
   personal: {{ not (or (contains "ubisoft" .chezmoi.fqdnHostname) (contains "-WKS-" .chezmoi.fqdnHostname) (env "DOTFILES_NONPERSONAL" | ne "")) }}
 
+  blocked_hosts:
+    - telemetry.business.githubcopilot.com
+
   interactive: {{ $interactive }}
 {{ if ne .chezmoi.os "windows" }}
   can_sudo: {{ $can_sudo }}

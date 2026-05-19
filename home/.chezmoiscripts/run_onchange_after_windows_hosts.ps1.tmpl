@@ -1,0 +1,61 @@
+# Self-elevate the script if required
+if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] 'Administrator')) {
+  if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
+    $CommandLine = "-File `"" + $MyInvocation.MyCommand.Path + "`" " + $MyInvocation.UnboundArguments
+    Start-Process -Wait -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
+    Exit
+  }
+}
+
+$hostsPath = "$env:SystemRoot\System32\drivers\etc\hosts"
+$blockedAddress = '0.0.0.0'
+$blockedHosts = @(
+{{- range .blocked_hosts }}
+  '{{ . }}'
+{{- end }}
+)
+
+$blockedSet = @{}
+foreach ($hostName in $blockedHosts) {
+  $blockedSet[$hostName.ToLowerInvariant()] = $true
+}
+
+$oldLines = @(Get-Content -LiteralPath $hostsPath)
+$newLines = @()
+
+foreach ($line in $oldLines) {
+  if ([string]::IsNullOrWhiteSpace($line) -or $line -match '^\s*#') {
+    $newLines += $line
+    continue
+  }
+
+  $lineParts = @($line.Trim() -split '#', 2)
+  $entry = $lineParts[0].Trim()
+  $comment = if ($lineParts.Count -gt 1) { " #$($lineParts[1])" } else { '' }
+  $parts = @($entry -split '\s+')
+  if ($parts.Count -lt 2) {
+    $newLines += $line
+    continue
+  }
+
+  $keptHosts = @($parts[1..($parts.Count - 1)] | Where-Object { -not $blockedSet.ContainsKey($_.ToLowerInvariant()) })
+  if ($keptHosts.Count -eq ($parts.Count - 1)) {
+    $newLines += $line
+  } elseif ($keptHosts.Count -gt 0) {
+    $newLines += "$($parts[0]) $($keptHosts -join ' ')$comment"
+  }
+}
+
+foreach ($hostName in $blockedHosts) {
+  $newLines += "$blockedAddress $hostName"
+}
+
+$oldText = ($oldLines -join "`r`n").TrimEnd()
+$newText = ($newLines -join "`r`n").TrimEnd()
+if ($oldText -ne $newText) {
+  $backupPath = "$hostsPath.bak"
+  if (-not (Test-Path -LiteralPath $backupPath)) {
+    Copy-Item -LiteralPath $hostsPath -Destination $backupPath
+  }
+  Set-Content -LiteralPath $hostsPath -Value $newLines -Encoding ASCII
+}
