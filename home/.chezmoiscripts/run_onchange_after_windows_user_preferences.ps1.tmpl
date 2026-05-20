@@ -43,6 +43,9 @@ Set-UserEnvIfMissing 'FTP_PROXY'
 ###################################################################################################
 # Set environment variable
 [Environment]::SetEnvironmentVariable("DOTNET_CLI_TELEMETRY_OPTOUT", "1", "User")
+[Environment]::SetEnvironmentVariable("GH_TELEMETRY", "false", "User")
+[Environment]::SetEnvironmentVariable("DO_NOT_TRACK", "true", "User")
+[Environment]::SetEnvironmentVariable("COPILOT_AUTO_UPDATE", "false", "User")
 [Environment]::SetEnvironmentVariable("CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC", "1", "User")
 
 
