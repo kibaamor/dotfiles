@@ -57,5 +57,5 @@ if ($oldText -ne $newText) {
   if (-not (Test-Path -LiteralPath $backupPath)) {
     Copy-Item -LiteralPath $hostsPath -Destination $backupPath
   }
-  Set-Content -LiteralPath $hostsPath -Value $newLines -Encoding ASCII
+  [System.IO.File]::WriteAllLines($hostsPath, $newLines, [System.Text.Encoding]::UTF8)
 }
