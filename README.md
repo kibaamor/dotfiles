@@ -4,6 +4,19 @@ Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 
 ## Install
 
+### Find the fastest mirror (optional, useful for users in China)
+
+Before installing, run this script to pick the fastest GitHub mirror for your network.
+The script tests multiple mirror candidates in parallel and exports the result as a
+`DOTFILES_MIRROR` variable — add it to your environment before running the install
+commands below.
+
+```bash
+eval "$(bash <(curl -fsSL https://raw.githubusercontent.com/kibaamor/dotfiles/main/find-gh-mirror.sh) -q)"
+```
+
+> See `find-gh-mirror.sh --help` for additional options (custom probes, timeouts, extra mirrors, etc.).
+
 ### Linux
 
 ```bash
@@ -14,7 +27,7 @@ export GIT_USEREMAIL=x@x.x
 export DOTFILES_EXTRA_BINS=1
 # (Optional) Install binaries through arkade (takes effect at every chezmoi update).
 export DOTFILES_ARKADE_BINS=1
-# (Optional) Set a mirror for GitHub-hosted downloads; replace this URL with your preferred mirror.
+# (Optional) Set a mirror for GitHub-hosted downloads.
 export DOTFILES_MIRROR=https://cdn.gh-proxy.org
 # (Optional) Set a proxy; replace this URL with your proxy address.
 export HTTP_PROXY=http://localhost:7890
@@ -48,7 +61,7 @@ $env:GIT_USEREMAIL = "x@x.x"
 $env:DOTFILES_EXTRA_BINS = "1"
 # (Optional) Install binaries through arkade (takes effect at every chezmoi update).
 $env:DOTFILES_ARKADE_BINS = "1"
-# (Optional) Set a mirror for GitHub-hosted downloads; replace this URL with your preferred mirror.
+# (Optional) Set a mirror for GitHub-hosted downloads.
 $env:DOTFILES_MIRROR = "https://cdn.gh-proxy.org"
 # (Optional) Set a proxy; replace this URL with your proxy address.
 $env:HTTP_PROXY = "http://localhost:7890"

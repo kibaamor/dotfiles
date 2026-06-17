@@ -67,6 +67,7 @@ export default_proxy="${default_proxy:-}"
 if [[ -z "${default_proxy}" ]] && command_exists nc ; then
   if nc -w 1 -z localhost 7890 >/dev/null 2>&1 ; then
     export default_proxy=http://localhost:7890
+  fi
 fi
 
 
