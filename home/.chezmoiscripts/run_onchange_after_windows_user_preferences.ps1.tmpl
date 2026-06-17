@@ -1,0 +1,163 @@
+###################################################################################################
+# Update PATH
+function Add-PathToUserPath {
+  param ([string]$NewPath)
+
+  $envPath = [Environment]::GetEnvironmentVariable("PATH", "User")
+  if ($envPath -split ";" -contains $NewPath) {
+    Write-Host "$NewPath is already in PATH"
+  } else {
+    Write-Host "Adding $NewPath to PATH"
+    [Environment]::SetEnvironmentVariable("PATH", "$NewPath;$envPath", "User")
+  }
+}
+Add-PathToUserPath "$env:USERPROFILE\.local\bin"
+Add-PathToUserPath "$env:USERPROFILE\go\bin"
+
+function Set-UserEnvIfMissing {
+  param ([string]$EnvName)
+
+  $currentValue = [Environment]::GetEnvironmentVariable($EnvName, "Process")
+  if ([string]::IsNullOrWhiteSpace($currentValue)) {
+    Write-Host "Current environment variable '$EnvName' is not set or empty. Nothing to update."
+    return
+  }
+
+  $userValue = [Environment]::GetEnvironmentVariable($EnvName, "User")
+  if (-not [string]::IsNullOrWhiteSpace($userValue)) {
+    Write-Host "User environment variable '$EnvName'('$userValue') already set. No action taken."
+    return
+  }
+
+  if ($userValue -ne $currentValue) {
+    Write-Host "Setting user environment variable '$EnvName' to '$currentValue'"
+    [Environment]::SetEnvironmentVariable($EnvName, $currentValue, "User")
+  }
+}
+Set-UserEnvIfMissing 'NO_PROXY'
+Set-UserEnvIfMissing 'HTTP_PROXY'
+Set-UserEnvIfMissing 'HTTPS_PROXY'
+Set-UserEnvIfMissing 'FTP_PROXY'
+
+
+###################################################################################################
+# Set environment variable
+[Environment]::SetEnvironmentVariable("DOTNET_CLI_TELEMETRY_OPTOUT", "1", "User")
+[Environment]::SetEnvironmentVariable("GH_TELEMETRY", "false", "User")
+[Environment]::SetEnvironmentVariable("DO_NOT_TRACK", "true", "User")
+[Environment]::SetEnvironmentVariable("COPILOT_AUTO_UPDATE", "false", "User")
+[Environment]::SetEnvironmentVariable("CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC", "1", "User")
+
+
+###################################################################################################
+# Update git config
+if (Get-Command git -ErrorAction SilentlyContinue) {
+  if ($env:GIT_USERNAME) {
+    $currentUsername = git config --global user.name
+    if ($currentUsername -ne $env:GIT_USERNAME) {
+      Write-Host "Updating git global user.name from '$currentUsername' to '$env:GIT_USERNAME'"
+      git config --global user.name "$env:GIT_USERNAME"
+    }
+  }
+
+  if ($env:GIT_USEREMAIL) {
+    $currentEmail = git config --global user.email
+    if ($currentEmail -ne $env:GIT_USEREMAIL) {
+      Write-Host "Updating git global user.email from '$currentEmail' to '$env:GIT_USEREMAIL'"
+      git config --global user.email "$env:GIT_USEREMAIL"
+    }
+  }
+
+  if ($env:default_proxy) {
+    $currentHttpProxy = git config --includes --global http.proxy
+    if ($currentHttpProxy -ne "$env:default_proxy") {
+        Write-Host "Updating git global http.proxy from '$currentHttpProxy' to '$env:default_proxy'"
+        git config  --file "$env:USERPROFILE/.gitconfig-proxy" http.proxy "$env:default_proxy"
+    }
+
+    $currentHttpsProxy = git config --includes --global https.proxy
+    if ($currentHttpsProxy -ne "$env:default_proxy") {
+        Write-Host "Updating git global https.proxy from '$currentHttpsProxy' to '$env:default_proxy'"
+        git config  --file "$env:USERPROFILE/.gitconfig-proxy" https.proxy "$env:default_proxy"
+    }
+  }
+}
+
+
+###################################################################################################
+# Install softwares via winget
+$installedPackages = winget list
+{{ range $package := .packages.windows }}
+if (-not ($installedPackages | Select-String '{{ $package }}')) {
+  Write-Host 'Install package {{ $package }}...'
+  winget install --id '{{ $package }}' --accept-package-agreements --accept-source-agreements --force
+} else {
+  Write-Host 'Package {{ $package }} is already installed.'
+}
+{{ end }}
+
+
+###################################################################################################
+# Install softwares via scoop
+function Install-Scoop {
+  $commit = "b0ee913725139b816f9178163af0aecdba07a7ed"
+  $expectedSha256 = "48f6ea398b3a3fa26fae0093d37bd85b13e7eaa5d1d4a3e208408768408e35ae"
+  $githubUrlPrefixes = @(
+    "https://"
+    "https://cdn.gh-proxy.org/https/"
+  )
+
+  foreach ($githubUrlPrefix in $githubUrlPrefixes) {
+    try {
+      $installerUrl = "${githubUrlPrefix}raw.githubusercontent.com/ScoopInstaller/Install/$commit/install.ps1"
+      Write-Host "Installing scoop from $installerUrl..."
+
+      $installerBytes = (New-Object Net.WebClient).DownloadData($installerUrl)
+      $actualSha256 = [BitConverter]::ToString([Security.Cryptography.SHA256]::Create().ComputeHash($installerBytes)).Replace("-", "").ToLowerInvariant()
+      if ($actualSha256 -ne $expectedSha256) {
+        throw "Scoop installer checksum mismatch. Expected $expectedSha256 but got $actualSha256."
+      }
+
+      $installerText = [Text.Encoding]::UTF8.GetString($installerBytes)
+      $installerText = $installerText.Replace("https://github.com/", "${githubUrlPrefix}github.com/")
+      $installer = [ScriptBlock]::Create($installerText)
+      $Global:LASTEXITCODE = 0
+      & $installer
+      if ($Global:LASTEXITCODE -ne 0) {
+        throw "Scoop installer exited with code $Global:LASTEXITCODE."
+      }
+      return
+    }
+    catch {
+      Write-Host "An error occurred when installing scoop from '$githubUrlPrefix': $_"
+    }
+  }
+
+  throw "Unable to install scoop from GitHub or CDN."
+}
+
+if (-not (Test-Path "$env:USERPROFILE\scoop")) {
+  Write-Host "Install scoop..."
+  Install-Scoop
+} else {
+  Write-Host "Scoop is already installed."
+}
+
+if (Test-Path "$env:USERPROFILE\scoop") {
+  Write-Host "Install git..."
+  scoop install git
+
+  Write-Host "Add bucket nerd-fonts..."
+  scoop bucket add nerd-fonts
+
+  Write-Host "Install font CascadiaMono-NF-Propo..."
+  scoop install CascadiaMono-NF-Propo
+  Write-Host "Install font Source-Han-Sans-SC..."
+  scoop install Source-Han-Sans-SC
+
+  Write-Host "Add bucket extras..."
+  scoop bucket add extras
+
+  Write-Host "Install snipaste..."
+  scoop install snipaste
+}

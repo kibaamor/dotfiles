@@ -1,0 +1,189 @@
+name: Build and Push DevContainers
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".chezmoiroot"
+      - ".chezmoiversion"
+      - ".devcontainer/**"
+      - ".dockerignore"
+      - ".github/workflows/devcontainers.yml"
+      - "home/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: devcontainers
+  cancel-in-progress: false
+
+env:
+  # This devcontainer is built from ubuntu:24.04, so publish Linux container
+  # platforms. Docker has no macOS container platform, and Windows containers
+  # require a Windows base image.
+  DEVCONTAINER_PLATFORMS: linux/amd64,linux/arm64
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+
+    outputs:
+      version_tag: ${{ steps.tags.outputs.version_tag }}
+
+    steps:
+      - name: Generate image tags
+        id: tags
+        run: |
+          echo "version_tag=${GITHUB_SHA::7}-$(date -u +%Y%m%d%H%M%S)" >> "$GITHUB_OUTPUT"
+
+  build-and-push-base:
+    needs: metadata
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      CACHE_SCOPE: devcontainer-base
+      DEVCONTAINER_CONFIG_FILE: .devcontainer/devcontainer.json
+      GHCR_IMAGE: ghcr.io/${{ github.repository }}
+
+    steps:
+      - &checkout-repository
+        name: Checkout repository
+        uses: actions/checkout@v6
+
+      - &setup-qemu
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+        with:
+          cache-image: false
+
+      - &setup-buildx
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - &login-ghcr
+        name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - &install-skopeo
+        name: Install skopeo
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends skopeo
+
+      - &build-and-push-devcontainer
+        name: Build and Push DevContainer to GHCR
+        uses: devcontainers/ci@v0.3
+        with:
+          imageName: ${{ env.GHCR_IMAGE }}
+          imageTag: ${{ needs.metadata.outputs.version_tag }},latest
+          configFile: ${{ env.DEVCONTAINER_CONFIG_FILE }}
+          platform: ${{ env.DEVCONTAINER_PLATFORMS }}
+          push: always
+          # GitHub's cache service evicts entries not accessed for 7 days by default.
+          cacheFrom: |
+            type=gha,scope=${{ env.CACHE_SCOPE }}
+            ${{ env.GHCR_IMAGE }}:latest
+          cacheTo: type=gha,mode=max,scope=${{ env.CACHE_SCOPE }}
+
+  build-and-push-golang:
+    needs:
+      - metadata
+      - build-and-push-base
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      CACHE_SCOPE: devcontainer-golang
+      DEVCONTAINER_CONFIG_FILE: .devcontainer/golang/devcontainer.json
+      GHCR_IMAGE: ghcr.io/${{ github.repository_owner }}/dotfiles-golang
+
+    steps:
+      - *checkout-repository
+      - *setup-qemu
+      - *setup-buildx
+      - *login-ghcr
+      - *install-skopeo
+      - *build-and-push-devcontainer
+
+  build-and-push-node:
+    needs:
+      - metadata
+      - build-and-push-base
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      CACHE_SCOPE: devcontainer-node
+      DEVCONTAINER_CONFIG_FILE: .devcontainer/node/devcontainer.json
+      GHCR_IMAGE: ghcr.io/${{ github.repository_owner }}/dotfiles-node
+
+    steps:
+      - *checkout-repository
+      - *setup-qemu
+      - *setup-buildx
+      - *login-ghcr
+      - *install-skopeo
+      - *build-and-push-devcontainer
+
+  copy-base-to-docker-hub:
+    needs:
+      - metadata
+      - build-and-push-base
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      DOCKERHUB_IMAGE: dotfiles
+      GHCR_IMAGE: ghcr.io/${{ github.repository_owner }}/dotfiles
+
+    steps:
+      - *install-skopeo
+
+      - &copy-image-to-docker-hub
+        name: Copy image to Docker Hub
+        env:
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION_TAG: ${{ needs.metadata.outputs.version_tag }}
+        run: |
+          for tag in "${VERSION_TAG}" latest; do
+            skopeo copy --all \
+              --src-creds "${{ github.actor }}:${GITHUB_TOKEN}" \
+              --dest-creds "${DOCKERHUB_USERNAME}:${DOCKERHUB_TOKEN}" \
+              "docker://${GHCR_IMAGE}:${tag}" \
+              "docker://docker.io/${DOCKERHUB_USERNAME}/${DOCKERHUB_IMAGE}:${tag}"
+          done
+
+  copy-golang-to-docker-hub:
+    needs:
+      - metadata
+      - build-and-push-golang
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      DOCKERHUB_IMAGE: dotfiles-golang
+      GHCR_IMAGE: ghcr.io/${{ github.repository_owner }}/dotfiles-golang
+
+    steps:
+      - *install-skopeo
+      - *copy-image-to-docker-hub
+
+  copy-node-to-docker-hub:
+    needs:
+      - metadata
+      - build-and-push-node
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      DOCKERHUB_IMAGE: dotfiles-node
+      GHCR_IMAGE: ghcr.io/${{ github.repository_owner }}/dotfiles-node
+
+    steps:
+      - *install-skopeo
+      - *copy-image-to-docker-hub

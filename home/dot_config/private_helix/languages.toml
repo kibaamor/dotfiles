@@ -1,0 +1,18 @@
+# Language Support
+# https://docs.helix-editor.com/lang-support.html
+
+# languages.toml files
+# https://docs.helix-editor.com/languages.html
+
+# Gopls: Settings
+# https://github.com/golang/tools/blob/master/gopls/doc/settings.md
+[language-server.gopls]
+command = "gopls"
+config = { "gofumpt" = true, "local" = "goimports", "semanticTokens" = true, "staticcheck" = true, "verboseOutput" = true, "analyses" = { "fieldalignment" = true, "nilness" = true, unusedparams = true, unusedwrite = true, useany = true }, usePlaceholders = true, completeUnimported = true, hints = { "assignVariableType" = true, "compositeLiteralFields" = true, "compositeLiteralTypes" = true, "constantValues" = true, "functionTypeParameters" = true, "parameterNames" = true, "rangeVariableTypes" = true } }
+
+[[language]]
+name = "go"
+roots = ["go.work", "go.mod"]
+auto-format = true
+comment-token = "//"
+language-servers = [ "gopls"]

@@ -1,0 +1,19 @@
+{{ if eq .chezmoi.os "windows" }}
+.chezmoiscripts/*.sh
+.gdbinit
+.local/bin/rfv
+.p10k.zsh
+.utilities.sh
+.vimrc
+.zshrc
+.config/htop/**
+{{ else }}
+.chezmoiscripts/*.ps1
+AppData/**
+!AppData/Roaming/helix/config.toml
+Documents/**
+!Documents/PowerShell/Profile.ps1
+
+.oh-my-zsh/cache/**
+.oh-my-zsh/custom/themes/powerlevel10k/**/*.zwc
+{{ end }}

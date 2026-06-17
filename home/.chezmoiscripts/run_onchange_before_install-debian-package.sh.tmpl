@@ -1,0 +1,23 @@
+{{- if contains "debian" (get .chezmoi.osRelease "idLike") -}}
+
+#!/bin/bash
+
+set -eu
+
+if [ "$(id -u)" -eq 0 ]; then
+  set -efu \
+    && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get update \
+    && apt-get install --yes --no-install-recommends {{ .packages.debian }} \
+    && rm -rf /var/lib/apt/lists/*
+{{ if .can_sudo }}
+else
+  set -efu \
+    && export DEBIAN_FRONTEND=noninteractive \
+    && {{ .sudo }} apt-get update \
+    && {{ .sudo }} apt-get install --yes --no-install-recommends {{ .packages.debian }} \
+    && {{ .sudo }} rm -rf /var/lib/apt/lists/*
+{{ end }}
+fi
+
+{{- end -}}

@@ -1,0 +1,99 @@
+{{- if ne .chezmoi.os "windows" -}}
+#!/bin/bash
+
+set -efu
+
+hosts_file=/etc/hosts
+blocked_address=0.0.0.0
+blocked_hosts='{{ range .blocked_hosts }}{{ . }}
+{{ end }}'
+
+tmp_file="$(mktemp)"
+trap 'rm -f "$tmp_file"' EXIT
+
+awk -v address="$blocked_address" -v hosts="$blocked_hosts" '
+  BEGIN {
+    host_count = split(hosts, ordered_hosts, "\n")
+    for (i = 1; i <= host_count; i++) {
+      if (ordered_hosts[i] != "") {
+        blocked[ordered_hosts[i]] = 1
+      }
+    }
+  }
+  /^[[:space:]]*#/ { print; next }
+  {
+    original = $0
+    comment = ""
+    entry = $0
+    comment_start = index($0, "#")
+    if (comment_start > 0) {
+      comment = substr($0, comment_start)
+      entry = substr($0, 1, comment_start - 1)
+    }
+
+    gsub(/^[[:space:]]+|[[:space:]]+$/, "", entry)
+    if (entry == "") {
+      print original
+      next
+    }
+
+    field_count = split(entry, fields, /[[:space:]]+/)
+    if (field_count < 2) {
+      print original
+      next
+    }
+
+    line = fields[1]
+    removed = 0
+    kept_count = 0
+    for (i = 2; i <= field_count; i++) {
+      if (fields[i] in blocked) {
+        removed = 1
+      } else {
+        line = line " " fields[i]
+        kept_count++
+      }
+    }
+
+    if (removed && kept_count > 0) {
+      if (comment != "") {
+        line = line " " comment
+      }
+      print line
+    } else if (!removed) {
+      print original
+    }
+  }
+  END {
+    for (i = 1; i <= host_count; i++) {
+      if (ordered_hosts[i] != "") {
+        print address " " ordered_hosts[i]
+      }
+    }
+  }
+' "$hosts_file" > "$tmp_file"
+
+if cmp -s "$hosts_file" "$tmp_file"; then
+  exit 0
+fi
+
+backup_file=${hosts_file}.bak
+
+if [ "$(id -u)" -eq 0 ]; then
+  if [ ! -e "$backup_file" ]; then
+    cp "$hosts_file" "$backup_file"
+  fi
+  cp "$tmp_file" "$hosts_file"
+{{ if .can_sudo }}
+else
+  if [ ! -e "$backup_file" ]; then
+    {{ .sudo }} cp "$hosts_file" "$backup_file" || true # cp fails when building docker images, so ignore errors
+  fi
+  {{ .sudo }} cp "$tmp_file" "$hosts_file" || true # cp fails when building docker images, so ignore errors
+{{ else }}
+else
+  echo "Skipping /etc/hosts update because root or sudo access is required." >&2
+{{ end }}
+fi
+
+{{- end -}}

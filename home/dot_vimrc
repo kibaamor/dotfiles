@@ -1,0 +1,8 @@
+function! SourceIfExists(file)
+  if filereadable(expand(a:file))
+    exe 'source' a:file
+  endif
+endfunction
+
+call SourceIfExists("~/.vimconf/vimconf_plug.vim")
+call SourceIfExists("~/.custom.vimrc")

@@ -1,0 +1,74 @@
+[user]
+    name = {{ .git_username }}
+    email = {{ .git_useremail }}
+
+[init]
+    defaultBranch = main
+
+[push]
+    default = simple
+
+[pull]
+    rebase = true
+
+[core]
+    editor = vim
+    pager = delta
+    quotepath = false
+
+    safecrlf = warn
+{{- if eq .chezmoi.os "windows" }}
+    autocrlf = true
+{{- else }}
+    autocrlf = input
+{{- end }}
+    #eol = native
+
+[gui]
+    encoding = utf-8
+
+[i18n "commit"]
+    encoding = utf-8
+
+[i18n]
+    logoutputencoding = utf-8
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+    dark = true
+    side-by-side = true
+    line-numbers = true
+    relative-paths = true
+    syntax-theme = Monokai Extended
+    plus-style = "syntax #004d00"
+    minus-style = "syntax #4d0000"
+    line-numbers-plus-style = "#b8bb26"
+    line-numbers-minus-style = "#fb4934"
+    line-numbers-zero-style = "#665c54"
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+
+#[url "git@github.com:"]
+#    insteadOf = https://github.com/
+
+[include]
+    path = ~/.gitconfig-proxy
+
+# https://git-scm.com/docs/git-config#_includes
+# https://git-scm.com/docs/git-config#Documentation/git-config.txt-GITCONFIGGLOBAL
+# GIT_CONFIG_GLOBAL=~/.gitconfig-github git config --global user.name xxx
+[includeIf "hasconfig:remote.*.url:https://github.com/**"]
+    path = ~/.gitconfig-github
+[includeIf "hasconfig:remote.*.url:git@github.com:*/**"]
+    path = ~/.gitconfig-github
+[includeIf "hasconfig:remote.*.url:https://gitlab**"]
+    path = ~/.gitconfig-gitlab
+[includeIf "hasconfig:remote.*.url:git@gitlab*:*/**"]
+    path = ~/.gitconfig-gitlab

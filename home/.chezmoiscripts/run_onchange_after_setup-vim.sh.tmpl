@@ -1,0 +1,10 @@
+{{- if ne .chezmoi.os "windows" -}}
+#!/bin/bash
+
+set -efu
+
+if command -v vim &> /dev/null; then
+  vim +PlugInstall +qa!
+fi
+
+{{- end -}}

@@ -1,0 +1,21 @@
+{{- if contains "centos" (get .chezmoi.osRelease "idLike") -}}
+
+#!/bin/bash
+
+set -efu
+
+if [ "$(id -u)" -eq 0 ]; then
+  set -efu \
+    && yum update \
+    && yum --assumeyes install {{ .packages.centos }} \
+    && yum clean all
+{{ if .can_sudo }}
+else
+  set -efu \
+    && {{ .sudo }} yum update \
+    && {{ .sudo }} yum --assumeyes install {{ .packages.centos }} \
+    && {{ .sudo }} yum clean all
+{{ end }}
+fi
+
+{{- end -}}

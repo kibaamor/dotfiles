@@ -1,0 +1,17 @@
+packages:
+  debian: "git zsh tree vim bmon netcat-openbsd"
+  centos: "git zsh tree vim-enhanced bmon nmap-ncat util-linux-user"
+  windows:
+    - "Microsoft.WindowsTerminal"
+    - "Microsoft.PowerShell"
+    - "JanDeDobbeleer.OhMyPosh"
+    - "rsteube.Carapace"
+    - "Sogou.SogouInput"
+    - "Microsoft.VisualStudioCode"
+    # - "Microsoft.PowerToys"
+    # - "Microsoft.Sysinternals"
+    # - "GeekUninstaller.GeekUninstaller"
+    # - "Fork.Fork"
+    # - "Tencent.WeChat"
+    # - "SublimeHQ.SublimeText.4"
+    # - "Notion.Notion"

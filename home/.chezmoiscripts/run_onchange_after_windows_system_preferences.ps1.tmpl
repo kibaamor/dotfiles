@@ -1,0 +1,60 @@
+# https://github.com/neersighted/dotfiles/blob/master/home/.chezmoiscripts/run_onchange_after_windows_preferences.ps1
+
+###################################################################################################
+# Self-elevate the script if required
+if (-not ([Security.Principal.WindowsPrincipal] `
+    [Security.Principal.WindowsIdentity]::GetCurrent() `
+).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    $exe = if ($PSVersionTable.PSEdition -eq 'Core') { "$PSHOME\pwsh.exe" }
+            else { "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" }
+
+    $script = $PSCommandPath
+    if (-not $script) { $script = $MyInvocation.MyCommand.Path }
+    if (-not $script) { throw "No script path" }
+
+    $args = @('-NoProfile', '-File', $script) + $args
+
+    Start-Process -Wait -FilePath $exe -Verb RunAs -ArgumentList $args
+    exit
+}
+
+
+###################################################################################################
+# Set my shell preferences.
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name Hidden -Value 1
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name HideDrivesWithNoMedia -Value 1
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name HideFileExt -Value 0
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name NavPaneExpandToCurrentFolder -Value 0
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name NavPaneShowAllFolders -Value 0
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name SeparateProcess -Value 1
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name ShowSecondsInSystemClock -Value 1
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name ShowSuperHidden -Value 0
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name LaunchTo -Value 1
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced' -Name MMTaskbarMode -Value 0
+Set-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState' -Name FullPath -Value 1
+
+
+###################################################################################################
+# Windows features
+try {
+  $enabledFeatures = Get-WindowsOptionalFeature -Online |
+    Where-Object State -eq 'Enabled' |
+    Select-Object -ExpandProperty FeatureName
+
+  {{ range $feature := .windows.features }}
+  if (-not $enabledFeatures.Contains('{{ $feature }}')) {
+    Write-Host 'Enable feature {{ $feature }}...'
+    Enable-WindowsOptionalFeature -Online -All -NoRestart -FeatureName '{{ $feature }}'
+  } else {
+    Write-Host 'Feature {{ $feature }} is already enabled.'
+  }
+  {{ end }}
+} catch {
+  Write-Warning "Unable to query Windows Optional Features: $_"
+}
+
+Write-Host 'Enable winget proxy command line options...'
+winget settings --enable ProxyCommandLineOptions
+
+Write-Host 'Install package provider NuGet...'
+Install-PackageProvider -Name NuGet -Force

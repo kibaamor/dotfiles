@@ -1,0 +1,47 @@
+{{- /* https://www.chezmoi.io/reference/configuration-file/variables/ */ -}}
+
+{{- /* https://pkg.go.dev/text/template */ -}}
+{{- /* https://masterminds.github.io/sprig/ */ -}}
+
+{{- /* Detect interactive runs. */ -}}
+{{- $interactive := and
+  stdinIsATTY
+  (env "ACT" | not)
+  (env "CODESPACES" | not)
+  (env "DEBIAN_FRONTEND" | ne "noninteractive") -}}
+
+{{- /* Allow sudo when interactive or explicitly enabled. */ -}}
+{{- $can_sudo := or $interactive (env "DOTFILES_CAN_SUDO" | ne "") -}}
+
+{{- /* Normalize architecture names used by external binary releases. */ -}}
+{{- $uname_arch := .chezmoi.arch -}}
+{{- if eq .chezmoi.arch "amd64" -}}
+{{-   $uname_arch = "x86_64" -}}
+{{- else if and (eq .chezmoi.os "linux") (eq .chezmoi.arch "arm64") -}}
+{{-   $uname_arch = "aarch64" -}}
+{{- end -}}
+
+format: yaml
+
+data:
+  git_username: {{ env "GIT_USERNAME" | default "Kiba Amor" }}
+  git_useremail: {{ env "GIT_USEREMAIL" | default "5093911+kibaamor@users.noreply.github.com" }}
+
+  personal: {{ not (or (contains "ubisoft" .chezmoi.fqdnHostname) (contains "-WKS-" .chezmoi.fqdnHostname) (env "DOTFILES_NONPERSONAL" | ne "")) }}
+
+  blocked_hosts:
+    - telemetry.business.githubcopilot.com
+
+  interactive: {{ $interactive }}
+{{ if ne .chezmoi.os "windows" }}
+  can_sudo: {{ $can_sudo }}
+  sudo: {{ findExecutable "sudo" (list "/bin" "/sbin" "/usr/bin" "/usr/sbin") }}
+{{ end }}
+
+  platform: "{{ if eq .chezmoi.os "windows" }}pc{{ else if eq .chezmoi.os "darwin" }}apple{{ else }}unknown{{ end }}"
+  uname_arch: "{{ $uname_arch }}"
+  go_arch: "{{ if eq $uname_arch "aarch64" }}arm64{{ else }}{{ $uname_arch }}{{ end }}"
+  rust_arch: "{{ if and (eq .chezmoi.os "darwin") (eq .chezmoi.arch "arm64") }}aarch64{{ else }}{{ $uname_arch }}{{ end }}"
+  exe_ext: "{{ if eq .chezmoi.os "windows" }}.exe{{ end }}"
+  pkg_postfix: "{{ if eq .chezmoi.os "windows" }}.zip{{ else }}.tar.gz{{ end }}"
+  pkg_runtime: "{{ if eq .chezmoi.os "windows" }}-msvc{{ else if eq .chezmoi.os "linux" }}-musl{{ end }}"
