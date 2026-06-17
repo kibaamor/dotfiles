@@ -39,14 +39,15 @@ die() { echo "error: $*" >&2; exit 1; }
 log() { [[ "$QUIET" == 0 ]] && echo "# $*" >&2 || true; }
 
 human() {
-  local v="${1:-0}" suffix="${2:-}" div n d
+  local v="${1:-0}" suffix="${2:-}" div n d iv
+  iv=$(printf '%.0f' "$v")
   for div in 1073741824:GB 1048576:MB 1024:KB; do
     n="${div%%:*}" d="${div##*:}"
-    if (( v >= n )); then
+    if (( iv >= n )); then
       printf '%.1f%s%s' "$(echo "$v / $n" | bc -l)" "$d" "$suffix"; return
     fi
   done
-  printf '%sB%s' "$v" "$suffix"
+  printf '%.0fB%s' "$iv" "$suffix"
 }
 
 slugify() { printf '%s' "${1//[^a-zA-Z0-9]/_}"; }
