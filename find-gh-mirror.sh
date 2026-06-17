@@ -186,9 +186,10 @@ main() {
 
     if [[ -z "$best" ]] || { [[ "${vpas:-0}" == "${vtot:-0}" ]] && (( $(echo "$lat < $best_lat" | bc -l) )); }; then
       if [[ "${vpas:-0}" == "${vtot:-0}" && "$vtot" -gt 0 ]] || [[ -z "$TEST_SHA256" ]]; then
-        best="$raw"
-        best_lat="$lat"
-        break  # rows sorted by latency; first eligible is always fastest
+        if [[ -z "$best" ]]; then
+          best="$raw"
+          best_lat="$lat"
+        fi
       fi
     fi
 
