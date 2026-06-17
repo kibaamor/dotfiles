@@ -28,7 +28,7 @@ Options:
   -j N    Max concurrent probes (default: $MAX_JOBS)
   -t URL  Test path (default: $TEST_PATH)
   -x URL  Add an extra mirror to test (can be repeated, use "" for direct)
-  -s SHA  Expected SHA256 of the test file (set to empty to skip verification)
+  -s SHA  Expected SHA256 of the test file (empty to skip verification)
   -q      Quiet mode: only print the final export line
   -h      Show this help
 EOF
@@ -36,64 +36,72 @@ EOF
 }
 
 die() { echo "error: $*" >&2; exit 1; }
-log()  { [[ "$QUIET" == 0 ]] && echo "# $*" >&2; true; }
-req()  { command -v "$1" >/dev/null 2>&1 || die "required command not found: $1"; }
+log() { [[ "$QUIET" == 0 ]] && echo "# $*" >&2 || true; }
 
 human() {
-  local v="${1:-0}" suffix="${2:-}" div
+  local v="${1:-0}" suffix="${2:-}" div n d
   for div in 1073741824:GB 1048576:MB 1024:KB; do
-    if (( $(echo "$v >= ${div%%:*}" | bc -l) )); then
-      printf '%.1f%s%s' "$(echo "$v / ${div%%:*}" | bc -l)" "${div##*:}" "$suffix"; return
+    n="${div%%:*}" d="${div##*:}"
+    if (( v >= n )); then
+      printf '%.1f%s%s' "$(echo "$v / $n" | bc -l)" "$d" "$suffix"; return
     fi
   done
   printf '%sB%s' "$v" "$suffix"
 }
 
-slugify() { local s="${1:-direct}"; printf '%s' "${s//[^a-zA-Z0-9]/_}"; }
-url_for() { [[ -z "$1" ]] && echo "$TEST_URL" || echo "$1/$TEST_URL"; }
+slugify() { printf '%s' "${1//[^a-zA-Z0-9]/_}"; }
+url_for()  { [[ -z "$1" ]] && echo "$TEST_URL" || echo "$1/$TEST_URL"; }
+
 median() {
   local f="$1" n count
-  n=$(wc -l < "$f" 2>/dev/null) && ((n)) || { echo "99999 0 0"; return; }
+  n=$(wc -l < "$f" 2>/dev/null) || true
+  if [[ -z "$n" || "$n" -eq 0 ]]; then
+    echo "99999 0 0 0 0"
+    return
+  fi
   count=$(( (n + 1) / 2 ))
   sort -t' ' -k1 -n "$f" 2>/dev/null | sed -n "${count}p"
 }
 
+# Probe all mirrors, writing one line per mirror to $out:
+#   lat|size|speed|mirror_label|pass_count|total_count|raw_mirror
 probe() {
   local -n _mirrors="$1"
   local tmp="$2"
-  local -n _rank="$3"
-  local -n _best="$4"
-  local -n _best_lat="$5"
-  local -n _pref_lat="$6"
-  local pids=() m slug times dl url label sha
-  local -A valid=()
+  local out="$3"
+  local pids=() m
 
   for m in "${_mirrors[@]}"; do
-    slug="$(slugify "$m")"
-    times="$tmp/${slug}.times"
+    local slug label url
+    slug="$(slugify "${m:-direct}")"
     label="${m:-direct}"
     url="$(url_for "$m")"
 
     log "probing $label ($PROBES probes)..."
 
     for ((i = 0; i < PROBES; i++)); do
-      curl -L --connect-timeout "$TIMEOUT_CONNECT" --max-time "$TIMEOUT_MAX" \
-        --silent --output /dev/null \
-        --write-out '%{time_total} %{size_download} %{speed_download}\n' "$url" >>"$times" 2>/dev/null &
+      (
+        local dl="$tmp/${slug}_${i}.dl"
+        local lat=99999 size=0 speed=0 vf=0
+
+        local info
+        info=$(curl -L --connect-timeout "$TIMEOUT_CONNECT" --max-time "$TIMEOUT_MAX" \
+          --silent -o "$dl" \
+          --write-out '%{time_total} %{size_download} %{speed_download}' "$url" 2>/dev/null || true) || true
+
+        if [[ -n "$info" ]]; then
+          IFS=' ' read -r lat size speed <<<"$info"
+          if [[ -n "$TEST_SHA256" ]]; then
+            local sha
+            sha=$(sha256sum "$dl" 2>/dev/null | awk '{print $1}' || true)
+            [[ "$sha" == "$TEST_SHA256" ]] && vf=1
+          fi
+        fi
+        rm -f "$dl"
+        printf '%s %s %s %s\n' "$lat" "$size" "$speed" "$vf" >>"$tmp/${slug}.times"
+      ) &
       pids+=("$!")
     done
-
-    if [[ -n "$TEST_SHA256" ]]; then
-      log "verifying $label..."
-      dl="$tmp/${slug}.dl"
-      (
-        sha=$(curl -L --connect-timeout "$TIMEOUT_CONNECT" --max-time "$TIMEOUT_MAX" \
-          --silent -o "$dl" --write-out '' "$url" 2>/dev/null && sha256sum "$dl" | awk '{print $1}' || true)
-        rm -f "$dl"
-        [[ "$sha" == "$TEST_SHA256" ]] && echo "${slug}:1" || echo "${slug}:0"
-      ) >>"$tmp/_verify" 2>/dev/null &
-      pids+=("$!")
-    fi
 
     while (( ${#pids[@]} >= MAX_JOBS )); do
       wait "${pids[0]}" || true; pids=("${pids[@]:1}")
@@ -101,37 +109,30 @@ probe() {
   done
   for pid in "${pids[@]}"; do wait "$pid" || true; done
 
-  if [[ -n "$TEST_SHA256" ]]; then
-    while IFS=: read -r vslug vval; do valid["$vslug"]="$vval"; done < "$tmp/_verify"
-  fi
-
-  local row lat size speed
-  _best_lat=99999
-  _pref_lat=99999
-
   for m in "${_mirrors[@]}"; do
-    slug="$(slugify "$m")"
+    local slug label row lat size speed pass tot
+    slug="$(slugify "${m:-direct}")"
     label="${m:-direct}"
     row="$(median "$tmp/${slug}.times")"
     lat="$(echo "$row" | awk '{print $1}')"
     size="$(echo "$row" | awk '{print $2}')"
     speed="$(echo "$row" | awk '{print $3}')"
 
-    if [[ -z "$lat" || "$lat" == 99999 ]]; then
-      _rank+=("$lat $label ${valid["$slug"]:-1}")
-    else
-      _rank+=("$(printf '%s %s %s %s %s' "$lat" "$size" "$speed" "$label" "${valid["$slug"]:-1}")")
+    pass=0 tot=0
+    if [[ -n "$TEST_SHA256" ]] && [[ -f "$tmp/${slug}.times" ]]; then
+      while read -r _ _ _ vf || [[ -n "$vf" ]]; do
+        [[ -z "$vf" ]] && continue
+        tot=$(( tot + 1 ))
+        [[ "$vf" == 1 ]] && pass=$(( pass + 1 )) || true
+      done < "$tmp/${slug}.times"
     fi
 
-    if (( $(echo "$lat < $_best_lat" | bc -l) )) && [[ "${valid[$slug]:-1}" != 0 ]]; then
-      _best_lat="$lat"; _best="$m"
-    fi
-    [[ "$m" == "$PREFERRED_MIRROR" ]] && _pref_lat="$lat" || true
+    printf '%s|%s|%s|%s|%s|%s|%s\n' "$lat" "$size" "$speed" "$label" "$pass" "$tot" "$m" >>"$out"
   done
 }
 
 main() {
-  req curl
+  command -v curl >/dev/null 2>&1 || die "required command not found: curl"
 
   if [[ -n "$TEST_SHA256" ]] && ! command -v sha256sum >/dev/null 2>&1; then
     log "sha256sum not found — skipping verification"
@@ -149,31 +150,54 @@ main() {
     mirrors+=("$m"); seen[$key]=1
   done
 
-  local tmp
+  local tmp rankfile
   tmp="$(mktemp -d --tmpdir find-gh-mirror.XXXXXX)"
   TEMP_DIR="$tmp"
+  rankfile="$tmp/rank.txt"
+  probe mirrors "$tmp" "$rankfile"
 
-  local -a rank=()
-  local best best_lat pref_lat
-  probe mirrors "$tmp" rank best best_lat pref_lat
+  local best=""
+  local best_lat=99999
+  local pref_lat=99999
 
   if [[ "$QUIET" == 0 ]]; then
     echo "# mirror latency ranking (fastest first):"
-    printf '%s\n' "${rank[@]}" | sort -t' ' -k1 -n | while IFS=' ' read -r lat size speed name vf; do
+  fi
+
+  local sorted
+  sorted=$(sort -t'|' -k1 -n "$rankfile")
+
+  while IFS='|' read -r lat size speed name vpas vtot raw; do
+    [[ -z "$lat" ]] && continue
+
+    if [[ "$QUIET" == 0 ]]; then
       local tag=""
-      [[ "${vf:-1}" == 0 ]] && tag=" [VERIFY FAILED]" || true
+      if [[ -n "$TEST_SHA256" ]] && [[ "${vtot:-0}" -gt 0 ]]; then
+        if [[ "$vpas" == "$vtot" ]]; then tag=" [verify: ${vpas}/${vtot} OK]"
+        else tag=" [verify: ${vpas}/${vtot}]"; fi
+      fi
       if [[ "$lat" == 99999 ]]; then
         printf '#   %s  %-s%s\n' "$lat" "$name" "$tag"
       else
         printf '#   %s  %s  %s  %-s%s\n' "$lat" "$(human "${size:-0}")" "$(human "${speed:-0}" /s)" "$name" "$tag"
       fi
-    done
-  fi
+    fi
+
+    if [[ -z "$best" ]] || { [[ "${vpas:-0}" == "${vtot:-0}" ]] && (( $(echo "$lat < $best_lat" | bc -l) )); }; then
+      if [[ "${vpas:-0}" == "${vtot:-0}" && "$vtot" -gt 0 ]] || [[ -z "$TEST_SHA256" ]]; then
+        best="$raw"
+        best_lat="$lat"
+        break  # rows sorted by latency; first eligible is always fastest
+      fi
+    fi
+
+    [[ "$raw" == "$PREFERRED_MIRROR" ]] && pref_lat="$lat" || true
+  done <<<"$sorted"
 
   local result
-  if (( $(echo "$best_lat == 99999" | bc -l) )); then
+  if [[ "$best_lat" == 99999 ]]; then
     result="$PREFERRED_MIRROR"
-  elif (( $(echo "$best_lat == $pref_lat" | bc -l) )) && [[ "$best" != "$PREFERRED_MIRROR" ]]; then
+  elif [[ "$best_lat" == "$pref_lat" ]] && [[ "$best" != "$PREFERRED_MIRROR" ]]; then
     result="$PREFERRED_MIRROR"
   else
     result="$best"
@@ -213,7 +237,7 @@ TEST_URL="https://${TEST_PATH}"
 TEMP_DIR=""
 
 cleanup() {
-  if [[ -n "$TEMP_DIR" ]]; then
+  if [[ -n "${TEMP_DIR:-}" ]]; then
     rm -rf "$TEMP_DIR"
   fi
 }

@@ -12,7 +12,11 @@ The script tests multiple mirror candidates in parallel and exports the result a
 commands below.
 
 ```bash
-eval "$(bash <(curl -fsSL https://raw.githubusercontent.com/kibaamor/dotfiles/main/find-gh-mirror.sh) -q)"
+bash <(curl -fsSL https://raw.githubusercontent.com/kibaamor/dotfiles/main/find-gh-mirror.sh)
+# or
+bash <(curl -fsSL https://cdn.gh-proxy.org/https://raw.githubusercontent.com/kibaamor/dotfiles/main/find-gh-mirror.sh)
+# or
+bash <(curl -fsSL https://ghproxy.net/https://raw.githubusercontent.com/kibaamor/dotfiles/main/find-gh-mirror.sh)
 ```
 
 > See `find-gh-mirror.sh --help` for additional options (custom probes, timeouts, extra mirrors, etc.).
@@ -38,7 +42,7 @@ git config --global url."https://cdn.gh-proxy.org/https://github.com/".insteadOf
 git config --file ~/.gitconfig-proxy url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"
 
 # Install dotfiles
-sh -c "$(curl kibazen.cn/dotfiles.sh)"
+curl -fsLS get.chezmoi.io | sh -s -- -b "$HOME/.local/bin" init --apply kibaamor
 ```
 
 > You can set git config for GitHub via command `git config --file ~/.gitconfig-github user.name xxx`.

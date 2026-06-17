@@ -1,6 +1,15 @@
 # AGENTS.md
 
-Chezmoi dotfiles repo at `kibaamor/dotfiles`. `.chezmoiroot` is `home`, so files under `home/` map to `~`.
+Chezmoi dotfiles repo at [kibaamor/dotfiles](https://github.com/kibaamor/dotfiles).
+`.chezmoiroot` is `home`, so files under `home/` map to `~`.
+
+## Rules
+
+- **Never apply blindly.** Validate with `chezmoi diff` or `execute-template` before applying.
+- **Never shellcheck `.sh.tmpl` or `.ps1.tmpl` directly.** Render with `chezmoi execute-template` first.
+- **Always shellcheck after script modifications.** Run `shellcheck find-gh-mirror.sh update-version.sh` before claiming work is done.
+- **Never auto-stage files.** Do NOT run `git add` unless the user explicitly requests a commit.
+- **OS-gate with `.chezmoi.os` / `.interactive` / `.can_sudo`.** No unconditional installs or `chsh`.
 
 ## Commands
 
@@ -17,8 +26,8 @@ chezmoi --source . execute-template < home/.chezmoi.yaml.tmpl
 # Verify mirror mode render for external downloads
 DOTFILES_MIRROR=https://cdn.gh-proxy.org chezmoi --source . execute-template < home/.chezmoiexternal.yaml.tmpl | head -30
 
-# Lint shell scripts (do NOT shellcheck .tmpl files — render with execute-template first)
-shellcheck update-version.sh home/dot_utilities.sh find-gh-mirror.sh
+# Lint shell scripts
+shellcheck update-version.sh find-gh-mirror.sh
 
 # Find the fastest GitHub mirror (outputs export DOTFILES_MIRROR=...)
 ./find-gh-mirror.sh
@@ -27,7 +36,7 @@ shellcheck update-version.sh home/dot_utilities.sh find-gh-mirror.sh
 ./update-version.sh
 ```
 
-No test suite. Validate with `chezmoi diff` or `execute-template` — never `apply` blindly.
+No test suite. Validate with `chezmoi diff` or `execute-template`.
 
 ## Editor / Formatting
 
@@ -88,19 +97,17 @@ Non-obvious target mappings (beyond simple `dot_`/`executable_` prefixes):
 | `home/Documents/PowerShell/Profile.ps1` | `$PROFILE` | Windows |
 | `home/AppData/Roaming/helix/config.toml` | `%APPDATA%\helix\config.toml` | Windows |
 
-## Key Conventions
-
-- **Never shellcheck `.sh.tmpl` or `.ps1.tmpl` directly.** Render with `chezmoi execute-template` first.
-- **OS-gate with `.chezmoi.os` / `.interactive` / `.can_sudo`.** No unconditional installs or `chsh`.
-- **`.chezmoiversion`** pins the chezmoi version, used by CI.
-
-## Adding resource
+## Adding a resource
 
 1. `update-version.sh` — add `"owner/repo"` to the `repos` array (default / extra-bins / arkade-bins) or `commit_repos`.
 2. `home/.chezmoiexternal.yaml.tmpl` — add entry with `{{ template "mirror_urls" ... }}` (GitHub) or inline `url`+`checksum` (non-GitHub).
 3. Run `./update-version.sh` to regenerate `versions.yaml` + `checksums.yaml`.
 
 **Version keys** strip `-` from repo names: `NTrace-core` → `NTracecore`, `zsh-syntax-highlighting` → `zshsyntaxhighlighting`.
+
+## `find-gh-mirror.sh` internals
+
+Each probe downloads the test file and verifies SHA256 in a single `curl` call. Results are written to a `|`-delimited rank file (`lat|size|speed|mirror_label|pass_count|total_count`) consumed by `main()`. Fastest mirror with all probes passing verification is selected.
 
 ## Devcontainer
 
