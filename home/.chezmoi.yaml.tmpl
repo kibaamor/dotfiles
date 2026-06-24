@@ -42,6 +42,4 @@ data:
   uname_arch: "{{ $uname_arch }}"
   go_arch: "{{ if eq $uname_arch "aarch64" }}arm64{{ else }}{{ $uname_arch }}{{ end }}"
   rust_arch: "{{ if and (eq .chezmoi.os "darwin") (eq .chezmoi.arch "arm64") }}aarch64{{ else }}{{ $uname_arch }}{{ end }}"
-  exe_ext: "{{ if eq .chezmoi.os "windows" }}.exe{{ end }}"
-  pkg_postfix: "{{ if eq .chezmoi.os "windows" }}.zip{{ else }}.tar.gz{{ end }}"
-  pkg_runtime: "{{ if eq .chezmoi.os "windows" }}-msvc{{ else if eq .chezmoi.os "linux" }}-musl{{ end }}"
+  

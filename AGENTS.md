@@ -61,7 +61,6 @@ Produces the frozen `data` dictionary.
 | `personal` | fqdnHostname + env | Gates Windows scripts |
 | `interactive` | stdinIsATTY + CI env | Gates `chsh` |
 | `can_sudo` | interactive + env | Sudo availability |
-| `uname_arch` / `go_arch` / `rust_arch` | .chezmoi.arch | Arch names for binary URLs |
 
 ### 2. `home/.chezmoidata/*.yaml` — Structured data
 
@@ -74,6 +73,8 @@ Produces the frozen `data` dictionary.
 - GitHub sources: use `{{ template "mirror_urls" (dict "root" $ "path" $xxx_url) }}` for CDN mirror support.
 - Non-GitHub sources: inline `url:` + `checksum:`.
 - Most entries are always installed; some are gated by `DOTFILES_EXTRA_BINS` and `DOTFILES_ARKADE_BINS`.
+- OS-detection locals (`$exe_ext`, `$pkg_postfix`, `$pkg_runtime`) are defined at the top via Sprig `ternary`. Use these—not `data:` fields—when constructing binary URLs.
+- Use `ternary true_val false_val bool` for concise conditionals (from Sprig, available in chezmoi).
 
 ### 4. `home/.chezmoiscripts/` — Lifecycle scripts
 
