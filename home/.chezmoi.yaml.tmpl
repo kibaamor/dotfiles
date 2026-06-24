@@ -27,7 +27,7 @@ data:
   git_username: {{ env "GIT_USERNAME" | default "Kiba Amor" }}
   git_useremail: {{ env "GIT_USEREMAIL" | default "5093911+kibaamor@users.noreply.github.com" }}
 
-  personal: {{ not (or (contains "ubisoft" .chezmoi.fqdnHostname) (contains "-WKS-" .chezmoi.fqdnHostname) (env "DOTFILES_NONPERSONAL" | ne "")) }}
+  
 
   blocked_hosts:
     - telemetry.business.githubcopilot.com

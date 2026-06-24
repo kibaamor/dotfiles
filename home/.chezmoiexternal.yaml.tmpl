@@ -311,15 +311,10 @@
 {{ template "mirror_urls" (dict "root" $ "path" $arkade_url) }}
   executable: true
 
-{{ if and (ne .chezmoi.os "darwin") (or (ne .chezmoi.os "windows") .personal) }}
+{{ if eq .chezmoi.os "linux" }}
 ".local/bin/upx{{ $exe_ext }}":
   type: archive-file
-{{ $upx_url := "" }}
-{{ if eq .chezmoi.os "windows" }}
-{{ $upx_url = printf "github.com/upx/upx/releases/download/v%s/upx-%s-win64.zip" .versions.upx .versions.upx }}
-{{ else }}
-{{ $upx_url = printf "github.com/upx/upx/releases/download/v%s/upx-%s-%s_%s.tar.xz" .versions.upx .versions.upx .chezmoi.arch .chezmoi.os }}
-{{ end }}
+{{ $upx_url := printf "github.com/upx/upx/releases/download/v%s/upx-%s-%s_%s.tar.xz" .versions.upx .versions.upx .chezmoi.arch .chezmoi.os }}
 {{ template "mirror_urls" (dict "root" $ "path" $upx_url) }}
   path: "upx{{ $exe_ext }}"
   executable: true
@@ -342,21 +337,6 @@
 {{ if ne .chezmoi.os "windows" }}
   stripComponents: 1
 {{ end }}
-
-#{{ if .personal }}
-#".local/bin/frpc{{ $exe_ext }}":
-#  type: archive-file
-#  url: "https://github.com/fatedier/frp/releases/download/v{{ .versions.frp }}/frp_{{ .versions.frp }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ $pkg_postfix }}"
-#  path: "frpc{{ $exe_ext }}"
-#  executable: true
-#  stripComponents: 1
-#".local/bin/frps{{ $exe_ext }}":
-#  type: archive-file
-#  url: "https://github.com/fatedier/frp/releases/download/v{{ .versions.frp }}/frp_{{ .versions.frp }}_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ $pkg_postfix }}"
-#  path: "frps{{ $exe_ext }}"
-#  executable: true
-#  stripComponents: 1
-#{{ end }}
 
 ########################################################################################################################
 # Install extra binaries that can be installed via arkade.

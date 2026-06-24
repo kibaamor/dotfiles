@@ -58,7 +58,6 @@ Produces the frozen `data` dictionary.
 | Field | Source | Purpose |
 |---|---|---|
 | `git_username` / `git_useremail` | env | Git identity |
-| `personal` | fqdnHostname + env | Gates Windows scripts |
 | `interactive` | stdinIsATTY + CI env | Gates `chsh` |
 | `can_sudo` | interactive + env | Sudo availability |
 
