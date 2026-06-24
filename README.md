@@ -116,50 +116,50 @@ chezmoi update
 
 ### Default Installed Binaries
 
-1. [delta](https://github.com/dandavison/delta)
-1. [bat](https://github.com/sharkdp/bat)
-1. [fd](https://github.com/sharkdp/fd)
-1. [fzf](https://github.com/junegunn/fzf)
-1. [direnv](https://github.com/direnv/direnv)
-1. [rg](https://github.com/BurntSushi/ripgrep)
-1. [lsd](https://github.com/lsd-rs/lsd)
-1. [duf](https://github.com/muesli/duf)
-1. [age, age-keygen](https://github.com/FiloSottile/age)
-1. [tldr](https://github.com/tldr-pages/tlrc)
-1. [jq](https://github.com/jqlang/jq)
-1. [yq](https://github.com/mikefarah/yq)
-1. [gdu](https://github.com/dundee/gdu)
-1. [ipgeo](https://github.com/kibaamor/ipgeo)
-1. [ipstream](https://github.com/kibaamor/ipstream)
-1. [tproxy](https://github.com/kevwan/tproxy)
-1. [gping](https://github.com/orf/gping)
-1. [doggo](https://github.com/mr-karan/doggo)
-1. [nexttrace](https://github.com/nxtrace/NTrace-core)
-1. [ctop](https://github.com/bcicen/ctop)
-1. [kubecolor](https://github.com/kubecolor/kubecolor)
-1. [arkade](https://github.com/alexellis/arkade)
-1. [upx](https://github.com/upx/upx)
-1. [ShellCheck](https://github.com/koalaman/shellcheck) (Linux/macOS)
+1. [delta](https://github.com/dandavison/delta) — Linux / Windows
+1. [bat](https://github.com/sharkdp/bat) — Linux / macOS / Windows
+1. [fd](https://github.com/sharkdp/fd) — Linux / Windows
+1. [fzf](https://github.com/junegunn/fzf) — Linux / macOS / Windows
+1. [direnv](https://github.com/direnv/direnv) — Linux / macOS / Windows
+1. [rg](https://github.com/BurntSushi/ripgrep) — Linux / macOS / Windows
+1. [lsd](https://github.com/lsd-rs/lsd) — Linux / macOS / Windows
+1. [duf](https://github.com/muesli/duf) — Linux / macOS / Windows
+1. [age, age-keygen](https://github.com/FiloSottile/age) — Linux / macOS / Windows
+1. [tldr](https://github.com/tldr-pages/tlrc) — Linux / macOS / Windows
+1. [jq](https://github.com/jqlang/jq) — Linux / macOS / Windows
+1. [yq](https://github.com/mikefarah/yq) — Linux / macOS / Windows
+1. [gdu](https://github.com/dundee/gdu) — Linux / macOS / Windows
+1. [ipgeo](https://github.com/kibaamor/ipgeo) — Linux / macOS / Windows
+1. [ipstream](https://github.com/kibaamor/ipstream) — Linux / macOS / Windows
+1. [tproxy](https://github.com/kevwan/tproxy) — Linux / macOS / Windows
+1. [gping](https://github.com/orf/gping) — Linux / macOS / Windows
+1. [doggo](https://github.com/mr-karan/doggo) — Linux / macOS / Windows
+1. [nexttrace](https://github.com/nxtrace/NTrace-core) — Linux / macOS / Windows
+1. [ctop](https://github.com/bcicen/ctop) — Linux / Windows
+1. [kubecolor](https://github.com/kubecolor/kubecolor) — Linux / macOS / Windows
+1. [arkade](https://github.com/alexellis/arkade) — Linux / macOS / Windows
+1. [upx](https://github.com/upx/upx) — Linux only
+1. [ShellCheck](https://github.com/koalaman/shellcheck) — Linux / macOS / Windows
 
 ### Extra Binaries
 
 > These binaries are installed only when `DOTFILES_EXTRA_BINS` is non-empty.
 
-1. [kubeshark](https://github.com/kubeshark/kubeshark)
-1. [kubefwd](https://github.com/txn2/kubefwd)
+1. [kubeshark](https://github.com/kubeshark/kubeshark) — Linux / macOS / Windows
+1. [kubefwd](https://github.com/txn2/kubefwd) — Linux / macOS / Windows
 
 ### Binaries Installed via Arkade
 
 > These binaries are installed through arkade only when `DOTFILES_ARKADE_BINS` is non-empty.
 
-1. [mkcert](https://github.com/FiloSottile/mkcert)
-1. [dive](https://github.com/wagoodman/dive)
-1. [lazydocker](https://github.com/jesseduffield/lazydocker)
-1. [minikube](https://github.com/kubernetes/minikube)
-1. [kind](https://github.com/kubernetes-sigs/kind)
-1. [kubectx, kubens](https://github.com/ahmetb/kubectx)
-1. [k9s](https://github.com/derailed/k9s)
-1. [helm](https://helm.sh/)
+1. [mkcert](https://github.com/FiloSottile/mkcert) — Linux / macOS / Windows
+1. [dive](https://github.com/wagoodman/dive) — Linux / macOS / Windows
+1. [lazydocker](https://github.com/jesseduffield/lazydocker) — Linux / macOS / Windows
+1. [minikube](https://github.com/kubernetes/minikube) — Linux / macOS / Windows
+1. [kind](https://github.com/kubernetes-sigs/kind) — Linux / macOS / Windows
+1. [kubectx, kubens](https://github.com/ahmetb/kubectx) — Linux / macOS / Windows
+1. [k9s](https://github.com/derailed/k9s) — Linux / macOS / Windows
+1. [helm](https://helm.sh/) — Linux / macOS / Windows
 
 ## Troubleshooting
 

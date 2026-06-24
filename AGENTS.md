@@ -2,12 +2,13 @@
 
 Chezmoi dotfiles repo at [kibaamor/dotfiles](https://github.com/kibaamor/dotfiles).
 `.chezmoiroot` is `home`, so files under `home/` map to `~`.
+Requires chezmoi ≥ `2.70.3` (pinned in `.chezmoiversion`).
 
 ## Rules
 
 - **Never apply blindly.** Validate with `chezmoi diff` or `execute-template` before applying.
 - **Never shellcheck `.sh.tmpl` or `.ps1.tmpl` directly.** Render with `chezmoi execute-template` first.
-- **Always shellcheck after script modifications.** Run `shellcheck find-gh-mirror.sh update-version.sh` before claiming work is done.
+- **Always shellcheck after script modifications.** Run `shellcheck find-gh-mirror.sh update-version.sh` before claiming work is done. Only shellcheck these two files — `dot_utilities.sh` is sourced at runtime but has no complex logic needing linting.
 - **Never auto-stage files.** Do NOT run `git add` unless the user explicitly requests a commit.
 - **OS-gate with `.chezmoi.os` / `.interactive` / `.can_sudo`.** No unconditional installs or `chsh`.
 
@@ -34,13 +35,24 @@ shellcheck update-version.sh find-gh-mirror.sh
 
 # Update all external tool versions and checksums (requires gh, curl, chezmoi, sha256sum)
 ./update-version.sh
+
+# Speed up iteration: skip GitHub API calls (reuses existing versions.yaml)
+./update-version.sh --skip-versions
+
+# Speed up iteration: skip binary downloads (reuses existing checksums.yaml)
+./update-version.sh --skip-checksums
 ```
 
 No test suite. Validate with `chezmoi diff` or `execute-template`.
 
+## Runtime Environment
+
+- **Proxy:** if `default_proxy` is set (auto-detected from `localhost:7890` or env), `~/.gitconfig-proxy` is populated with `http.proxy`/`https.proxy` and `HTTP_PROXY`/`HTTPS_PROXY`/`http_proxy`/`https_proxy` are exported. Git identity per-service uses `~/.gitconfig-github` and `~/.gitconfig-gitlab` (included via `includeIf` in `~/.gitconfig`).
+- **`/tmp` with `noexec`:** set `TMPDIR` to a writable+executable location before running `chezmoi apply` or `update-version.sh`, as both may extract binaries there.
+
 ## Editor / Formatting
 
-Indentation: 4-space default. 2-space for `*.{sh,zsh,tmpl,json,xml,yml,yaml}`. Shell scripts: spaces, not tabs.
+Indentation: 4-space default. 2-space for `*.{sh,zsh,tmpl,json,xml,yml,yaml}`. Shell scripts: spaces, not tabs. `.editorconfig` enforces charset (UTF-8 / UTF-8-BOM for `.ps1`) and line endings (LF for `.sh`, CRLF for `.bat/.cmd/.ps1`).
 
 ## Shell Entrypoints
 
@@ -72,8 +84,11 @@ Produces the frozen `data` dictionary.
 - GitHub sources: use `{{ template "mirror_urls" (dict "root" $ "path" $xxx_url) }}` for CDN mirror support.
 - Non-GitHub sources: inline `url:` + `checksum:`.
 - Most entries are always installed; some are gated by `DOTFILES_EXTRA_BINS` and `DOTFILES_ARKADE_BINS`.
-- OS-detection locals (`$exe_ext`, `$pkg_postfix`, `$pkg_runtime`) are defined at the top via Sprig `ternary`. Use these—not `data:` fields—when constructing binary URLs.
+- Arch/platform locals are defined at the top via Sprig `ternary`:
+  - `$exe_ext`, `$pkg_postfix`, `$pkg_runtime` — OS detection
+  - `$platform` (`pc`/`apple`/`unknown`), `$go_arch`, `$rust_arch` — arch normalization
 - Use `ternary true_val false_val bool` for concise conditionals (from Sprig, available in chezmoi).
+- Runtime selectors (e.g. `$delta_rt`, `$rg_rt`) prefer `ternary` over `if` blocks to keep URLs single-expression.
 
 ### 4. `home/.chezmoiscripts/` — Lifecycle scripts
 
