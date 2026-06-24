@@ -257,7 +257,12 @@
 
 ".local/bin/doggo{{ .exe_ext }}":
   type: archive-file
-{{ $doggo_url := printf "github.com/mr-karan/doggo/releases/download/v%s/doggo_%s_%s_%s%s" .versions.doggo .versions.doggo (.chezmoi.os | camelcase) .go_arch .pkg_postfix }}
+  {{ $doggo_url := "" }}
+  {{ if eq .uname_arch "arm64" }}
+  {{ $doggo_url = printf "github.com/mr-karan/doggo/releases/download/v%s/doggo-%s-%s%s" .versions.doggo .chezmoi.os "aarch64" .pkg_postfix }}
+  {{ else }}
+  {{ $doggo_url = printf "github.com/mr-karan/doggo/releases/download/v%s/doggo-%s-%s%s" .versions.doggo .chezmoi.os .uname_arch .pkg_postfix }}
+  {{ end }}
 {{ template "mirror_urls" (dict "root" $ "path" $doggo_url) }}
   path: "doggo{{ .exe_ext }}"
   executable: true
