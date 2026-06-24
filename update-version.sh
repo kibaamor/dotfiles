@@ -90,6 +90,33 @@ targets=(
   windows/amd64
 )
 
+SKIP_VERSIONS=0
+SKIP_CHECKSUMS=0
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --skip-versions) SKIP_VERSIONS=1 ;;
+    --skip-checksums) SKIP_CHECKSUMS=1 ;;
+    -h|--help)
+      cat >&2 <<'USAGE'
+Usage: ./update-version.sh [--skip-versions] [--skip-checksums]
+
+Options:
+  --skip-versions    Skip GitHub API calls; reuse existing versions.yaml on disk.
+  --skip-checksums   Skip binary downloads; reuse existing checksums.yaml on disk.
+  -h, --help         Show this help message.
+USAGE
+      exit 0
+      ;;
+    *)
+      echo "error: unknown option: $1" >&2
+      echo "usage: ./update-version.sh [--skip-versions] [--skip-checksums] [-h]" >&2
+      exit 1
+      ;;
+  esac
+  shift
+done
+
 require_command() {
   if ! command -v "$1" >/dev/null 2>&1; then
     echo "error: required command not found: $1" >&2
@@ -287,6 +314,23 @@ write_versions_file() {
       echo "  $key: ${UPDATED_COMMITS[$key]}"
     } >>"$output_file"
   done
+}
+
+# Strip the "Generated at:" header line and compare content-only equality.
+yaml_content_eq() {
+  local a="$1" b="$2"
+  [[ -f "$a" && -f "$b" ]] || return 1
+  diff <(sed '/^# Generated at:/d' "$a") <(sed '/^# Generated at:/d' "$b") >/dev/null 2>&1
+}
+
+safe_mv_if_changed() {
+  local src="$1" dst="$2"
+  if yaml_content_eq "$src" "$dst"; then
+    echo "content unchanged, skipping write: $dst" >&2
+    rm -f "$src"
+  else
+    mv "$src" "$dst"
+  fi
 }
 
 write_json_object() {
@@ -579,20 +623,44 @@ main() {
   load_existing_versions
   load_existing_checksums
 
-  update_versions
-  update_checksums
+  if [[ "$SKIP_VERSIONS" -eq 1 && "$SKIP_CHECKSUMS" -eq 1 && (! -f "$VERSIONS_FILE" || ! -f "$CHECKSUMS_FILE") ]]; then
+    echo "error: --skip-versions and --skip-checksums both set, but the required files do not both exist" >&2
+    exit 1
+  fi
+
+  if [[ "$SKIP_VERSIONS" -eq 1 ]]; then
+    for key in "${!EXISTING_VERSIONS[@]}"; do
+      UPDATED_VERSIONS["$key"]="${EXISTING_VERSIONS[$key]}"
+    done
+    for key in "${!EXISTING_COMMITS[@]}"; do
+      UPDATED_COMMITS["$key"]="${EXISTING_COMMITS[$key]}"
+    done
+  else
+    update_versions
+  fi
+
+  if [[ "$SKIP_CHECKSUMS" -eq 1 ]]; then
+    for key in "${!EXISTING_CHECKSUMS[@]}"; do
+      UPDATED_CHECKSUMS["$key"]="${EXISTING_CHECKSUMS[$key]}"
+    done
+  else
+    update_checksums
+  fi
 
   UPDATE_VERSION_TEMP_DIR="$(mktemp -d "$ROOT_DIR/.update-version.XXXXXX")"
   trap cleanup_temp_dir EXIT
 
-  temp_versions_file="$UPDATE_VERSION_TEMP_DIR/versions.yaml"
-  temp_checksums_file="$UPDATE_VERSION_TEMP_DIR/checksums.yaml"
+  if [[ "$SKIP_VERSIONS" -eq 0 ]]; then
+    temp_versions_file="$UPDATE_VERSION_TEMP_DIR/versions.yaml"
+    write_versions_file "$temp_versions_file"
+    safe_mv_if_changed "$temp_versions_file" "$VERSIONS_FILE"
+  fi
 
-  write_versions_file "$temp_versions_file"
-  write_checksums_file "$temp_checksums_file"
-
-  mv "$temp_versions_file" "$VERSIONS_FILE"
-  mv "$temp_checksums_file" "$CHECKSUMS_FILE"
+  if [[ "$SKIP_CHECKSUMS" -eq 0 ]]; then
+    temp_checksums_file="$UPDATE_VERSION_TEMP_DIR/checksums.yaml"
+    write_checksums_file "$temp_checksums_file"
+    safe_mv_if_changed "$temp_checksums_file" "$CHECKSUMS_FILE"
+  fi
 
   cleanup_temp_dir
   UPDATE_VERSION_TEMP_DIR=""
