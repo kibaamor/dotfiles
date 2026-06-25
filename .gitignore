@@ -1,2 +1,9 @@
-.update-version.*/
-.kilo/
+# Temporary files when running `./update-version.sh`
+/.update-version-*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Agent files
+/.kilo
