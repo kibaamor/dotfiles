@@ -42,7 +42,7 @@ git config --global url."https://cdn.gh-proxy.org/https://github.com/".insteadOf
 git config --file ~/.gitconfig-proxy url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"
 
 # Install dotfiles
-curl -fsLS get.chezmoi.io | sh -s -- -b "$HOME/.local/bin" init --apply kibaamor
+sh -c "$(curl -fsLS https://get.chezmoi.io/lb)" -- init --apply kibaamor
 ```
 
 > You can set git config for GitHub via command `git config --file ~/.gitconfig-github user.name xxx`.

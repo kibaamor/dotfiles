@@ -17,7 +17,7 @@ RUN set -eux \
     && export DOTFILES_EXTRA_BINS=1 \
     && export DOTFILES_ARKADE_BINS=1 \
     && export DOTFILES_CAN_SUDO=1 \
-    && sh -c "$(curl -fsSL https://kibazen.cn/dotfiles.sh)" \
+    && sh -c "$(curl -fsLS https://get.chezmoi.io/lb)" -- init --apply kibaamor \
     && echo exit 0 | script -qec zsh \
     && rm -fr -- ~/typescript ~/.zsh_history ~/.cache/chezmoi \
     && find ~/.local/bin -type f ! -name 'upx' ! -name 'rfv' -exec sh -c '~/.local/bin/upx --best --lzma -q "$@"  || true' sh {} + \
