@@ -1,20 +1,22 @@
 # https://www.chezmoi.io/reference/special-files/chezmoiexternal-format/
 
 {{- define "checksum" -}}
-{{- with index .root.checksums .key }}
+  {{- with index .root.checksums .key }}
   checksum:
     sha256: "{{ . }}"
-{{- end -}}
+  {{- end -}}
 {{- end }}
 
 {{- define "mirror_urls" -}}
 {{- $mirror := env "DOTFILES_MIRROR" -}}
 {{- if $mirror | ne "" }}
-{{- printf "\n  url: \"%s/https://%s\"\n  urls:\n    - \"https://%s\"" $mirror .path .path }}
+  url: "{{ $mirror }}/https://{{ .path }}"
+  urls:
+    - "https://{{ .path }}"
 {{- else }}
-{{- printf "\n  url: \"https://%s\"" .path }}
+  url: "https://{{ .path }}"
 {{- end }}
-{{   template "checksum" (dict "root" .root "key" .path) }}
+{{- template "checksum" (dict "root" .root "key" .path) }}
 {{- end }}
 
 {{- $exe_ext := ternary ".exe" "" (eq .chezmoi.os "windows") -}}
@@ -30,61 +32,61 @@
 ".oh-my-zsh":
   type: archive
 {{ $ohmyzsh_url := printf "github.com/ohmyzsh/ohmyzsh/archive/%s.tar.gz" .commits.ohmyzsh }}
-{{ template "mirror_urls" (dict "root" $ "path" $ohmyzsh_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $ohmyzsh_url) }}
   exact: true
   stripComponents: 1
 
 ".oh-my-zsh/custom/themes/powerlevel10k":
   type: archive
 {{ $powerlevel10k_url := printf "github.com/romkatv/powerlevel10k/archive/refs/tags/v%s.tar.gz" .versions.powerlevel10k }}
-{{ template "mirror_urls" (dict "root" $ "path" $powerlevel10k_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $powerlevel10k_url) }}
   exact: true
   stripComponents: 1
 
 ".oh-my-zsh/custom/plugins/zsh-autosuggestions":
   type: archive
 {{ $zsh_autosuggestions_url := printf "github.com/zsh-users/zsh-autosuggestions/archive/refs/tags/v%s.tar.gz" .versions.zshautosuggestions }}
-{{ template "mirror_urls" (dict "root" $ "path" $zsh_autosuggestions_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $zsh_autosuggestions_url) }}
   exact: true
   stripComponents: 1
 
 ".oh-my-zsh/custom/plugins/zsh-syntax-highlighting":
   type: archive
 {{ $zsh_syntax_highlighting_url := printf "github.com/zsh-users/zsh-syntax-highlighting/archive/refs/tags/%s.tar.gz" .versions.zshsyntaxhighlighting }}
-{{ template "mirror_urls" (dict "root" $ "path" $zsh_syntax_highlighting_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $zsh_syntax_highlighting_url) }}
   exact: true
   stripComponents: 1
 
 ".oh-my-zsh/custom/plugins/zsh-bat":
   type: archive
 {{ $zsh_bat_url := printf "github.com/fdellwing/zsh-bat/archive/%s.tar.gz" .commits.zshbat }}
-{{ template "mirror_urls" (dict "root" $ "path" $zsh_bat_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $zsh_bat_url) }}
   exact: true
   stripComponents: 1
 
 ".oh-my-zsh/custom/plugins/zsh-you-should-use":
   type: archive
 {{ $zsh_you_should_use_url := printf "github.com/MichaelAquilina/zsh-you-should-use/archive/refs/tags/%s.tar.gz" .versions.zshyoushoulduse }}
-{{ template "mirror_urls" (dict "root" $ "path" $zsh_you_should_use_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $zsh_you_should_use_url) }}
   exact: true
   stripComponents: 1
 
 ".vim/autoload/plug.vim":
   type: file
 {{ $vim_plug_url := printf "raw.githubusercontent.com/junegunn/vim-plug/%s/plug.vim" .versions.vimplug }}
-{{ template "mirror_urls" (dict "root" $ "path" $vim_plug_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $vim_plug_url) }}
 
 ".vimconf":
   type: archive
 {{ $vimconf_url := printf "github.com/kibaamor/vimconf/archive/%s.tar.gz" .commits.vimconf }}
-{{ template "mirror_urls" (dict "root" $ "path" $vimconf_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $vimconf_url) }}
   exact: true
   stripComponents: 1
 
 ".gdbinit-gef.py":
   type: file
 {{ $gef_url := printf "raw.githubusercontent.com/hugsy/gef/%s/gef.py" .commits.gef }}
-{{ template "mirror_urls" (dict "root" $ "path" $gef_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $gef_url) }}
 {{ end }}
 
 {{ if not (and (eq .chezmoi.os "darwin") (eq .chezmoi.arch "amd64")) }}
@@ -92,7 +94,7 @@
   type: archive-file
 {{ $delta_rt := ternary "-gnu" $pkg_runtime (and (eq .chezmoi.os "linux") (eq .chezmoi.arch "arm64")) }}
 {{ $delta_url := printf "github.com/dandavison/delta/releases/download/%s/delta-%s-%s-%s-%s%s%s" .versions.delta .versions.delta $rust_arch $platform .chezmoi.os $delta_rt $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $delta_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $delta_url) }}
   path: "delta{{ $exe_ext }}"
   executable: true
   stripComponents: 1
@@ -101,7 +103,7 @@
 ".local/bin/bat{{ $exe_ext }}":
   type: archive-file
 {{ $bat_url := printf "github.com/sharkdp/bat/releases/download/v%s/bat-v%s-%s-%s-%s%s%s" .versions.bat .versions.bat $rust_arch $platform .chezmoi.os $pkg_runtime $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $bat_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $bat_url) }}
   path: "bat{{ $exe_ext }}"
   executable: true
   stripComponents: 1
@@ -110,7 +112,7 @@
 ".local/bin/fd{{ $exe_ext }}":
   type: archive-file
 {{ $fd_url := printf "github.com/sharkdp/fd/releases/download/v%s/fd-v%s-%s-%s-%s%s%s" .versions.fd .versions.fd $rust_arch $platform .chezmoi.os $pkg_runtime $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $fd_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $fd_url) }}
   path: "fd{{ $exe_ext }}"
   executable: true
   stripComponents: 1
@@ -120,7 +122,7 @@
 ".local/bin/fzf{{ $exe_ext }}":
   type: archive-file
 {{ $fzf_url := printf "github.com/junegunn/fzf/releases/download/v%s/fzf-%s-%s_%s%s" .versions.fzf .versions.fzf .chezmoi.os .chezmoi.arch $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $fzf_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $fzf_url) }}
   path: "fzf{{ $exe_ext }}"
   executable: true
 
@@ -128,30 +130,30 @@
 ".fzf.key-bindings.zsh":
   type: file
 {{ $fzf_key_bindings_url := printf "raw.githubusercontent.com/junegunn/fzf/v%s/shell/key-bindings.zsh" .versions.fzf }}
-{{ template "mirror_urls" (dict "root" $ "path" $fzf_key_bindings_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $fzf_key_bindings_url) }}
 
 ".fzf.completion.zsh":
   type: file
 {{ $fzf_completion_url := printf "raw.githubusercontent.com/junegunn/fzf/v%s/shell/completion.zsh" .versions.fzf }}
-{{ template "mirror_urls" (dict "root" $ "path" $fzf_completion_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $fzf_completion_url) }}
 
 ".fzf-git.sh":
   type: file
 {{ $fzf_git_url := printf "raw.githubusercontent.com/junegunn/fzf-git.sh/%s/fzf-git.sh" .commits.fzfgitsh }}
-{{ template "mirror_urls" (dict "root" $ "path" $fzf_git_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $fzf_git_url) }}
 {{ end }}
 
 ".local/bin/direnv{{ $exe_ext }}":
   type: file
 {{ $direnv_url := printf "github.com/direnv/direnv/releases/download/v%s/direnv.%s-%s" .versions.direnv .chezmoi.os .chezmoi.arch }}
-{{ template "mirror_urls" (dict "root" $ "path" $direnv_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $direnv_url) }}
   executable: true
 
 ".local/bin/rg{{ $exe_ext }}":
   type: archive-file
 {{ $rg_rt := ternary "-gnu" $pkg_runtime (and (eq .chezmoi.os "linux") (eq .chezmoi.arch "arm64")) }}
 {{ $rg_url := printf "github.com/BurntSushi/ripgrep/releases/download/%s/ripgrep-%s-%s-%s-%s%s%s" .versions.ripgrep .versions.ripgrep $rust_arch $platform .chezmoi.os $rg_rt $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $rg_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $rg_url) }}
   stripComponents: 1
   path: "rg{{ $exe_ext }}"
   executable: true
@@ -159,7 +161,7 @@
 ".local/bin/lsd{{ $exe_ext }}":
   type: archive-file
 {{ $lsd_url := printf "github.com/lsd-rs/lsd/releases/download/v%s/lsd-v%s-%s-%s-%s%s%s" .versions.lsd .versions.lsd $rust_arch $platform .chezmoi.os $pkg_runtime $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $lsd_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $lsd_url) }}
   path: "lsd{{ $exe_ext }}"
   executable: true
   stripComponents: 1
@@ -167,21 +169,21 @@
 ".local/bin/duf{{ $exe_ext }}":
   type: archive-file
 {{ $duf_url := printf "github.com/muesli/duf/releases/download/v%s/duf_%s_%s_%s%s" .versions.duf .versions.duf .chezmoi.os $go_arch $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $duf_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $duf_url) }}
   path: "duf{{ $exe_ext }}"
   executable: true
 
 ".local/bin/age{{ $exe_ext }}":
   type: archive-file
 {{ $age_url := printf "github.com/FiloSottile/age/releases/download/v%s/age-v%s-%s-%s%s" .versions.age .versions.age .chezmoi.os .chezmoi.arch $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $age_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $age_url) }}
   stripComponents: 1
   path: "age{{ $exe_ext }}"
   executable: true
 
 ".local/bin/age-keygen{{ $exe_ext }}":
   type: archive-file
-{{ template "mirror_urls" (dict "root" $ "path" $age_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $age_url) }}
   stripComponents: 1
   path: "age-keygen{{ $exe_ext }}"
   executable: true
@@ -190,73 +192,69 @@
 ".local/bin/tldr{{ $exe_ext }}":
   type: archive-file
 {{ $tlrc_url := printf "github.com/tldr-pages/tlrc/releases/download/v%s/tlrc-v%s-%s-%s-%s%s%s" .versions.tlrc .versions.tlrc $rust_arch $platform .chezmoi.os $pkg_runtime $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $tlrc_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $tlrc_url) }}
   path: "tldr{{ $exe_ext }}"
   executable: true
 {{ end }}
 
 ".local/bin/jq{{ $exe_ext }}":
   type: file
-{{ $jq_url := "" }}
-{{ if eq .chezmoi.os "darwin" }}
-{{ $jq_url = printf "github.com/jqlang/jq/releases/download/jq-%s/jq-macos-%s" .versions.jq .chezmoi.arch }}
-{{ else }}
-{{ $jq_url = printf "github.com/jqlang/jq/releases/download/jq-%s/jq-%s-%s%s" .versions.jq .chezmoi.os .chezmoi.arch $exe_ext }}
-{{ end }}
-{{ template "mirror_urls" (dict "root" $ "path" $jq_url) }}
+{{- $jq_url := ternary
+  (printf "github.com/jqlang/jq/releases/download/jq-%s/jq-macos-%s" .versions.jq .chezmoi.arch)
+  (printf "github.com/jqlang/jq/releases/download/jq-%s/jq-%s-%s%s" .versions.jq .chezmoi.os .chezmoi.arch $exe_ext)
+  (eq .chezmoi.os "darwin") }}
+{{- template "mirror_urls" (dict "root" $ "path" $jq_url) }}
   executable: true
 
 ".local/bin/yq{{ $exe_ext }}":
   type: file
 {{ $yq_url := printf "github.com/mikefarah/yq/releases/download/v%s/yq_%s_%s%s" .versions.yq .chezmoi.os .chezmoi.arch $exe_ext }}
-{{ template "mirror_urls" (dict "root" $ "path" $yq_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $yq_url) }}
   executable: true
 
 ".local/bin/gdu{{ $exe_ext }}":
   type: archive-file
 {{ $gdu_url := printf "github.com/dundee/gdu/releases/download/v%s/gdu_%s_%s%s%s" .versions.gdu .chezmoi.os .chezmoi.arch $exe_ext (ternary ".zip" ".tgz" (eq .chezmoi.os "windows")) }}
-{{ template "mirror_urls" (dict "root" $ "path" $gdu_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $gdu_url) }}
   path: "gdu_{{ .chezmoi.os }}_{{ .chezmoi.arch }}{{ $exe_ext }}"
   executable: true
 
 ".local/bin/ipgeo{{ $exe_ext }}":
   type: archive-file
 {{ $ipgeo_url := printf "github.com/kibaamor/ipgeo/releases/download/v%s/ipgeo_%s_%s_%s%s" .versions.ipgeo .versions.ipgeo .chezmoi.os .chezmoi.arch $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $ipgeo_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $ipgeo_url) }}
   path: "ipgeo{{ $exe_ext }}"
   executable: true
 
 ".local/bin/ipstream{{ $exe_ext }}":
   type: archive-file
 {{ $ipstream_url := printf "github.com/kibaamor/ipstream/releases/download/v%s/ipstream_%s_%s_%s%s" .versions.ipstream .versions.ipstream .chezmoi.os .chezmoi.arch $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $ipstream_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $ipstream_url) }}
   path: "ipstream{{ $exe_ext }}"
   executable: true
 
 ".local/bin/tproxy{{ $exe_ext }}":
   type: archive-file
 {{ $tproxy_url := printf "github.com/kevwan/tproxy/releases/download/v%s/tproxy-v%s-%s-%s%s" .versions.tproxy .versions.tproxy .chezmoi.os .chezmoi.arch $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $tproxy_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $tproxy_url) }}
   path: "tproxy{{ $exe_ext }}"
   executable: true
 
 ".local/bin/gping{{ $exe_ext }}":
   type: archive-file
-  {{ $gping_url := "" }}
-  {{ if eq .chezmoi.os "darwin" }}
-  {{ $gping_url = printf "github.com/orf/gping/releases/download/gping-v%s/gping-macOS%s-%s%s" .versions.gping $pkg_runtime $go_arch $pkg_postfix }}
-  {{ else }}
-  {{ $gping_url = printf "github.com/orf/gping/releases/download/gping-v%s/gping-%s%s-%s%s" .versions.gping (.chezmoi.os | camelcase) $pkg_runtime $go_arch $pkg_postfix }}
-  {{ end }}
-{{ template "mirror_urls" (dict "root" $ "path" $gping_url) }}
+{{- $gping_url := ternary
+  (printf "github.com/orf/gping/releases/download/gping-v%s/gping-macOS%s-%s%s" .versions.gping $pkg_runtime $go_arch $pkg_postfix)
+  (printf "github.com/orf/gping/releases/download/gping-v%s/gping-%s%s-%s%s" .versions.gping (.chezmoi.os | camelcase) $pkg_runtime $go_arch $pkg_postfix)
+  (eq .chezmoi.os "darwin") }}
+{{- template "mirror_urls" (dict "root" $ "path" $gping_url) }}
   path: "gping{{ $exe_ext }}"
   executable: true
 
 ".local/bin/doggo{{ $exe_ext }}":
   type: archive-file
-  {{ $doggo_arch := ternary "aarch64" (ternary "x86_64" .chezmoi.arch (eq .chezmoi.arch "amd64")) (eq .chezmoi.arch "arm64") }}
-  {{ $doggo_url := printf "github.com/mr-karan/doggo/releases/download/v%s/doggo-%s-%s%s" .versions.doggo .chezmoi.os $doggo_arch $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $doggo_url) }}
+{{- $doggo_arch := ternary "aarch64" (ternary "x86_64" .chezmoi.arch (eq .chezmoi.arch "amd64")) (eq .chezmoi.arch "arm64") }}
+{{- $doggo_url := printf "github.com/mr-karan/doggo/releases/download/v%s/doggo-%s-%s%s" .versions.doggo .chezmoi.os $doggo_arch $pkg_postfix }}
+{{- template "mirror_urls" (dict "root" $ "path" $doggo_url) }}
   path: "doggo{{ $exe_ext }}"
   executable: true
   stripComponents: 1
@@ -264,7 +262,7 @@
 ".local/bin/nexttrace{{ $exe_ext }}":
   type: file
 {{ $nexttrace_url := printf "github.com/nxtrace/NTrace-core/releases/download/v%s/nexttrace_%s_%s%s" .versions.NTracecore .chezmoi.os .chezmoi.arch $exe_ext }}
-{{ template "mirror_urls" (dict "root" $ "path" $nexttrace_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $nexttrace_url) }}
   path: "nexttrace{{ $exe_ext }}"
   executable: true
 
@@ -272,14 +270,14 @@
 ".local/bin/ctop{{ $exe_ext }}":
   type: file
 {{ $ctop_url := printf "github.com/bcicen/ctop/releases/download/v%s/ctop-%s-%s-%s" .versions.ctop .versions.ctop .chezmoi.os .chezmoi.arch }}
-{{ template "mirror_urls" (dict "root" $ "path" $ctop_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $ctop_url) }}
   executable: true
 {{ end }}
 
 ".local/bin/kubecolor{{ $exe_ext }}":
   type: archive-file
 {{ $kubecolor_url := printf "github.com/kubecolor/kubecolor/releases/download/v%s/kubecolor_%s_%s_%s%s" .versions.kubecolor .versions.kubecolor .chezmoi.os .chezmoi.arch $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $kubecolor_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $kubecolor_url) }}
   path: "kubecolor{{ $exe_ext }}"
   executable: true
 
@@ -290,14 +288,14 @@
   (printf "%s%s" (ternary "-arm64" "" (eq .chezmoi.arch "arm64")) $exe_ext)
   (eq .chezmoi.os "darwin") }}
 {{ $arkade_url := printf "github.com/alexellis/arkade/releases/download/%s/arkade%s" .versions.arkade $arkade_suffix }}
-{{ template "mirror_urls" (dict "root" $ "path" $arkade_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $arkade_url) }}
   executable: true
 
 {{ if eq .chezmoi.os "linux" }}
 ".local/bin/upx{{ $exe_ext }}":
   type: archive-file
 {{ $upx_url := printf "github.com/upx/upx/releases/download/v%s/upx-%s-%s_%s.tar.xz" .versions.upx .versions.upx .chezmoi.arch .chezmoi.os }}
-{{ template "mirror_urls" (dict "root" $ "path" $upx_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $upx_url) }}
   path: "upx{{ $exe_ext }}"
   executable: true
   stripComponents: 1
@@ -309,7 +307,7 @@
   (printf "github.com/koalaman/shellcheck/releases/download/v%s/shellcheck-v%s.zip" .versions.shellcheck .versions.shellcheck)
   (printf "github.com/koalaman/shellcheck/releases/download/v%s/shellcheck-v%s.%s.%s.tar.xz" .versions.shellcheck .versions.shellcheck .chezmoi.os $rust_arch)
   (eq .chezmoi.os "windows") }}
-{{ template "mirror_urls" (dict "root" $ "path" $shellcheck_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $shellcheck_url) }}
   path: "shellcheck{{ $exe_ext }}"
   executable: true
 {{ if ne .chezmoi.os "windows" }}
@@ -321,19 +319,17 @@
 {{ if env "DOTFILES_EXTRA_BINS" | ne "" }}
 ".local/bin/kubeshark{{ $exe_ext }}":
   type: file
-{{ $kubeshark_url := "" }}
-{{ if eq .chezmoi.os "windows" }}
-{{ $kubeshark_url = printf "github.com/kubeshark/kubeshark/releases/download/v%s/kubeshark.exe" .versions.kubeshark }}
-{{ else }}
-{{ $kubeshark_url = printf "github.com/kubeshark/kubeshark/releases/download/v%s/kubeshark_%s_%s" .versions.kubeshark .chezmoi.os .chezmoi.arch }}
-{{ end }}
-{{ template "mirror_urls" (dict "root" $ "path" $kubeshark_url) }}
+{{- $kubeshark_url := ternary
+  (printf "github.com/kubeshark/kubeshark/releases/download/v%s/kubeshark.exe" .versions.kubeshark)
+  (printf "github.com/kubeshark/kubeshark/releases/download/v%s/kubeshark_%s_%s" .versions.kubeshark .chezmoi.os .chezmoi.arch)
+  (eq .chezmoi.os "windows") }}
+{{- template "mirror_urls" (dict "root" $ "path" $kubeshark_url) }}
   executable: true
 
 ".local/bin/kubefwd{{ $exe_ext }}":
   type: archive-file
 {{ $kubefwd_url := printf "github.com/txn2/kubefwd/releases/download/v%s/kubefwd_%s_%s%s" .versions.kubefwd (.chezmoi.os | camelcase) $go_arch $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $kubefwd_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $kubefwd_url) }}
   path: "kubefwd{{ $exe_ext }}"
   executable: true
 {{ end }}
@@ -344,52 +340,52 @@
 ".local/bin/mkcert{{ $exe_ext }}":
   type: file
 {{ $mkcert_url := printf "github.com/FiloSottile/mkcert/releases/download/v%s/mkcert-v%s-%s-%s%s" .versions.mkcert .versions.mkcert .chezmoi.os .chezmoi.arch $exe_ext }}
-{{ template "mirror_urls" (dict "root" $ "path" $mkcert_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $mkcert_url) }}
   executable: true
 
 ".local/bin/dive{{ $exe_ext }}":
   type: archive-file
 {{ $dive_url := printf "github.com/wagoodman/dive/releases/download/v%s/dive_%s_%s_%s%s" .versions.dive .versions.dive .chezmoi.os .chezmoi.arch $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $dive_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $dive_url) }}
   path: "dive{{ $exe_ext }}"
   executable: true
 
 ".local/bin/lazydocker{{ $exe_ext }}":
   type: archive-file
 {{ $lazydocker_url := printf "github.com/jesseduffield/lazydocker/releases/download/v%s/lazydocker_%s_%s_%s%s" .versions.lazydocker .versions.lazydocker (.chezmoi.os | camelcase) $go_arch $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $lazydocker_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $lazydocker_url) }}
   path: "lazydocker{{ $exe_ext }}"
   executable: true
 
 ".local/bin/minikube{{ $exe_ext }}":
   type: file
 {{ $minikube_url := printf "github.com/kubernetes/minikube/releases/download/v%s/minikube-%s-%s%s" .versions.minikube .chezmoi.os .chezmoi.arch $exe_ext }}
-{{ template "mirror_urls" (dict "root" $ "path" $minikube_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $minikube_url) }}
   executable: true
 
 ".local/bin/kind{{ $exe_ext }}":
   type: file
 {{ $kind_url := printf "github.com/kubernetes-sigs/kind/releases/download/v%s/kind-%s-%s" .versions.kind .chezmoi.os .chezmoi.arch }}
-{{ template "mirror_urls" (dict "root" $ "path" $kind_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $kind_url) }}
   executable: true
 
 ".local/bin/kubectx{{ $exe_ext }}":
   type: archive-file
 {{ $kubectx_url := printf "github.com/ahmetb/kubectx/releases/download/v%s/kubectx_v%s_%s_%s%s" .versions.kubectx .versions.kubectx .chezmoi.os $go_arch $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $kubectx_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $kubectx_url) }}
   path: "kubectx{{ $exe_ext }}"
   executable: true
 ".local/bin/kubens{{ $exe_ext }}":
   type: archive-file
 {{ $kubens_url := printf "github.com/ahmetb/kubectx/releases/download/v%s/kubens_v%s_%s_%s%s" .versions.kubectx .versions.kubectx .chezmoi.os $go_arch $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $kubens_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $kubens_url) }}
   path: "kubens{{ $exe_ext }}"
   executable: true
 
 ".local/bin/k9s{{ $exe_ext }}":
   type: archive-file
 {{ $k9s_url := printf "github.com/derailed/k9s/releases/download/v%s/k9s_%s_%s%s" .versions.k9s (.chezmoi.os | camelcase) .chezmoi.arch $pkg_postfix }}
-{{ template "mirror_urls" (dict "root" $ "path" $k9s_url) }}
+{{- template "mirror_urls" (dict "root" $ "path" $k9s_url) }}
   path: "k9s{{ $exe_ext }}"
   executable: true
 
@@ -397,7 +393,7 @@
   type: archive-file
 {{ $helm_url := printf "get.helm.sh/helm-v%s-%s-%s%s" .versions.helm .chezmoi.os .chezmoi.arch $pkg_postfix }}
   url: "https://{{ $helm_url }}"
-{{ template "checksum" (dict "root" $ "key" $helm_url) }}
+{{- template "checksum" (dict "root" $ "key" $helm_url) }}
   path: "helm{{ $exe_ext }}"
   executable: true
   stripComponents: 1

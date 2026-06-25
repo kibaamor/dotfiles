@@ -10,7 +10,7 @@ Requires chezmoi ≥ `2.70.3` (pinned in `.chezmoiversion`).
 - **Never shellcheck `.sh.tmpl` or `.ps1.tmpl` directly.** Render with `chezmoi execute-template` first.
 - **Always shellcheck after script modifications.** Run `shellcheck find-gh-mirror.sh update-version.sh` before claiming work is done. Only shellcheck these two files — `dot_utilities.sh` is sourced at runtime but has no complex logic needing linting.
 - **Never auto-stage files.** Do NOT run `git add` unless the user explicitly requests a commit.
-- **OS-gate with `.chezmoi.os` / `.interactive` / `.can_sudo`.** No unconditional installs or `chsh`.
+- **OS-gate with `.chezmoi.os` / `.can_sudo`.** No unconditional installs or `chsh`.
 
 ## Commands
 
@@ -70,7 +70,6 @@ Produces the frozen `data` dictionary.
 | Field | Source | Purpose |
 |---|---|---|
 | `git_username` / `git_useremail` | env | Git identity |
-| `interactive` | stdinIsATTY + CI env | Gates `chsh` |
 | `can_sudo` | interactive + env | Sudo availability |
 
 ### 2. `home/.chezmoidata/*.yaml` — Structured data
@@ -81,14 +80,15 @@ Produces the frozen `data` dictionary.
 
 ### 3. `home/.chezmoiexternal.yaml.tmpl` — External tool downloads
 
-- GitHub sources: use `{{ template "mirror_urls" (dict "root" $ "path" $xxx_url) }}` for CDN mirror support.
-- Non-GitHub sources: inline `url:` + `checksum:`.
-- Most entries are always installed; some are gated by `DOTFILES_EXTRA_BINS` and `DOTFILES_ARKADE_BINS`.
+- GitHub sources: use `{{- template "mirror_urls" (dict "root" $ "path" $xxx_url) }}` for CDN mirror support.
+- Non-GitHub sources: inline `url:` + `checksum:` (see helm entry).
+- Most entries are always installed; `DOTFILES_EXTRA_BINS` and `DOTFILES_ARKADE_BINS` gate the last two groups.
 - Arch/platform locals are defined at the top via Sprig `ternary`:
   - `$exe_ext`, `$pkg_postfix`, `$pkg_runtime` — OS detection
   - `$platform` (`pc`/`apple`/`unknown`), `$go_arch`, `$rust_arch` — arch normalization
-- Use `ternary true_val false_val bool` for concise conditionals (from Sprig, available in chezmoi).
+- Use `ternary true_val false_val bool` for conditionals (from Sprig, available in chezmoi).
 - Runtime selectors (e.g. `$delta_rt`, `$rg_rt`) prefer `ternary` over `if` blocks to keep URLs single-expression.
+- Multi-line ternary values must be wrapped with leading `  ` indentation to avoid excess blank lines in rendered output.
 
 ### 4. `home/.chezmoiscripts/` — Lifecycle scripts
 
@@ -115,7 +115,7 @@ Non-obvious target mappings (beyond simple `dot_`/`executable_` prefixes):
 ## Adding a resource
 
 1. `update-version.sh` — add `"owner/repo"` to the `repos` array (default / extra-bins / arkade-bins) or `commit_repos`.
-2. `home/.chezmoiexternal.yaml.tmpl` — add entry with `{{ template "mirror_urls" ... }}` (GitHub) or inline `url`+`checksum` (non-GitHub).
+2. `home/.chezmoiexternal.yaml.tmpl` — add entry with `{{- template "mirror_urls" ... }}` (GitHub) or inline `url`+`checksum` (non-GitHub).
 3. Run `./update-version.sh` to regenerate `versions.yaml` + `checksums.yaml`.
 
 **Version keys** strip `-` from repo names: `NTrace-core` → `NTracecore`, `zsh-syntax-highlighting` → `zshsyntaxhighlighting`.

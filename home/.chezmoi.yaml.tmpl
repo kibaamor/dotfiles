@@ -22,7 +22,6 @@ data:
   blocked_hosts:
     - telemetry.business.githubcopilot.com
 
-  interactive: {{ $interactive }}
 {{ if ne .chezmoi.os "windows" }}
   can_sudo: {{ $can_sudo }}
   sudo: {{ findExecutable "sudo" (list "/bin" "/sbin" "/usr/bin" "/usr/sbin") }}

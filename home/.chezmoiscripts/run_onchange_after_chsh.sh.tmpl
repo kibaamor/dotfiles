@@ -1,4 +1,4 @@
-{{- if and (not (eq .chezmoi.os "windows")) .interactive -}}
+{{- if ne .chezmoi.os "windows" -}}
 #!/bin/bash
 
 set -efu
@@ -7,10 +7,12 @@ if [ "$(basename "$SHELL")" = "zsh" ]; then
   exit 0
 fi
 
+if [ "$(id -u)" -eq 0 ]; then
+  chsh -s /usr/bin/zsh "$USER"
 {{ if .can_sudo }}
-  chsh -s /usr/bin/zsh || {{ .sudo }} chsh -s /usr/bin/zsh "$USER"
-{{ else }}
-  chsh -s /usr/bin/zsh
+else
+  {{ .sudo }} chsh -s /usr/bin/zsh "$USER"
 {{ end }}
+fi
 
 {{- end -}}
