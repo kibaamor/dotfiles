@@ -33,8 +33,31 @@ jobs:
 
     outputs:
       version_tag: ${{ steps.tags.outputs.version_tag }}
+      run_base: ${{ steps.parse.outputs.run_base }}
+      run_golang: ${{ steps.parse.outputs.run_golang }}
+      run_node: ${{ steps.parse.outputs.run_node }}
 
     steps:
+      - name: Parse [cicd=...] from commit message
+        id: parse
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            for t in base golang node; do
+              echo "run_${t}=true" >> "$GITHUB_OUTPUT"
+            done
+            exit 0
+          else
+            MSG="${{ github.event.head_commit.message || '' }}"
+            TAGS=$(echo "$MSG" | grep -oP '(?<=\[cicd=)[^\]]+' || true)
+            for t in base golang node; do
+              if echo "$TAGS" | grep -qw "$t"; then
+                echo "run_${t}=true" >> "$GITHUB_OUTPUT"
+              else
+                echo "run_${t}=false" >> "$GITHUB_OUTPUT"
+              fi
+            done
+          fi
+
       - name: Generate image tags
         id: tags
         run: |
@@ -42,7 +65,7 @@ jobs:
 
   build-and-push-base:
     needs: metadata
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && needs.metadata.outputs.run_base == 'true'
     runs-on: ubuntu-latest
     env:
       CACHE_SCOPE: devcontainer-base
@@ -97,7 +120,7 @@ jobs:
     needs:
       - metadata
       - build-and-push-base
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && needs.metadata.outputs.run_golang == 'true' && (needs.build-and-push-base.result == 'success' || needs.build-and-push-base.result == 'skipped')
     runs-on: ubuntu-latest
     env:
       CACHE_SCOPE: devcontainer-golang
@@ -116,7 +139,7 @@ jobs:
     needs:
       - metadata
       - build-and-push-base
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && needs.metadata.outputs.run_node == 'true' && (needs.build-and-push-base.result == 'success' || needs.build-and-push-base.result == 'skipped')
     runs-on: ubuntu-latest
     env:
       CACHE_SCOPE: devcontainer-node
@@ -135,7 +158,7 @@ jobs:
     needs:
       - metadata
       - build-and-push-base
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && needs.build-and-push-base.result == 'success'
     runs-on: ubuntu-latest
     env:
       DOCKERHUB_IMAGE: dotfiles
@@ -164,7 +187,7 @@ jobs:
     needs:
       - metadata
       - build-and-push-golang
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && needs.build-and-push-golang.result == 'success'
     runs-on: ubuntu-latest
     env:
       DOCKERHUB_IMAGE: dotfiles-golang
@@ -178,7 +201,7 @@ jobs:
     needs:
       - metadata
       - build-and-push-node
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && needs.build-and-push-node.result == 'success'
     runs-on: ubuntu-latest
     env:
       DOCKERHUB_IMAGE: dotfiles-node
