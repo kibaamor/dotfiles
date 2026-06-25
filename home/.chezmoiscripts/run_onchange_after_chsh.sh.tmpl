@@ -1,14 +1,14 @@
 {{- if ne .chezmoi.os "windows" -}}
 #!/bin/bash
 
-set -ef
+set -efu
 
 if [ "$(basename "$SHELL")" = "zsh" ]; then
   exit 0
 fi
 
 {{ if .can_sudo }}
-chsh -s /usr/bin/zsh || {{ .sudo }} chsh -s /usr/bin/zsh "$USER" # USER maybe undefined
+chsh -s /usr/bin/zsh || {{ .sudo }} chsh -s /usr/bin/zsh "$(id -un)"
 {{ else }}
 chsh -s /usr/bin/zsh
 {{ end }}
