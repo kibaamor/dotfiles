@@ -7,12 +7,10 @@ if [ "$(basename "$SHELL")" = "zsh" ]; then
   exit 0
 fi
 
-if [ "$(id -u)" -eq 0 ]; then
-  chsh -s /usr/bin/zsh "$USER"
 {{ if .can_sudo }}
-else
-  {{ .sudo }} chsh -s /usr/bin/zsh "$USER"
+chsh -s /usr/bin/zsh || {{ .sudo }} chsh -s /usr/bin/zsh "$USER"
+{{ else }}
+chsh -s /usr/bin/zsh
 {{ end }}
-fi
 
 {{- end -}}
