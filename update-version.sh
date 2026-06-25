@@ -79,31 +79,35 @@ targets=(
 )
 
 SKIP_VERSIONS=0
-SKIP_CHECKSUMS=0
+MAX_JOBS=8
 
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --skip-versions) SKIP_VERSIONS=1 ;;
-    --skip-checksums) SKIP_CHECKSUMS=1 ;;
-    -h|--help)
+while getopts "sj:h" opt; do
+  case "$opt" in
+    s) SKIP_VERSIONS=1 ;;
+    j) MAX_JOBS="$OPTARG" ;;
+    h)
       cat >&2 <<'USAGE'
-Usage: ./update-version.sh [--skip-versions] [--skip-checksums]
+Usage: ./update-version.sh [-s] [-j N]
 
 Options:
-  --skip-versions    Skip GitHub API calls; reuse existing versions.yaml on disk.
-  --skip-checksums   Skip binary downloads; reuse existing checksums.yaml on disk.
-  -h, --help         Show this help message.
+  -s                    Skip GitHub API calls; reuse existing versions.yaml on disk.
+  -j N                  Max concurrent checksum downloads (default: 8).
+  -h                    Show this help message.
 USAGE
       exit 0
       ;;
     *)
-      echo "error: unknown option: $1" >&2
-      echo "usage: ./update-version.sh [--skip-versions] [--skip-checksums] [-h]" >&2
+      echo "usage: ./update-version.sh [-s] [-j N] [-h]" >&2
       exit 1
       ;;
   esac
-  shift
 done
+shift $((OPTIND - 1))
+
+if [[ ! "$MAX_JOBS" =~ ^[1-9][0-9]*$ ]]; then
+  echo "error: -j must be a positive integer: $MAX_JOBS" >&2
+  exit 1
+fi
 
 require_command() {
   if ! command -v "$1" >/dev/null 2>&1; then
@@ -312,7 +316,7 @@ render_override_data() {
   local commits_name="$4"
   local checksums_name="$5"
 
-  printf '{"chezmoi":{"os":"%s","arch":"%s","fqdnHostname":"update-version"},"versions":' "$os" "$arch"
+  printf '{"chezmoi":{"os":"%s","arch":"%s"},"versions":' "$os" "$arch"
   write_json_object "$versions_name"
   printf ',"commits":'
   write_json_object "$commits_name"
@@ -397,7 +401,7 @@ update_checksums() {
   local -n _uc="$3"
   # shellcheck disable=SC2178
   local -n _ucs="$4"
-  local key sha256 url
+  local key url
   local -A seen_keys=()
   local -A urls=()
   local sorted_urls=()
@@ -411,25 +415,50 @@ update_checksums() {
 
   mapfile -t sorted_urls < <(printf '%s\n' "${!urls[@]}" | sort)
 
+  local tmp_dir pids=() idx=0
+  tmp_dir="$(mktemp -d "$ROOT_DIR/.update-version-checksums.XXXXXX")"
+
   for url in "${sorted_urls[@]}"; do
     key="$(canonical_key_for_url "$url")"
     if [[ -n "${seen_keys[$key]+x}" ]]; then
       continue
     fi
     seen_keys["$key"]=1
+    local cache_val="${_ec[$key]:-}"
 
-    if [[ -n "${_ec[$key]+x}" ]]; then
-      echo "cached checksum: $url" >&2
-      _ucs["$key"]="${_ec[$key]}"
-    else
-      echo "checksumming: $url" >&2
-      if ! sha256="$(curl --fail --silent --show-error --location --retry 3 "$url" | sha256sum | awk '{print $1}')"; then
-        echo "error: failed to checksum URL: $url" >&2
-        continue
+    (
+      if [[ -n "$cache_val" ]]; then
+        echo "cached checksum: $url" >&2
+        printf '%s|%s\n' "$key" "$cache_val" >"$tmp_dir/$idx"
+      else
+        echo "checksumming: $url" >&2
+        if sha256="$(curl --fail --silent --show-error --location --retry 3 "$url" | sha256sum | awk '{print $1}')" && [[ -n "$sha256" ]]; then
+          printf '%s|%s\n' "$key" "$sha256" >"$tmp_dir/$idx"
+        else
+          echo "error: failed to checksum URL: $url" >&2
+          printf '%s|FAIL\n' "$key" >"$tmp_dir/$idx"
+        fi
       fi
-      _ucs["$key"]="$sha256"
-    fi
+    ) &
+    pids+=("$!")
+    ((idx++))
+
+    while (( ${#pids[@]} >= MAX_JOBS )); do
+      wait "${pids[0]}" || true
+      pids=("${pids[@]:1}")
+    done
   done
+
+  for pid in "${pids[@]}"; do
+    wait "$pid" || true
+  done
+
+  while IFS='|' read -r key sha256; do
+    [[ "$sha256" == "FAIL" ]] && continue
+    _ucs["$key"]="$sha256"
+  done < <(cat "$tmp_dir"/* 2>/dev/null)
+
+  rm -rf "$tmp_dir"
 }
 
 write_checksums_file() {
@@ -484,21 +513,19 @@ main() {
     fi
   fi
 
-  if [[ "$SKIP_CHECKSUMS" -eq 0 ]]; then
-    # shellcheck disable=SC2034
-    declare -A EXISTING_CHECKSUMS=()
-    # shellcheck disable=SC2034
-    declare -A UPDATED_CHECKSUMS=()
+  # shellcheck disable=SC2034
+  declare -A EXISTING_CHECKSUMS=()
+  # shellcheck disable=SC2034
+  declare -A UPDATED_CHECKSUMS=()
 
-    load_existing_checksums EXISTING_CHECKSUMS
+  load_existing_checksums EXISTING_CHECKSUMS
 
-    update_checksums EXISTING_CHECKSUMS UPDATED_VERSIONS UPDATED_COMMITS UPDATED_CHECKSUMS
+  update_checksums EXISTING_CHECKSUMS UPDATED_VERSIONS UPDATED_COMMITS UPDATED_CHECKSUMS
 
-    if assoc_arrays_equal EXISTING_CHECKSUMS UPDATED_CHECKSUMS; then
-      echo "checksums unchanged, skipping write: $CHECKSUMS_FILE" >&2
-    else
-      write_checksums_file "$CHECKSUMS_FILE" UPDATED_CHECKSUMS
-    fi
+  if assoc_arrays_equal EXISTING_CHECKSUMS UPDATED_CHECKSUMS; then
+    echo "checksums unchanged, skipping write: $CHECKSUMS_FILE" >&2
+  else
+    write_checksums_file "$CHECKSUMS_FILE" UPDATED_CHECKSUMS
   fi
 }
 

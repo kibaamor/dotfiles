@@ -37,10 +37,7 @@ shellcheck update-version.sh find-gh-mirror.sh
 ./update-version.sh
 
 # Speed up iteration: skip GitHub API calls (reuses existing versions.yaml)
-./update-version.sh --skip-versions
-
-# Speed up iteration: skip binary downloads (reuses existing checksums.yaml)
-./update-version.sh --skip-checksums
+./update-version.sh -s
 ```
 
 No test suite. Validate with `chezmoi diff` or `execute-template`.
