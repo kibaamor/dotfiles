@@ -22,6 +22,9 @@ concurrency:
   cancel-in-progress: false
 
 env:
+  # This devcontainer is built from ubuntu:24.04, so publish Linux container
+  # platforms. Docker has no macOS container platform, and Windows containers
+  # require a Windows base image.
   DEVCONTAINER_PLATFORMS: linux/amd64,linux/arm64
 
 jobs:
