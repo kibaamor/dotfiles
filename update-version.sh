@@ -180,35 +180,33 @@ normalize_version() {
   sed -nE 's/^[^0-9]*([0-9]+([.][0-9]+)*)$/\1/p'
 }
 
+copy_assoc_array() {
+  # shellcheck disable=SC2178
+  local -n src="$1" dst="$2"
+  local key
+  for key in "${!src[@]}"; do
+    dst["$key"]="${src[$key]}"
+  done
+}
+
+fill_missing_keys() {
+  # shellcheck disable=SC2178
+  local -n src="$1" dst="$2"
+  local key
+  for key in "${!src[@]}"; do
+    [[ -n "${dst[$key]+x}" ]] || dst["$key"]="${src[$key]}"
+  done
+}
+
 latest_version_for() {
   local repo="$1"
   local version
-
-  if ! version="$(
-    gh release view \
-      --repo "$repo" \
-      --json tagName \
-      --jq '.tagName' 2>/dev/null | normalize_version
-  )"; then
-    version=""
-  fi
-
-  if [[ -z "$version" ]]; then
-    if ! version="$(
-      gh api \
-        --method GET \
-        --header 'Accept: application/vnd.github+json' \
-        --jq 'if type == "array" then .[0].name // empty else empty end' \
-        "https://api.github.com/repos/$repo/tags" | normalize_version
-    )"; then
-      version=""
-    fi
-  fi
-
-  if [[ ! "$version" =~ ^[0-9]+([.][0-9]+)*$ ]]; then
-    version=""
-  fi
-
+  version="$(
+    { gh release view --repo "$repo" --json tagName --jq '.tagName' 2>/dev/null \
+      || gh api --jq '.[0].name // empty' "repos/$repo/tags" 2>/dev/null; } \
+      | normalize_version
+  )" || version=""
+  [[ "$version" =~ ^[0-9]+([.][0-9]+)*$ ]] || version=""
   echo "$version"
 }
 
@@ -227,57 +225,44 @@ version_key_for() {
   echo "$1" | cut -d '/' -f 2 | tr -d '-'
 }
 
+report_change() {
+  local label="$1" key="$2" new_val="$3"
+  local old_val="${4:-}"
+  local map_name="$5"
+  local -n map_ref="$map_name"
+  if [[ -n "${map_ref[$key]+x}" && "$old_val" == "$new_val" ]]; then
+    echo "$label unchanged ($new_val)"
+  else
+    echo "$label updated (${old_val:-none} -> $new_val)"
+  fi
+}
+
 update_versions() {
-  local repo
-  local ref
-  local key
-  local version
-  local commit
-  local old_commit
-  local old_version
-  local spec
+  local repo ref key version commit spec
 
   for repo in "${repos[@]}"; do
     printf 'processing repo: %s ... ' "$repo"
-
     key="$(version_key_for "$repo")"
     version="$(latest_version_for "$repo")"
-
     if [[ -z "$version" ]]; then
       echo "failed"
       echo "error: failed to resolve version for $repo" >&2
       exit 1
     fi
-
-    old_version="${EXISTING_VERSIONS[$key]:-}"
-    if [[ -n "${EXISTING_VERSIONS[$key]+x}" && "$old_version" == "$version" ]]; then
-      echo "version unchanged ($version)"
-    else
-      echo "version updated (${old_version:-none} -> $version)"
-    fi
-
+    report_change "version" "$key" "$version" "${EXISTING_VERSIONS[$key]:-}" EXISTING_VERSIONS
     UPDATED_VERSIONS["$key"]="$version"
   done
 
   for spec in "${commit_repos[@]}"; do
     read -r repo ref key <<<"$spec"
     printf 'processing repo commit: %s ... ' "$repo"
-
     commit="$(latest_commit_for "$repo" "$ref")"
-
     if [[ ! "$commit" =~ ^[0-9a-f]{40}$ ]]; then
       echo "failed"
       echo "error: failed to resolve commit for $repo" >&2
       exit 1
     fi
-
-    old_commit="${EXISTING_COMMITS[$key]:-}"
-    if [[ -n "${EXISTING_COMMITS[$key]+x}" && "$old_commit" == "$commit" ]]; then
-      echo "commit unchanged ($commit)"
-    else
-      echo "commit updated (${old_commit:-none} -> $commit)"
-    fi
-
+    report_change "commit" "$key" "$commit" "${EXISTING_COMMITS[$key]:-}" EXISTING_COMMITS
     UPDATED_COMMITS["$key"]="$commit"
   done
 }
@@ -324,12 +309,12 @@ yaml_content_eq() {
 }
 
 safe_mv_if_changed() {
-  local src="$1" dst="$2"
-  if yaml_content_eq "$src" "$dst"; then
-    echo "content unchanged, skipping write: $dst" >&2
-    rm -f "$src"
+  local src_file="$1" dst_file="$2"
+  if yaml_content_eq "$src_file" "$dst_file"; then
+    echo "content unchanged, skipping write: $dst_file" >&2
+    rm -f "$src_file"
   else
-    mv "$src" "$dst"
+    mv "$src_file" "$dst_file"
   fi
 }
 
@@ -379,64 +364,72 @@ canonical_key_for_url() {
   echo "$url"
 }
 
+render_target_urls() {
+  local target="$1"
+  local versions_array_name="$2"
+  local commits_array_name="$3"
+  local out_file="$4"
+  local arch os rendered_file target_data target_config
+
+  os="${target%/*}"
+  arch="${target#*/}"
+  target_data="$(render_override_data "$os" "$arch" "$versions_array_name" "$commits_array_name")"
+
+  local chezmoi_env=(env DOTFILES_EXTRA_BINS=1 DOTFILES_ARKADE_BINS=1 DOTFILES_MIRROR=)
+  target_config="$("${chezmoi_env[@]}" chezmoi --source "$ROOT_DIR" execute-template \
+    --override-data "$target_data" \
+    --file "$CONFIG_TEMPLATE")"
+
+  rendered_file="$("${chezmoi_env[@]}" chezmoi --source "$ROOT_DIR" \
+    --config <(printf '%s\n' "$target_config") \
+    --config-format yaml \
+    execute-template \
+    --override-data "$target_data" \
+    --file "$EXTERNALS_TEMPLATE" 2>/dev/null || true)"
+
+  extract_urls <<<"$rendered_file" >>"$out_file"
+}
+
 add_rendered_urls() {
   local versions_array_name="$1"
   local commits_array_name="$2"
   local urls_array_name="$3"
   local keys_array_name="${4:-}"
-  local arch
   local key
-  local os
-  local rendered_file
-  local target_data
-  local target_config
+  local pid
+  local pids=()
   local target
   local url
   local -n urls_ref="$urls_array_name"
+
+  local tmp_dir=""
+  tmp_dir="$(mktemp -d "$ROOT_DIR/.update-version-render.XXXXXX")"
+
+  for target in "${targets[@]}"; do
+    render_target_urls "$target" "$versions_array_name" "$commits_array_name" \
+      "$tmp_dir/${target//\//-}" &
+    pids+=("$!")
+  done
+
+  for pid in "${pids[@]}"; do
+    wait "$pid" || { rm -rf "$tmp_dir"; return 1; }
+  done
 
   if [[ -n "$keys_array_name" ]]; then
     local -n keys_ref="$keys_array_name"
   fi
 
-  rendered_file=""
-
-  for target in "${targets[@]}"; do
-    os="${target%/*}"
-    arch="${target#*/}"
-    target_data="$(render_override_data "$os" "$arch" "$versions_array_name" "$commits_array_name")"
-
-    # Render the bootstrap config for each target first; it defines derived
-    # fields such as archive suffixes, architecture aliases, and URL prefixes.
-    target_config="$(env \
-      DOTFILES_EXTRA_BINS=1 \
-      DOTFILES_ARKADE_BINS=1 \
-      DOTFILES_MIRROR= \
-      chezmoi --source "$ROOT_DIR" execute-template \
-      --override-data "$target_data" \
-      --file "$CONFIG_TEMPLATE")"
-    # Render externals using the same target data plus either EXISTING_* or
-    # UPDATED_* maps, then collect the concrete URLs that require checksums.
-    rendered_file="$(env \
-      DOTFILES_EXTRA_BINS=1 \
-      DOTFILES_ARKADE_BINS=1 \
-      DOTFILES_MIRROR= \
-      chezmoi --source "$ROOT_DIR" \
-      --config <(printf '%s\n' "$target_config") \
-      --config-format yaml \
-      execute-template \
-      --override-data "$target_data" \
-      --file "$EXTERNALS_TEMPLATE")"
-
-    while IFS= read -r url; do
+  while IFS= read -r url; do
+    [[ -n "$url" ]] || continue
+    # shellcheck disable=SC2034
+    urls_ref["$url"]=1
+    if [[ -n "$keys_array_name" ]]; then
+      key="$(canonical_key_for_url "$url")"
       # shellcheck disable=SC2034
-      urls_ref["$url"]=1
-      if [[ -n "$keys_array_name" ]]; then
-        key="$(canonical_key_for_url "$url")"
-        # shellcheck disable=SC2034
-        keys_ref["$key"]=1
-      fi
-    done < <(extract_urls <<<"$rendered_file")
-  done
+      keys_ref["$key"]=1
+    fi
+  done < <(cat "$tmp_dir"/* 2>/dev/null | sort -u)
+  rm -rf "$tmp_dir"
 }
 
 write_checksum() {
@@ -522,6 +515,17 @@ checksum_output_for_urls() {
   } | sort
 }
 
+versions_unchanged() {
+  local key
+  for key in "${!EXISTING_VERSIONS[@]}"; do
+    [[ "${UPDATED_VERSIONS[$key]:-}" == "${EXISTING_VERSIONS[$key]}" ]] || return 1
+  done
+  for key in "${!EXISTING_COMMITS[@]}"; do
+    [[ "${UPDATED_COMMITS[$key]:-}" == "${EXISTING_COMMITS[$key]}" ]] || return 1
+  done
+  return 0
+}
+
 update_checksums() {
   local key
   local checksum_output
@@ -541,24 +545,21 @@ update_checksums() {
   # Render old and updated external URL sets. Their key intersection determines
   # which existing checksums can be reused without downloading the asset again.
   if [[ -f "$VERSIONS_FILE" ]]; then
-    for key in "${!EXISTING_VERSIONS[@]}"; do
-      old_versions["$key"]="${EXISTING_VERSIONS[$key]}"
-    done
-    for key in "${!EXISTING_COMMITS[@]}"; do
-      old_commits["$key"]="${EXISTING_COMMITS[$key]}"
-    done
-    for key in "${!UPDATED_VERSIONS[@]}"; do
-      if [[ -z "${old_versions[$key]+x}" ]]; then
-        old_versions["$key"]="${UPDATED_VERSIONS[$key]}"
-      fi
-    done
-    for key in "${!UPDATED_COMMITS[@]}"; do
-      if [[ -z "${old_commits[$key]+x}" ]]; then
-        old_commits["$key"]="${UPDATED_COMMITS[$key]}"
-      fi
-    done
+    if versions_unchanged; then
+      # All versions match existing — every checksum in EXISTING_CHECKSUMS is
+      # reusable without rendering the old URL set.
+      for key in "${!EXISTING_CHECKSUMS[@]}"; do
+        # shellcheck disable=SC2034
+        old_keys["$key"]=1
+      done
+    else
+      copy_assoc_array EXISTING_VERSIONS old_versions
+      copy_assoc_array EXISTING_COMMITS old_commits
+      fill_missing_keys UPDATED_VERSIONS old_versions
+      fill_missing_keys UPDATED_COMMITS old_commits
 
-    add_rendered_urls old_versions old_commits old_urls old_keys
+      add_rendered_urls old_versions old_commits old_urls old_keys
+    fi
   fi
 
   add_rendered_urls UPDATED_VERSIONS UPDATED_COMMITS urls
@@ -629,20 +630,14 @@ main() {
   fi
 
   if [[ "$SKIP_VERSIONS" -eq 1 ]]; then
-    for key in "${!EXISTING_VERSIONS[@]}"; do
-      UPDATED_VERSIONS["$key"]="${EXISTING_VERSIONS[$key]}"
-    done
-    for key in "${!EXISTING_COMMITS[@]}"; do
-      UPDATED_COMMITS["$key"]="${EXISTING_COMMITS[$key]}"
-    done
+    copy_assoc_array EXISTING_VERSIONS UPDATED_VERSIONS
+    copy_assoc_array EXISTING_COMMITS UPDATED_COMMITS
   else
     update_versions
   fi
 
   if [[ "$SKIP_CHECKSUMS" -eq 1 ]]; then
-    for key in "${!EXISTING_CHECKSUMS[@]}"; do
-      UPDATED_CHECKSUMS["$key"]="${EXISTING_CHECKSUMS[$key]}"
-    done
+    copy_assoc_array EXISTING_CHECKSUMS UPDATED_CHECKSUMS
   else
     update_checksums
   fi
