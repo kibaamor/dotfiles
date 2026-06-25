@@ -257,7 +257,6 @@
 {{- template "mirror_urls" (dict "root" $ "path" $doggo_url) }}
   path: "doggo{{ $exe_ext }}"
   executable: true
-  stripComponents: 1
 
 ".local/bin/nexttrace{{ $exe_ext }}":
   type: file
