@@ -1,0 +1,29 @@
+enable_pane_titles: true
+name: game
+root: <%= ENV["PWD"] %>
+
+windows:
+  - server:
+      - export PORT=8080
+      - lsof -ti :8080 | xargs -r kill -9
+      - pn run server
+
+  - lobby:
+      - export PORT=8000
+      - lsof -ti :8000 | xargs -r kill -9
+      - pn run lobby
+
+  - socket:
+      - export PORT=8030
+      - lsof -ti :8030 | xargs -r kill -9
+      - pn run socket
+
+  - ingame:
+      - export PORT=8017
+      - lsof -ti :8017 | xargs -r kill -9
+      - pn run ingame
+  - cron:
+      - export PORT=8018
+      - lsof -ti :8018 | xargs -r kill -9
+      - pn run cron
+
