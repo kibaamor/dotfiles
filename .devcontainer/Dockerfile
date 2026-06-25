@@ -14,8 +14,6 @@ USER ubuntu
 WORKDIR /home/ubuntu
 
 RUN set -eux \
-    && export DOTFILES_EXTRA_BINS=1 \
-    && export DOTFILES_ARKADE_BINS=1 \
     && export DOTFILES_CAN_SUDO=1 \
     && sh -c "$(curl -fsLS https://get.chezmoi.io/lb)" -- init --apply kibaamor \
     && echo exit 0 | script -qec zsh \

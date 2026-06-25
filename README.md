@@ -1,5 +1,7 @@
 # dotfiles
 
+[![Build and Push DevContainers](https://github.com/kibaamor/dotfiles/actions/workflows/devcontainers.yml/badge.svg)](https://github.com/kibaamor/dotfiles/actions/workflows/devcontainers.yml)
+
 Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 
 ## Install
