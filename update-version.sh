@@ -29,7 +29,6 @@ repos=(
   "muesli/duf"
   "FiloSottile/age"
   "tldr-pages/tlrc"
-  "fatedier/frp"
   "jqlang/jq"
   "mikefarah/yq"
   "dundee/gdu"
