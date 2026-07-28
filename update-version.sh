@@ -67,6 +67,7 @@ commit_repos=(
   "kibaamor/vimconf main vimconf"
   "hugsy/gef main gef"
   "junegunn/fzf-git.sh main fzfgitsh"
+  "tmux-plugins/tpm master tpm"
 )
 
 targets=(

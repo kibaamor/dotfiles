@@ -87,6 +87,13 @@
   type: file
 {{ $gef_url := printf "raw.githubusercontent.com/hugsy/gef/%s/gef.py" .commits.gef }}
 {{- template "mirror_urls" (dict "root" $ "path" $gef_url) }}
+
+".tmux/plugins/tpm":
+  type: archive
+{{ $tpm_url := printf "github.com/tmux-plugins/tpm/archive/%s.tar.gz" .commits.tpm }}
+{{- template "mirror_urls" (dict "root" $ "path" $tpm_url) }}
+  exact: true
+  stripComponents: 1
 {{ end }}
 
 {{ if not (and (eq .chezmoi.os "darwin") (eq .chezmoi.arch "amd64")) }}
