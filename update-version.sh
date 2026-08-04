@@ -72,6 +72,7 @@ commit_repos=(
   ##############################################################
   # AI agent skills (synced to ~/.agents/skills)
   "DietrichGebert/ponytail main ponytail"
+  "mattpocock/skills main mattpocockskills"
 )
 
 targets=(
@@ -364,6 +365,7 @@ rendered_file="$("${chezmoi_env[@]}" chezmoi --source "$ROOT_DIR" \
   sed -n -e 's/^[[:space:]]*url:[[:space:]]*"\(.*\)"[[:space:]]*$/\1/p' \
          -e 's/^[[:space:]]*-[[:space:]]*"\(.*\)"[[:space:]]*$/\1/p' \
     <<<"$rendered_file" \
+    | grep -F '://' \
     | sort -u >>"$out_file"
 }
 
