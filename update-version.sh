@@ -68,6 +68,10 @@ commit_repos=(
   "hugsy/gef main gef"
   "junegunn/fzf-git.sh main fzfgitsh"
   "tmux-plugins/tpm master tpm"
+
+  ##############################################################
+  # AI agent skills (synced to ~/.agents/skills)
+  "DietrichGebert/ponytail main ponytail"
 )
 
 targets=(

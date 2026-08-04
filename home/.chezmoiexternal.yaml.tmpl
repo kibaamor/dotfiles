@@ -28,6 +28,23 @@
 {{- $rust_arch := ternary "aarch64" (ternary "x86_64" .chezmoi.arch (eq .chezmoi.arch "amd64")) (eq .chezmoi.arch "arm64") -}}
 
 
+########################################################################################################################
+# AI agent skills synced from DietrichGebert/ponytail (all platforms, replaced on update).
+# Each skill dir is an exact external: deletions within it sync locally on apply, while
+# non-ponytail siblings in ~/.agents/skills are never touched (the shared parent is not exact).
+# To add a new ponytail skill, append its directory name to $ponytail_skills.
+{{ $ponytail_url := printf "github.com/DietrichGebert/ponytail/archive/%s.tar.gz" .commits.ponytail }}
+{{- $ponytail_skills := list "ponytail" "ponytail-audit" "ponytail-debt" "ponytail-gain" "ponytail-help" "ponytail-review" }}
+{{- range $skill := $ponytail_skills }}
+".agents/skills/{{ $skill }}":
+  type: archive
+{{- template "mirror_urls" (dict "root" $ "path" $ponytail_url) }}
+  stripComponents: 3
+  exact: true
+  include:
+    - "*/skills/{{ $skill }}/**"
+{{- end }}
+
 {{ if ne .chezmoi.os "windows" }}
 ".oh-my-zsh":
   type: archive
