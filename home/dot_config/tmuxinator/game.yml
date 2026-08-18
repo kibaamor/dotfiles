@@ -1,6 +1,7 @@
 enable_pane_titles: true
 name: game
 root: <%= ENV["PWD"] %>
+startup_window: server
 
 windows:
   - server:
