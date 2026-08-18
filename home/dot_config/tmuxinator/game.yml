@@ -18,12 +18,12 @@ windows:
       - lsof -ti :8030 | xargs -r kill -9
       - pn run socket
 
-  - ingame:
-      - export PORT=8017
-      - lsof -ti :8017 | xargs -r kill -9
-      - pn run ingame
   - cron:
       - export PORT=8018
       - lsof -ti :8018 | xargs -r kill -9
       - pn run cron
 
+  # - ingame:
+  #     - export PORT=8017
+  #     - lsof -ti :8017 | xargs -r kill -9
+  #     - pn run ingame
