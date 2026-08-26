@@ -4,32 +4,32 @@ root: <%= ENV["PWD"] %>
 startup_window: server
 
 windows:
-  - server:
-      - pkill -9 -f "jd-server/app.js --async-stack-traces" 2>/dev/null; true
-      - export PORT=8080
-      - bash -c 'trap "kill -KILL 0" HUP TERM INT; nodemon ./jd-server/app.js --async-stack-traces | bunyan -o short & wait'
+- server:
+  - pkill -9 -f "jd-server/app.js --async-stack-traces" 2>/dev/null; true
+  - export PORT=8080
+  - bash -c 'trap "kill -KILL 0" HUP TERM INT; nodemon ./jd-server/app.js --async-stack-traces | bunyan -L -o short & wait'
 
-  - lobby:
-      - pkill -9 -f "jd-lobby/app.js --async-stack-traces" 2>/dev/null; true
-      - export PORT=8000
-      - bash -c 'trap "kill -KILL 0" HUP TERM INT; nodemon ./jd-lobby/app.js --async-stack-traces | bunyan -o short & wait'
+- lobby:
+  - pkill -9 -f "jd-lobby/app.js --async-stack-traces" 2>/dev/null; true
+  - export PORT=8000
+  - bash -c 'trap "kill -KILL 0" HUP TERM INT; nodemon ./jd-lobby/app.js --async-stack-traces | bunyan -L -o short & wait'
 
-  - socket:
-      - pkill -9 -f "jd-socket/app.js --async-stack-traces" 2>/dev/null; true
-      - export PORT=8030
-      - bash -c 'trap "kill -KILL 0" HUP TERM INT; nodemon --ignore "*" ./jd-socket/app.js --async-stack-traces | bunyan -o short & wait'
+- socket:
+  - pkill -9 -f "jd-socket/app.js --async-stack-traces" 2>/dev/null; true
+  - export PORT=8030
+  - bash -c 'trap "kill -KILL 0" HUP TERM INT; nodemon --ignore "*" ./jd-socket/app.js --async-stack-traces | bunyan -L -o short & wait'
 
-  - cron:
-      - pkill -9 -f "jd-server/cron.js --async-stack-traces" 2>/dev/null; true
-      - export PORT=8018
-      - bash -c 'trap "kill -KILL 0" HUP TERM INT; nodemon ./jd-server/cron.js --async-stack-traces | bunyan -o short & wait'
+- cron:
+  - pkill -9 -f "jd-server/cron.js --async-stack-traces" 2>/dev/null; true
+  - export PORT=8018
+  - bash -c 'trap "kill -KILL 0" HUP TERM INT; nodemon ./jd-server/cron.js --async-stack-traces | bunyan -L -o short & wait'
 
-  - idip:
-      - pkill -9 -f "jd-idip/app.js --async-stack-traces" 2>/dev/null; true
-      - export PORT=8050
-      - bash -c 'trap "kill -KILL 0" HUP TERM INT; nodemon ./jd-idip/app.js --async-stack-traces | bunyan -o short & wait'
+- idip:
+  - pkill -9 -f "jd-idip/app.js --async-stack-traces" 2>/dev/null; true
+  - export PORT=8050
+  - bash -c 'trap "kill -KILL 0" HUP TERM INT; nodemon ./jd-idip/app.js --async-stack-traces | bunyan -L -o short & wait'
 
-  # - ingame:
-  #     - pkill -9 -f "jd-ingame/app.js --async-stack-traces" 2>/dev/null; true
-  #     - export PORT=8017
-  #     - bash -c 'trap "kill -KILL 0" HUP TERM INT; nodemon ./jd-ingame/app.js --async-stack-traces | bunyan -o short & wait'
+# - ingame:
+#     - pkill -9 -f "jd-ingame/app.js --async-stack-traces" 2>/dev/null; true
+#     - export PORT=8017
+#     - bash -c 'trap "kill -KILL 0" HUP TERM INT; nodemon ./jd-ingame/app.js --async-stack-traces | bunyan -L -o short & wait'
