@@ -54,7 +54,7 @@
     - "*/skills/engineering/{{ $skill }}/**"
 {{- end }}
 
-{{- $matt_productivity_skills := list "grill-me" "grilling" "handoff" "to-questionnaire" "wait-what" }}
+{{- $matt_productivity_skills := list "grill-me" "grilling" "handoff" "teach" "to-questionnaire" "wait-what" "writing-for-agents" }}
 {{- range $skill := $matt_productivity_skills }}
 ".agents/skills/{{ $skill }}":
   type: archive
