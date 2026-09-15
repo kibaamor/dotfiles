@@ -31,7 +31,7 @@
 # AI agent skills
 
 {{ $ponytail_url := printf "github.com/DietrichGebert/ponytail/archive/%s.tar.gz" .commits.ponytail }}
-{{- $ponytail_skills := list "ponytail" "ponytail-audit" "ponytail-debt" "ponytail-gain" "ponytail-help" "ponytail-review" }}
+{{- $ponytail_skills := list "ponytail" }}
 {{- range $skill := $ponytail_skills }}
 ".agents/skills/{{ $skill }}":
   type: archive
@@ -54,7 +54,7 @@
     - "*/skills/engineering/{{ $skill }}/**"
 {{- end }}
 
-{{- $matt_productivity_skills := list "grill-me" "grilling" "handoff" "teach" "to-questionnaire" "wait-what" "writing-for-agents" }}
+{{- $matt_productivity_skills := list "grill-me" "grilling" "handoff" "to-questionnaire" "wait-what" }}
 {{- range $skill := $matt_productivity_skills }}
 ".agents/skills/{{ $skill }}":
   type: archive
