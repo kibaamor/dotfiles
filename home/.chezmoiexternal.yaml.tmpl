@@ -30,6 +30,7 @@
 ########################################################################################################################
 # AI agent skills
 
+{{ if env "DOTFILES_AGENT_SKILLS" | ne "" }}
 {{ $ponytail_url := printf "github.com/DietrichGebert/ponytail/archive/%s.tar.gz" .commits.ponytail }}
 {{- $ponytail_skills := list "ponytail" }}
 {{- range $skill := $ponytail_skills }}
@@ -64,6 +65,7 @@
   include:
     - "*/skills/productivity/{{ $skill }}/**"
 {{- end }}
+{{ end }}
 
 ########################################################################################################################
 # Shell configuration and plugins

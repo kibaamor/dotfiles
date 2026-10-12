@@ -33,6 +33,8 @@ export GIT_USEREMAIL=x@x.x
 export DOTFILES_EXTRA_BINS=1
 # (Optional) Install binaries through arkade (takes effect at every chezmoi update).
 export DOTFILES_ARKADE_BINS=1
+# (Optional) Install AI agent skills (takes effect at every chezmoi update).
+export DOTFILES_AGENT_SKILLS=1
 # (Optional) Set a mirror for GitHub-hosted downloads.
 export DOTFILES_MIRROR=https://cdn.gh-proxy.org
 # (Optional) Set a proxy; replace this URL with your proxy address.
@@ -67,6 +69,8 @@ $env:GIT_USEREMAIL = "x@x.x"
 $env:DOTFILES_EXTRA_BINS = "1"
 # (Optional) Install binaries through arkade (takes effect at every chezmoi update).
 $env:DOTFILES_ARKADE_BINS = "1"
+# (Optional) Install AI agent skills (takes effect at every chezmoi update).
+$env:DOTFILES_AGENT_SKILLS = "1"
 # (Optional) Set a mirror for GitHub-hosted downloads.
 $env:DOTFILES_MIRROR = "https://cdn.gh-proxy.org"
 # (Optional) Set a proxy; replace this URL with your proxy address.
@@ -99,6 +103,14 @@ every `chezmoi update`, not just `chezmoi init`.
 
 ```bash
 DOTFILES_MIRROR=https://cdn.gh-proxy.org chezmoi update
+```
+
+### Toggle AI agent skills at update time
+
+`DOTFILES_AGENT_SKILLS` is re-read at every `chezmoi update`. Set it to any non-empty value to install the configured skills into `~/.agents/skills`; leave it unset or empty to skip installation.
+
+```bash
+DOTFILES_AGENT_SKILLS=1 chezmoi update
 ```
 
 ### Toggle extra binaries at update time
