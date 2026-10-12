@@ -197,7 +197,7 @@
 
 ".local/bin/direnv{{ $exe_ext }}":
   type: file
-{{ $direnv_url := printf "github.com/direnv/direnv/releases/download/v%s/direnv.%s-%s" .versions.direnv .chezmoi.os .chezmoi.arch }}
+{{ $direnv_url := printf "github.com/direnv/direnv/releases/download/v%s/direnv.%s-%s%s" .versions.direnv .chezmoi.os .chezmoi.arch $exe_ext }}
 {{- template "mirror_urls" (dict "root" $ "path" $direnv_url) }}
   executable: true
 
