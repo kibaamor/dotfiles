@@ -19,6 +19,18 @@
 {{- template "checksum" (dict "root" .root "key" .path) }}
 {{- end }}
 
+{{- define "agent_skill_archives" -}}
+{{- range $skill := .skills }}
+".agents/skills/{{ $skill }}":
+  type: archive
+{{- template "mirror_urls" (dict "root" $.root "path" $.url) }}
+  stripComponents: {{ $.stripComponents }}
+  exact: true
+  include:
+    - "{{ $.includePrefix }}/{{ $skill }}/**"
+{{- end }}
+{{- end }}
+
 {{- $exe_ext := ternary ".exe" "" (eq .chezmoi.os "windows") -}}
 {{- $pkg_postfix := ternary ".zip" ".tar.gz" (eq .chezmoi.os "windows") -}}
 {{- $pkg_runtime := ternary "-musl" (ternary "-msvc" "" (eq .chezmoi.os "windows")) (eq .chezmoi.os "linux") -}}
@@ -39,56 +51,48 @@
 ## Ponytail
 {{ $ponytail_url := printf "github.com/DietrichGebert/ponytail/archive/%s.tar.gz" .commits.ponytail }}
 {{- $ponytail_skills := list "ponytail" }}
-{{- range $skill := $ponytail_skills }}
-".agents/skills/{{ $skill }}":
-  type: archive
-{{- template "mirror_urls" (dict "root" $ "path" $ponytail_url) }}
-  stripComponents: 3
-  exact: true
-  include:
-    - "*/skills/{{ $skill }}/**"
-{{- end }}
+{{- template "agent_skill_archives" (dict
+  "root" $
+  "url" $ponytail_url
+  "skills" $ponytail_skills
+  "stripComponents" 3
+  "includePrefix" "*/skills"
+) }}
 {{- end }}
 
 ## matt
 {{- if eq $agent_skill_suit "matt" }}
 {{ $matt_url := printf "github.com/mattpocock/skills/archive/%s.tar.gz" .commits.mattpocockskills }}
-{{- $matt_skills := list "ask-matt" "code-review" "codebase-design" "diagnosing-bugs" "domain-modeling" "grill-with-docs" "implement" "implement-spec" "improve-codebase-architecture" "pr" "prototype" "research" "retro" "setup-matt-pocock-skills" "tdd" "to-spec" "to-tickets" "triage" "wayfinder" "wizard" }}
-{{- range $skill := $matt_skills }}
-".agents/skills/{{ $skill }}":
-  type: archive
-{{- template "mirror_urls" (dict "root" $ "path" $matt_url) }}
-  stripComponents: 4
-  exact: true
-  include:
-    - "*/skills/engineering/{{ $skill }}/**"
-{{- end }}
+{{- $matt_engineering_skills := list "ask-matt" "code-review" "codebase-design" "diagnosing-bugs" "domain-modeling" "grill-with-docs" "implement" "implement-spec" "improve-codebase-architecture" "pr" "prototype" "research" "retro" "setup-matt-pocock-skills" "tdd" "to-spec" "to-tickets" "triage" "wayfinder" "wizard" }}
+{{- template "agent_skill_archives" (dict
+  "root" $
+  "url" $matt_url
+  "skills" $matt_engineering_skills
+  "stripComponents" 4
+  "includePrefix" "*/skills/engineering"
+) }}
 
 {{- $matt_productivity_skills := list "grill-me" "grilling" "handoff" "teach" "to-questionnaire" "wait-what" "writing-for-agents" }}
-{{- range $skill := $matt_productivity_skills }}
-".agents/skills/{{ $skill }}":
-  type: archive
-{{- template "mirror_urls" (dict "root" $ "path" $matt_url) }}
-  stripComponents: 4
-  exact: true
-  include:
-    - "*/skills/productivity/{{ $skill }}/**"
-{{- end }}
+{{- template "agent_skill_archives" (dict
+  "root" $
+  "url" $matt_url
+  "skills" $matt_productivity_skills
+  "stripComponents" 4
+  "includePrefix" "*/skills/productivity"
+) }}
 {{- end }}
 
 ## superpowers
 {{- if eq $agent_skill_suit "superpowers" }}
 {{ $superpowers_url := printf "github.com/obra/superpowers/archive/%s.tar.gz" .commits.superpowers }}
 {{- $superpowers_skills := list "brainstorming" "diagnosing-superpowers" "dispatching-parallel-agents" "executing-plans" "finishing-a-development-branch" "receiving-code-review" "requesting-code-review" "subagent-driven-development" "systematic-debugging" "test-driven-development" "using-git-worktrees" "using-superpowers" "verification-before-completion" "writing-plans" "writing-skills" }}
-{{- range $skill := $superpowers_skills }}
-".agents/skills/{{ $skill }}":
-  type: archive
-{{- template "mirror_urls" (dict "root" $ "path" $superpowers_url) }}
-  stripComponents: 3
-  exact: true
-  include:
-    - "*/skills/{{ $skill }}/**"
-{{- end }}
+{{- template "agent_skill_archives" (dict
+  "root" $
+  "url" $superpowers_url
+  "skills" $superpowers_skills
+  "stripComponents" 3
+  "includePrefix" "*/skills"
+) }}
 {{- end }}
 
 ########################################################################################################################
