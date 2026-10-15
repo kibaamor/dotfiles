@@ -4,14 +4,13 @@
 
 Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 
-## Install
+## Installation
 
-### Find the fastest mirror (optional, useful for users in China)
+### Find the fastest mirror (optional; useful in China)
 
-Before installing, run this script to pick the fastest GitHub mirror for your network.
-The script tests multiple mirror candidates in parallel and exports the result as a
-`DOTFILES_MIRROR` variable — add it to your environment before running the install
-commands below.
+Before installing, run the mirror finder to choose a fast GitHub mirror for your
+network. It tests candidates in parallel and exports the selected URL as
+`DOTFILES_MIRROR`. Set that variable in your environment before continuing.
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/kibaamor/dotfiles/main/find-gh-mirror.sh)
@@ -21,7 +20,8 @@ bash <(curl -fsSL https://cdn.gh-proxy.org/https://raw.githubusercontent.com/kib
 bash <(curl -fsSL https://ghproxy.net/https://raw.githubusercontent.com/kibaamor/dotfiles/main/find-gh-mirror.sh)
 ```
 
-> See `find-gh-mirror.sh --help` for additional options (custom probes, timeouts, extra mirrors, etc.).
+See `find-gh-mirror.sh --help` for custom probes, timeouts, extra mirrors, and
+other options.
 
 ### Linux
 
@@ -33,15 +33,15 @@ export GIT_USEREMAIL=x@x.x
 export DOTFILES_EXTRA_BINS=1
 # (Optional) Install binaries through arkade (takes effect at every chezmoi update).
 export DOTFILES_ARKADE_BINS=1
-# (Optional) Install AI agent skills (takes effect at every chezmoi update).
-export DOTFILES_AGENT_SKILLS=1
+# (Optional) Choose an agent skill suite (defaults to matt).
+export DOTFILES_AGENT_SKILL_SUIT=matt
 # (Optional) Set a mirror for GitHub-hosted downloads.
 export DOTFILES_MIRROR=https://cdn.gh-proxy.org
 # (Optional) Set a proxy; replace this URL with your proxy address.
 export HTTP_PROXY=http://localhost:7890
 export HTTPS_PROXY=http://localhost:7890
 export default_proxy=http://localhost:7890
-# (Optional) Set the GitHub proxy.
+# (Optional) Set a GitHub URL rewrite rule.
 git config --global url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"
 git config --file ~/.gitconfig-proxy url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"
 
@@ -49,9 +49,10 @@ git config --file ~/.gitconfig-proxy url."https://cdn.gh-proxy.org/https://githu
 sh -c "$(curl -fsLS https://get.chezmoi.io/lb)" -- init --apply kibaamor
 ```
 
-> You can set git config for GitHub via command `git config --file ~/.gitconfig-github user.name xxx`.
->
-> You can set git config for GitLab via command `git config --file ~/.gitconfig-gitlab user.name xxx`.
+Set service-specific Git identities with:
+
+- GitHub: `git config --file ~/.gitconfig-github user.name xxx`
+- GitLab: `git config --file ~/.gitconfig-gitlab user.name xxx`
 
 ### Windows
 
@@ -69,15 +70,15 @@ $env:GIT_USEREMAIL = "x@x.x"
 $env:DOTFILES_EXTRA_BINS = "1"
 # (Optional) Install binaries through arkade (takes effect at every chezmoi update).
 $env:DOTFILES_ARKADE_BINS = "1"
-# (Optional) Install AI agent skills (takes effect at every chezmoi update).
-$env:DOTFILES_AGENT_SKILLS = "1"
+# (Optional) Choose an agent skill suite (defaults to matt).
+$env:DOTFILES_AGENT_SKILL_SUIT = "matt"
 # (Optional) Set a mirror for GitHub-hosted downloads.
 $env:DOTFILES_MIRROR = "https://cdn.gh-proxy.org"
 # (Optional) Set a proxy; replace this URL with your proxy address.
 $env:HTTP_PROXY = "http://localhost:7890"
 $env:HTTPS_PROXY = "http://localhost:7890"
 $env:default_proxy = "http://localhost:7890"
-# (Optional) Set the GitHub proxy.
+# (Optional) Set a GitHub URL rewrite rule.
 git config --global url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"
 git config --file ~/.gitconfig-proxy url."https://cdn.gh-proxy.org/https://github.com/".insteadOf "https://github.com/"
 
@@ -88,35 +89,45 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
 chezmoi init --apply kibaamor
 ```
 
-> You can set git config for GitHub via command `git config --file $env:USERPROFILE/.gitconfig-github user.name xxx`.
->
-> You can set git config for GitLab via command `git config --file $env:USERPROFILE/.gitconfig-gitlab user.name xxx`.
+Set service-specific Git identities with:
+
+- GitHub: `git config --file $env:USERPROFILE/.gitconfig-github user.name xxx`
+- GitLab: `git config --file $env:USERPROFILE/.gitconfig-gitlab user.name xxx`
 
 ## Usage
 
 ### Prefer CDN mirror for downloads
 
-Set `DOTFILES_MIRROR` to a mirror base URL to route all GitHub-hosted downloads through
-a proxy/CDN instead of fetching directly from GitHub. When set, the mirror becomes the
-primary URL and the original GitHub URL is preserved as a fallback. Takes effect at
-every `chezmoi update`, not just `chezmoi init`.
+Set `DOTFILES_MIRROR` to a mirror base URL to route GitHub-hosted downloads through a
+proxy or CDN. The mirror is tried first, with the original GitHub URL as a fallback.
+This setting is re-read at every `chezmoi update`.
 
 ```bash
 DOTFILES_MIRROR=https://cdn.gh-proxy.org chezmoi update
 ```
 
-### Toggle AI agent skills at update time
+### Choose AI agent skills at update time
 
-`DOTFILES_AGENT_SKILLS` is re-read at every `chezmoi update`. Set it to any non-empty value to install the configured skills into `~/.agents/skills`; leave it unset or empty to skip installation.
+`DOTFILES_AGENT_SKILL_SUIT` is re-read at every `chezmoi update`. If unset or empty,
+it defaults to `matt`.
+
+| Value | Skills installed |
+| --- | --- |
+| `matt` (default) | ponytail and skills from `mattpocock/skills` |
+| `pony` | ponytail only |
+| `none` | none |
+| Any other value | Template rendering fails with an error |
 
 ```bash
-DOTFILES_AGENT_SKILLS=1 chezmoi update
+DOTFILES_AGENT_SKILL_SUIT=matt chezmoi update
+DOTFILES_AGENT_SKILL_SUIT=pony chezmoi update
+DOTFILES_AGENT_SKILL_SUIT=none chezmoi update
 ```
 
 ### Toggle extra binaries at update time
 
-`DOTFILES_EXTRA_BINS` and `DOTFILES_ARKADE_BINS` are re-read at every `chezmoi update` — no need to re-initialize.
-Enable or disable them before running update:
+`DOTFILES_EXTRA_BINS` and `DOTFILES_ARKADE_BINS` are re-read at every
+`chezmoi update`; no re-initialization is needed.
 
 ```bash
 # Enable extra binaries on next update
@@ -126,54 +137,55 @@ DOTFILES_EXTRA_BINS=1 DOTFILES_ARKADE_BINS=1 chezmoi update
 chezmoi update
 ```
 
-## Installed Binaries
+## Installed binaries
 
-### Default Installed Binaries
+### Installed by default
 
-1. [delta](https://github.com/dandavison/delta) — Linux / Windows
-1. [bat](https://github.com/sharkdp/bat) — Linux / macOS / Windows
-1. [fd](https://github.com/sharkdp/fd) — Linux / Windows
-1. [fzf](https://github.com/junegunn/fzf) — Linux / macOS / Windows
-1. [direnv](https://github.com/direnv/direnv) — Linux / macOS / Windows
-1. [rg](https://github.com/BurntSushi/ripgrep) — Linux / macOS / Windows
-1. [lsd](https://github.com/lsd-rs/lsd) — Linux / macOS / Windows
-1. [duf](https://github.com/muesli/duf) — Linux / macOS / Windows
-1. [age, age-keygen](https://github.com/FiloSottile/age) — Linux / macOS / Windows
-1. [tldr](https://github.com/tldr-pages/tlrc) — Linux / macOS / Windows
-1. [jq](https://github.com/jqlang/jq) — Linux / macOS / Windows
-1. [yq](https://github.com/mikefarah/yq) — Linux / macOS / Windows
-1. [gdu](https://github.com/dundee/gdu) — Linux / macOS / Windows
-1. [ipgeo](https://github.com/kibaamor/ipgeo) — Linux / macOS / Windows
-1. [ipstream](https://github.com/kibaamor/ipstream) — Linux / macOS / Windows
-1. [tproxy](https://github.com/kevwan/tproxy) — Linux / macOS / Windows
-1. [gping](https://github.com/orf/gping) — Linux / macOS / Windows
-1. [doggo](https://github.com/mr-karan/doggo) — Linux / macOS / Windows
-1. [nexttrace](https://github.com/nxtrace/NTrace-core) — Linux / macOS / Windows
-1. [ctop](https://github.com/bcicen/ctop) — Linux / Windows
-1. [kubecolor](https://github.com/kubecolor/kubecolor) — Linux / macOS / Windows
-1. [arkade](https://github.com/alexellis/arkade) — Linux / macOS / Windows
-1. [upx](https://github.com/upx/upx) — Linux only
-1. [ShellCheck](https://github.com/koalaman/shellcheck) — Linux / macOS / Windows
+- [delta](https://github.com/dandavison/delta) — Linux / Windows
+- [bat](https://github.com/sharkdp/bat) — Linux / macOS / Windows
+- [fd](https://github.com/sharkdp/fd) — Linux / Windows
+- [fzf](https://github.com/junegunn/fzf) — Linux / macOS / Windows
+- [direnv](https://github.com/direnv/direnv) — Linux / macOS / Windows
+- [rg](https://github.com/BurntSushi/ripgrep) — Linux / macOS / Windows
+- [lsd](https://github.com/lsd-rs/lsd) — Linux / macOS / Windows
+- [duf](https://github.com/muesli/duf) — Linux / macOS / Windows
+- [age, age-keygen](https://github.com/FiloSottile/age) — Linux / macOS / Windows
+- [tldr](https://github.com/tldr-pages/tlrc) — Linux / macOS / Windows
+- [jq](https://github.com/jqlang/jq) — Linux / macOS / Windows
+- [yq](https://github.com/mikefarah/yq) — Linux / macOS / Windows
+- [gdu](https://github.com/dundee/gdu) — Linux / macOS / Windows
+- [ipgeo](https://github.com/kibaamor/ipgeo) — Linux / macOS / Windows
+- [ipstream](https://github.com/kibaamor/ipstream) — Linux / macOS / Windows
+- [tproxy](https://github.com/kevwan/tproxy) — Linux / macOS / Windows
+- [gping](https://github.com/orf/gping) — Linux / macOS / Windows
+- [doggo](https://github.com/mr-karan/doggo) — Linux / macOS / Windows
+- [nexttrace](https://github.com/nxtrace/NTrace-core) — Linux / macOS / Windows
+- [ctop](https://github.com/bcicen/ctop) — Linux / Windows
+- [kubecolor](https://github.com/kubecolor/kubecolor) — Linux / macOS / Windows
+- [arkade](https://github.com/alexellis/arkade) — Linux / macOS / Windows
+- [upx](https://github.com/upx/upx) — Linux only
+- [ShellCheck](https://github.com/koalaman/shellcheck) — Linux / macOS / Windows
 
-### Extra Binaries
+### Extra binaries
 
-> These binaries are installed only when `DOTFILES_EXTRA_BINS` is non-empty.
+These binaries are installed only when `DOTFILES_EXTRA_BINS` is non-empty:
 
-1. [kubeshark](https://github.com/kubeshark/kubeshark) — Linux / macOS / Windows
-1. [kubefwd](https://github.com/txn2/kubefwd) — Linux / macOS / Windows
+- [kubeshark](https://github.com/kubeshark/kubeshark) — Linux / macOS / Windows
+- [kubefwd](https://github.com/txn2/kubefwd) — Linux / macOS / Windows
 
-### Binaries Installed via Arkade
+### Binaries installed via arkade
 
-> These binaries are installed through arkade only when `DOTFILES_ARKADE_BINS` is non-empty.
+These binaries are installed through arkade only when `DOTFILES_ARKADE_BINS` is
+non-empty:
 
-1. [mkcert](https://github.com/FiloSottile/mkcert) — Linux / macOS / Windows
-1. [dive](https://github.com/wagoodman/dive) — Linux / macOS / Windows
-1. [lazydocker](https://github.com/jesseduffield/lazydocker) — Linux / macOS / Windows
-1. [minikube](https://github.com/kubernetes/minikube) — Linux / macOS / Windows
-1. [kind](https://github.com/kubernetes-sigs/kind) — Linux / macOS / Windows
-1. [kubectx, kubens](https://github.com/ahmetb/kubectx) — Linux / macOS / Windows
-1. [k9s](https://github.com/derailed/k9s) — Linux / macOS / Windows
-1. [helm](https://helm.sh/) — Linux / macOS / Windows
+- [mkcert](https://github.com/FiloSottile/mkcert) — Linux / macOS / Windows
+- [dive](https://github.com/wagoodman/dive) — Linux / macOS / Windows
+- [lazydocker](https://github.com/jesseduffield/lazydocker) — Linux / macOS / Windows
+- [minikube](https://github.com/kubernetes/minikube) — Linux / macOS / Windows
+- [kind](https://github.com/kubernetes-sigs/kind) — Linux / macOS / Windows
+- [kubectx, kubens](https://github.com/ahmetb/kubectx) — Linux / macOS / Windows
+- [k9s](https://github.com/derailed/k9s) — Linux / macOS / Windows
+- [helm](https://helm.sh/) — Linux / macOS / Windows
 
 ## Troubleshooting
 
