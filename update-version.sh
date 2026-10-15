@@ -73,6 +73,7 @@ commit_repos=(
   # AI agent skills (synced to ~/.agents/skills)
   "DietrichGebert/ponytail main ponytail"
   "mattpocock/skills main mattpocockskills"
+  "obra/superpowers main superpowers"
 )
 
 targets=(
@@ -344,7 +345,7 @@ render_target_urls() {
   local commits_array_name="$3"
   local checksums_array_name="$4"
   local out_file="$5"
-  local arch os rendered_file target_data target_config
+  local arch os rendered_file target_data target_config skill_suit
 
   os="${target%/*}"
   arch="${target#*/}"
@@ -355,18 +356,22 @@ render_target_urls() {
     --override-data "$target_data" \
     --file "$CONFIG_TEMPLATE")"
 
-rendered_file="$("${chezmoi_env[@]}" chezmoi --source "$ROOT_DIR" \
-    --config <(printf '%s\n' "$target_config") \
-    --config-format yaml \
-    execute-template \
-    --override-data "$target_data" \
-    --file "$EXTERNALS_TEMPLATE")"
+  # Include URLs for every selectable agent skill suite.
+  for skill_suit in matt superpowers; do
+    chezmoi_env=(env DOTFILES_EXTRA_BINS=1 DOTFILES_ARKADE_BINS=1 DOTFILES_MIRROR= "DOTFILES_AGENT_SKILL_SUIT=$skill_suit")
+    rendered_file="$("${chezmoi_env[@]}" chezmoi --source "$ROOT_DIR" \
+      --config <(printf '%s\n' "$target_config") \
+      --config-format yaml \
+      execute-template \
+      --override-data "$target_data" \
+      --file "$EXTERNALS_TEMPLATE")"
 
-  sed -n -e 's/^[[:space:]]*url:[[:space:]]*"\(.*\)"[[:space:]]*$/\1/p' \
-         -e 's/^[[:space:]]*-[[:space:]]*"\(.*\)"[[:space:]]*$/\1/p' \
-    <<<"$rendered_file" \
-    | grep -F '://' \
-    | sort -u >>"$out_file"
+    sed -n -e 's/^[[:space:]]*url:[[:space:]]*"\(.*\)"[[:space:]]*$/\1/p' \
+           -e 's/^[[:space:]]*-[[:space:]]*"\(.*\)"[[:space:]]*$/\1/p' \
+      <<<"$rendered_file" \
+      | grep -F '://' \
+      | sort -u >>"$out_file"
+  done
 }
 
 add_rendered_urls() {

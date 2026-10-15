@@ -113,15 +113,17 @@ it defaults to `matt`.
 
 | Value | Skills installed |
 | --- | --- |
-| `matt` (default) | ponytail and skills from `mattpocock/skills` |
-| `pony` | ponytail only |
 | `none` | none |
+| `pony` | `ponytail` only |
+| `matt` (default) | `ponytail` and skills from [`mattpocock/skills`](https://github.com/mattpocock/skills) |
+| `superpowers` | `ponytail` and all skills from [`obra/superpowers`](https://github.com/obra/superpowers/tree/main/skills) |
 | Any other value | Template rendering fails with an error |
 
 ```bash
-DOTFILES_AGENT_SKILL_SUIT=matt chezmoi update
-DOTFILES_AGENT_SKILL_SUIT=pony chezmoi update
 DOTFILES_AGENT_SKILL_SUIT=none chezmoi update
+DOTFILES_AGENT_SKILL_SUIT=pony chezmoi update
+DOTFILES_AGENT_SKILL_SUIT=matt chezmoi update
+DOTFILES_AGENT_SKILL_SUIT=superpowers chezmoi update
 ```
 
 ### Toggle extra binaries at update time

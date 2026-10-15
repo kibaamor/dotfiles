@@ -31,10 +31,12 @@
 # AI agent skills
 
 {{- $agent_skill_suit := env "DOTFILES_AGENT_SKILL_SUIT" | default "matt" -}}
-{{- if and (ne $agent_skill_suit "pony") (ne $agent_skill_suit "matt") (ne $agent_skill_suit "none") -}}
-{{- fail (printf "invalid DOTFILES_AGENT_SKILL_SUIT %q; expected pony, matt, or none" $agent_skill_suit) -}}
+{{- if and (ne $agent_skill_suit "none") (ne $agent_skill_suit "pony") (ne $agent_skill_suit "matt") (ne $agent_skill_suit "superpowers") -}}
+{{- fail (printf "invalid DOTFILES_AGENT_SKILL_SUIT %q; expected pony, matt, superpowers, or none" $agent_skill_suit) -}}
 {{- end -}}
-{{- if or (eq $agent_skill_suit "pony") (eq $agent_skill_suit "matt") }}
+
+{{- if ne $agent_skill_suit "none" }}
+## Ponytail
 {{ $ponytail_url := printf "github.com/DietrichGebert/ponytail/archive/%s.tar.gz" .commits.ponytail }}
 {{- $ponytail_skills := list "ponytail" }}
 {{- range $skill := $ponytail_skills }}
@@ -46,7 +48,9 @@
   include:
     - "*/skills/{{ $skill }}/**"
 {{- end }}
+{{- end }}
 
+## matt
 {{- if eq $agent_skill_suit "matt" }}
 {{ $matt_url := printf "github.com/mattpocock/skills/archive/%s.tar.gz" .commits.mattpocockskills }}
 {{- $matt_skills := list "ask-matt" "code-review" "codebase-design" "diagnosing-bugs" "domain-modeling" "grill-with-docs" "implement" "implement-spec" "improve-codebase-architecture" "pr" "prototype" "research" "retro" "setup-matt-pocock-skills" "tdd" "to-spec" "to-tickets" "triage" "wayfinder" "wizard" }}
@@ -70,6 +74,20 @@
   include:
     - "*/skills/productivity/{{ $skill }}/**"
 {{- end }}
+{{- end }}
+
+## superpowers
+{{- if eq $agent_skill_suit "superpowers" }}
+{{ $superpowers_url := printf "github.com/obra/superpowers/archive/%s.tar.gz" .commits.superpowers }}
+{{- $superpowers_skills := list "brainstorming" "diagnosing-superpowers" "dispatching-parallel-agents" "executing-plans" "finishing-a-development-branch" "receiving-code-review" "requesting-code-review" "subagent-driven-development" "systematic-debugging" "test-driven-development" "using-git-worktrees" "using-superpowers" "verification-before-completion" "writing-plans" "writing-skills" }}
+{{- range $skill := $superpowers_skills }}
+".agents/skills/{{ $skill }}":
+  type: archive
+{{- template "mirror_urls" (dict "root" $ "path" $superpowers_url) }}
+  stripComponents: 3
+  exact: true
+  include:
+    - "*/skills/{{ $skill }}/**"
 {{- end }}
 {{- end }}
 
