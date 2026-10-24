@@ -394,7 +394,7 @@
 {{ end }}
 
 ########################################################################################################################
-# Install extra binaries that can be installed via arkade.
+# Install extra binaries.
 {{ if env "DOTFILES_EXTRA_BINS" | ne "" }}
 ".local/bin/kubeshark{{ $exe_ext }}":
   type: file
@@ -411,6 +411,14 @@
 {{- template "mirror_urls" (dict "root" $ "path" $kubefwd_url) }}
   path: "kubefwd{{ $exe_ext }}"
   executable: true
+
+".local/bin/llmfit{{ $exe_ext }}":
+  type: archive-file
+{{ $llmfit_url := printf "github.com/AlexsJones/llmfit/releases/download/v%s/llmfit-v%s-%s-%s-%s%s%s" .versions.llmfit .versions.llmfit $rust_arch $platform .chezmoi.os $pkg_runtime $pkg_postfix }}
+{{- template "mirror_urls" (dict "root" $ "path" $llmfit_url) }}
+  path: "llmfit{{ $exe_ext }}"
+  executable: true
+  stripComponents: 1
 {{ end }}
 
 ########################################################################################################################

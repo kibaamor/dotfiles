@@ -174,6 +174,7 @@ These binaries are installed only when `DOTFILES_EXTRA_BINS` is non-empty:
 
 - [kubeshark](https://github.com/kubeshark/kubeshark) — Linux / macOS / Windows
 - [kubefwd](https://github.com/txn2/kubefwd) — Linux / macOS / Windows
+- [llmfit](https://github.com/AlexsJones/llmfit) — Linux / macOS / Windows
 
 ### Binaries installed via arkade
 

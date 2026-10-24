@@ -48,6 +48,7 @@ repos=(
   # Extra binary repositories
   "kubeshark/kubeshark"
   "txn2/kubefwd"
+  "AlexsJones/llmfit"
 
   ##############################################################
   # Arkade-managed binary repositories

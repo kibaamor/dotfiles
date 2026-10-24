@@ -6,4 +6,6 @@
 Thumbs.db
 
 # Agent files
+/.agents
 /.kilo
+/openspec/
