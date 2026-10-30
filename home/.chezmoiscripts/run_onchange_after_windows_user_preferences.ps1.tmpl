@@ -34,10 +34,33 @@ function Set-UserEnvIfMissing {
     [Environment]::SetEnvironmentVariable($EnvName, $currentValue, "User")
   }
 }
-Set-UserEnvIfMissing 'NO_PROXY'
-Set-UserEnvIfMissing 'HTTP_PROXY'
-Set-UserEnvIfMissing 'HTTPS_PROXY'
-Set-UserEnvIfMissing 'FTP_PROXY'
+
+function Set-UserEnv {
+  param ([string]$EnvName, [string]$NewValue)
+
+  if ([string]::IsNullOrWhiteSpace($NewValue)) {
+    Set-UserEnvIfMissing $EnvName
+    return
+  }
+
+  $userValue = [Environment]::GetEnvironmentVariable($EnvName, "User")
+  if ($userValue -eq $NewValue) {
+    Write-Host "User environment variable '$EnvName'('$userValue') already up to date. No action taken."
+    return
+  }
+
+  Write-Host "Setting user environment variable '$EnvName' to '$NewValue'"
+  [Environment]::SetEnvironmentVariable($EnvName, $NewValue, "User")
+}
+
+Set-UserEnv 'NO_PROXY' "$env:default_no_proxy"
+Set-UserEnv 'no_proxy' "$env:default_no_proxy"
+Set-UserEnv 'HTTP_PROXY' "$env:default_proxy"
+Set-UserEnv 'HTTPS_PROXY' "$env:default_proxy"
+Set-UserEnv 'FTP_PROXY' "$env:default_proxy"
+Set-UserEnv 'http_proxy' "$env:default_proxy"
+Set-UserEnv 'https_proxy' "$env:default_proxy"
+Set-UserEnv 'ftp_proxy' "$env:default_proxy"
 
 
 ###################################################################################################
