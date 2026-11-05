@@ -42,9 +42,9 @@
 ########################################################################################################################
 # AI agent skills
 
-{{- $agent_skill_suit := env "DOTFILES_AGENT_SKILL_SUIT" | default "matt" -}}
-{{- if and (ne $agent_skill_suit "none") (ne $agent_skill_suit "pony") (ne $agent_skill_suit "matt") (ne $agent_skill_suit "superpowers") -}}
-{{- fail (printf "invalid DOTFILES_AGENT_SKILL_SUIT %q; expected pony, matt, superpowers, or none" $agent_skill_suit) -}}
+{{- $agent_skill_suit := env "DOTFILES_AGENT_SKILL_SUIT" | default "basic" -}}
+{{- if and (ne $agent_skill_suit "none") (ne $agent_skill_suit "basic") (ne $agent_skill_suit "matt") (ne $agent_skill_suit "superpowers") -}}
+{{- fail (printf "invalid DOTFILES_AGENT_SKILL_SUIT %q; expected basic, matt, superpowers, or none" $agent_skill_suit) -}}
 {{- end -}}
 
 {{- if ne $agent_skill_suit "none" }}
@@ -57,6 +57,19 @@
   "skills" $ponytail_skills
   "stripComponents" 3
   "includePrefix" "*/skills"
+) }}
+{{- end }}
+
+## basic
+{{- if eq $agent_skill_suit "basic" }}
+{{ $matt_url := printf "github.com/mattpocock/skills/archive/%s.tar.gz" .commits.mattpocockskills }}
+{{- $matt_productivity_skills := list "writing-for-agents" }}
+{{- template "agent_skill_archives" (dict
+  "root" $
+  "url" $matt_url
+  "skills" $matt_productivity_skills
+  "stripComponents" 4
+  "includePrefix" "*/skills/productivity"
 ) }}
 {{- end }}
 

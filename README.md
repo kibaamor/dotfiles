@@ -33,8 +33,8 @@ export GIT_USEREMAIL=x@x.x
 export DOTFILES_EXTRA_BINS=1
 # (Optional) Install binaries through arkade (takes effect at every chezmoi update).
 export DOTFILES_ARKADE_BINS=1
-# (Optional) Choose an agent skill suite (defaults to matt).
-export DOTFILES_AGENT_SKILL_SUIT=matt
+# (Optional) Choose an agent skill suite (defaults to basic).
+export DOTFILES_AGENT_SKILL_SUIT=basic
 # (Optional) Set a mirror for GitHub-hosted downloads.
 export DOTFILES_MIRROR=https://cdn.gh-proxy.org
 # (Optional) Set a proxy; replace this URL with your proxy address.
@@ -70,8 +70,8 @@ $env:GIT_USEREMAIL = "x@x.x"
 $env:DOTFILES_EXTRA_BINS = "1"
 # (Optional) Install binaries through arkade (takes effect at every chezmoi update).
 $env:DOTFILES_ARKADE_BINS = "1"
-# (Optional) Choose an agent skill suite (defaults to matt).
-$env:DOTFILES_AGENT_SKILL_SUIT = "matt"
+# (Optional) Choose an agent skill suite (defaults to basic).
+$env:DOTFILES_AGENT_SKILL_SUIT = "basic"
 # (Optional) Set a mirror for GitHub-hosted downloads.
 $env:DOTFILES_MIRROR = "https://cdn.gh-proxy.org"
 # (Optional) Set a proxy; replace this URL with your proxy address.
@@ -109,19 +109,19 @@ DOTFILES_MIRROR=https://cdn.gh-proxy.org chezmoi update
 ### Choose AI agent skills at update time
 
 `DOTFILES_AGENT_SKILL_SUIT` is re-read at every `chezmoi update`. If unset or empty,
-it defaults to `matt`.
+it defaults to `basic`.
 
 | Value | Skills installed |
 | --- | --- |
 | `none` | none |
-| `pony` | `ponytail` only |
-| `matt` (default) | `ponytail` and skills from [`mattpocock/skills`](https://github.com/mattpocock/skills) |
+| `basic` (default) | `ponytail` and `writing-for-agents` |
+| `matt` | `ponytail` and skills from [`mattpocock/skills`](https://github.com/mattpocock/skills) |
 | `superpowers` | `ponytail` and all skills from [`obra/superpowers`](https://github.com/obra/superpowers/tree/main/skills) |
 | Any other value | Template rendering fails with an error |
 
 ```bash
 DOTFILES_AGENT_SKILL_SUIT=none chezmoi update
-DOTFILES_AGENT_SKILL_SUIT=pony chezmoi update
+DOTFILES_AGENT_SKILL_SUIT=basic chezmoi update
 DOTFILES_AGENT_SKILL_SUIT=matt chezmoi update
 DOTFILES_AGENT_SKILL_SUIT=superpowers chezmoi update
 ```

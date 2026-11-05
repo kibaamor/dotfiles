@@ -427,7 +427,7 @@ render_target_urls() {
     --file "$CONFIG_TEMPLATE")"
 
   # Include URLs for every selectable agent skill suite.
-  for skill_suit in matt superpowers; do
+  for skill_suit in basic matt superpowers; do
     env DOTFILES_EXTRA_BINS=1 DOTFILES_ARKADE_BINS=1 DOTFILES_MIRROR= \
       "DOTFILES_AGENT_SKILL_SUIT=$skill_suit" \
       chezmoi --source "$ROOT_DIR" \
